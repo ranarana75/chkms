@@ -45,8 +45,8 @@ export default function Index() {
     },
     {
       icon: <Calculator className="h-8 w-8 text-islamic-gold" />,
-      title: "আ��্থিক ব্যবস্থা���না",
-      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর্ট",
+      title: "আ��্থিক ব্যবস্থাপনা",
+      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর��ট",
       color: "bg-yellow-50 dark:bg-yellow-950",
       link: "/finance",
     },
@@ -80,7 +80,7 @@ export default function Index() {
     },
     {
       icon: <School className="h-8 w-8 text-green-600" />,
-      title: "ইসলামিক ফিচ���রস",
+      title: "ইসলামিক ফিচারস",
       description: "নামাজের সময়, হিফজ ট্র্যাক��ং এবং আখলাক পয়েন্ট",
       color: "bg-emerald-50 dark:bg-emerald-950",
       link: "/islamic",
@@ -219,7 +219,7 @@ export default function Index() {
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 font-bengali-heading">
-              সিস্টেমের বৈশিষ্ট্যসমূহ
+              সিস্ট��মের বৈশিষ্ট্যসমূহ
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto font-bengali-body">
               আধুনিক প্রযুক্তি ব্যবহার করে মাদ্রাসার সকল কার্যক্রম ডিজিটাইজেশন
@@ -271,7 +271,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 dark:text-gray-300">
-                  স্থানীয় সময় অনুযায়��� স্বয়ংক্রি��় নামাজের ওয়াক্ত আপডেট
+                  স্থানীয় সময় অনুযায়��� স্বয়ং���্রি��় নামাজের ওয়াক্ত আপডেট
                 </p>
               </CardContent>
             </Card>
@@ -294,7 +294,7 @@ export default function Index() {
               <CardHeader>
                 <Star className="h-12 w-12 text-islamic-blue mx-auto mb-4" />
                 <CardTitle className="text-islamic-blue">
-                  আ��লাক ��য়ে���্ট
+                  আখলাক ��য়ে���্ট
                 </CardTitle>
               </CardHeader>
               <CardContent>
