@@ -27,6 +27,14 @@ export default {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        islamic: {
+          green: "hsl(var(--islamic-green))",
+          "green-dark": "hsl(var(--islamic-green-dark))",
+          gold: "hsl(var(--islamic-gold))",
+          "gold-light": "hsl(var(--islamic-gold-light))",
+          blue: "hsl(var(--islamic-blue))",
+          "blue-dark": "hsl(var(--islamic-blue-dark))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
