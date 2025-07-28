@@ -16,7 +16,7 @@ import {
   CreditCard,
   FileText,
   Award,
-  Mosque,
+  School,
   Star,
   TrendingUp,
   CheckCircle,
