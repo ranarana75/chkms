@@ -31,7 +31,7 @@ export default function Index() {
     {
       icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
       title: "শিক্ষক পোর্টাল",
-      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্��াশবোর্ড",
+      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যাশবোর্ড",
       color: "bg-blue-50 dark:bg-blue-950"
     },
     {
@@ -43,7 +43,7 @@ export default function Index() {
     {
       icon: <BookOpen className="h-8 w-8 text-purple-600" />,
       title: "লাইব্রেরি সিস্টেম",
-      description: "ডিজিটাল বুক ক্যাটালগ এবং ইস্যু-রিটার্ন ব্যবস্থা",
+      description: "ডিজিটাল বুক ক্যাটালগ এবং ইস্যু-রিটার্��� ব্যবস্থা",
       color: "bg-purple-50 dark:bg-purple-950"
     },
     {
@@ -55,7 +55,7 @@ export default function Index() {
     {
       icon: <Bus className="h-8 w-8 text-indigo-600" />,
       title: "ট্রান্সপোর্ট সিস্টেম",
-      description: "রুট পরিক��্পনা, GPS ট্র্যাকিং এবং নিরাপত্তা",
+      description: "রুট পরিকল্পনা, GPS ট্র্যাকিং এবং নিরাপত্তা",
       color: "bg-indigo-50 dark:bg-indigo-950"
     }
   ];
@@ -75,7 +75,7 @@ export default function Index() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-islamic-green rounded-lg">
-                <Mosque className="h-8 w-8 text-white" />
+                <School className="h-8 w-8 text-white" />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-islamic-green-dark dark:text-islamic-green">CHKMS</h1>
@@ -85,7 +85,7 @@ export default function Index() {
             <nav className="hidden md:flex items-center space-x-6">
               <Link to="#about" className="text-gray-600 hover:text-islamic-green transition-colors">সম্পর্কে</Link>
               <Link to="#features" className="text-gray-600 hover:text-islamic-green transition-colors">বৈশিষ্ট্য</Link>
-              <Link to="#contact" className="text-gray-600 hover:text-islamic-green transition-colors">যোগাযোগ</Link>
+              <Link to="#contact" className="text-gray-600 hover:text-islamic-green transition-colors">য���গাযোগ</Link>
               <Button asChild className="bg-islamic-green hover:bg-islamic-green-dark">
                 <Link to="/login">লগইন</Link>
               </Button>
@@ -99,7 +99,7 @@ export default function Index() {
         <div className="container mx-auto text-center">
           <div className="flex justify-center mb-6">
             <Badge className="bg-islamic-gold/10 text-islamic-gold border-islamic-gold/20 px-6 py-2 text-lg">
-              আধুনিক মাদ্রাসা ব্যব��্থাপনা
+              আধুনিক মাদ্রাসা ব্যবস্থাপনা
             </Badge>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
@@ -107,7 +107,7 @@ export default function Index() {
             <span className="block text-islamic-green">ম্যানেজমেন্ট সিস্টেম</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-            ইসলামিক শিক্ষার ঐতিহ্য রক্ষা করে আধুনিক প্রযুক্তির সমন্বয়ে একটি সম্পূর্ণ ডিজিটাল শিক্ষা ব্যবস্থাপনা
+            ইসলামিক শিক্ষার ঐতিহ্য রক্ষা করে আধুনিক প্রযুক্তির সমন্বয়ে একটি সম্পূর্ণ ���িজিটাল শিক্ষা ব্যবস্থাপনা
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button size="lg" className="bg-islamic-green hover:bg-islamic-green-dark text-white px-8">
@@ -181,7 +181,7 @@ export default function Index() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="text-center border-islamic-green/20 bg-green-50 dark:bg-green-950">
               <CardHeader>
-                <Mosque className="h-12 w-12 text-islamic-green mx-auto mb-4" />
+                <School className="h-12 w-12 text-islamic-green mx-auto mb-4" />
                 <CardTitle className="text-islamic-green">নামাজের সময়সূচি</CardTitle>
               </CardHeader>
               <CardContent>
@@ -253,7 +253,7 @@ export default function Index() {
         <div className="container mx-auto text-center">
           <div className="flex items-center justify-center space-x-3 mb-6">
             <div className="p-2 bg-islamic-green rounded-lg">
-              <Mosque className="h-6 w-6 text-white" />
+              <School className="h-6 w-6 text-white" />
             </div>
             <div>
               <h3 className="text-lg font-bold">CHKMS</h3>
