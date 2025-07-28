@@ -112,7 +112,7 @@ export default function Index() {
     },
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
-      title: "হোস্টেল ব্যবস্থাপনা",
+      title: "হোস্টেল ব্যবস্থা���না",
       description: "রুম অ্যালোকেশন, মেস ব্যবস্থাপনা এ���ং হোস্��েল সেবা",
       color: "bg-orange-50 dark:bg-orange-950",
       link: "/hostel",
@@ -222,7 +222,7 @@ export default function Index() {
 
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-            {stats.map((stat, index) => (
+            {dynamicStats.map((stat, index) => (
               <Card
                 key={index}
                 className="text-center border-green-100 dark:border-gray-800"
@@ -332,7 +332,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 dark:text-gray-300">
-                  নৈ��িক আচরণ ও ইসলামিক মূল্যবোধের মূল্যায়ন
+                  নৈ��িক আচরণ ও ইসলামিক মূল্যবোধের মূল্যায়���
                 </p>
               </CardContent>
             </Card>
