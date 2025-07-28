@@ -54,7 +54,7 @@ const Navigation: React.FC = () => {
               <h1 className="text-lg font-bold text-islamic-green-dark">
                 CHKMS
               </h1>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground font-bengali">
                 চুনতি হাকিমিয়া কামিল মাদ্রাসা
               </p>
             </div>
