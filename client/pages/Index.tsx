@@ -39,7 +39,7 @@ export default function Index() {
     {
       icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
       title: "শিক্ষক পোর্টাল",
-      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যাশবোর্ড",
+      description: "ক্লা�� রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যাশবোর্ড",
       color: "bg-blue-50 dark:bg-blue-950",
       link: "/teacher",
     },
@@ -100,7 +100,7 @@ export default function Index() {
     },
     { label: "বিভাগ", value: "12", icon: <Building2 className="h-5 w-5" /> },
     {
-      label: "সফলত���র হা����",
+      label: "সফলতার হার",
       value: "95%",
       icon: <Star className="h-5 w-5" />,
     },
@@ -320,7 +320,7 @@ export default function Index() {
                 যোগাযোগ করুন
               </h2>
               <p className="text-lg mb-8 text-green-100 font-bengali-body">
-                আমাদের সাথে যোগাযোগ করুন এবং আধুনিক মাদ্রাসা ব্যবস্থাপনার
+                আমা���ের সাথে যোগাযোগ করুন এবং আধুনিক মাদ্রাসা ব্যবস্থাপনার
                 অংশীদার হন
               </p>
               <div className="space-y-4">
