@@ -67,7 +67,7 @@ export default function Index() {
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
       title: "হোস্টেল ব্যবস্থাপ��া",
-      description: "রুম অ্যালোকেশন, মেস ���্যবস্থাপনা এবং হোস্টেল সেবা",
+      description: "রুম অ্যালোকেশন, মেস ���্যবস্থ���পনা এবং হোস্টেল সেবা",
       color: "bg-orange-50 dark:bg-orange-950",
       link: "/hostel",
     },
@@ -265,7 +265,7 @@ export default function Index() {
             <Card className="text-center border-islamic-green/20 bg-green-50 dark:bg-green-950">
               <CardHeader>
                 <School className="h-12 w-12 text-islamic-green mx-auto mb-4" />
-                <CardTitle className="text-islamic-green">
+                <CardTitle className="text-islamic-green font-bengali-title">
                   নামাজের সময়সূচি
                 </CardTitle>
               </CardHeader>
