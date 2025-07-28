@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -38,7 +39,7 @@ export default function IslamicDashboard() {
           hijriDate: "১৫ জমাদিউল আওয়াল ১৪৪৬",
           location: "লক্ষ্মীপুর, বাংলাদেশ",
           times: {
-            fajr: "৫:১৫",
+            fajr: "���:১৫",
             sunrise: "৬:৩৫",
             dhuhr: "১১:৫৫",
             asr: "৩:৩০",
@@ -58,8 +59,8 @@ export default function IslamicDashboard() {
           ]
         },
         akhlaqLeaders: [
-          { name: "আব্দুর রহমান", points: 185, level: "প্���্যাটিনাম", class: "আলিম দ্বিতীয়" },
-          { name: "মোহাম্মদ হাসান", points: 142, level: "গোল্ড", class: "আলিম প্রথম" },
+          { name: "আব্দুর রহমান", points: 185, level: "প্ল্যাটিনাম", class: "আলিম দ্বিতীয়" },
+          { name: "মোহাম্মদ হাসান", points: 142, level: "গোল্ড", class: "আলিম প���রথম" },
           { name: "আবু বকর", points: 128, level: "গোল্ড", class: "আলিম দ্বিতীয়" }
         ],
         upcomingEvents: [
@@ -314,7 +315,7 @@ export default function IslamicDashboard() {
                     </div>
                     <div className="text-right">
                       <Badge className={`${
-                        student.level === 'প্ল্যাটিনাম' ? 'bg-gray-700' :
+                        student.level === 'প��ল্যাটিনাম' ? 'bg-gray-700' :
                         student.level === 'গোল্ড' ? 'bg-yellow-600' :
                         'bg-gray-500'
                       } text-white`}>
