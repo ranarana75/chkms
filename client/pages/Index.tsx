@@ -201,7 +201,7 @@ export default function Index() {
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                  <div className="text-sm text-gray-600 dark:text-gray-400 font-bengali">
                     {stat.label}
                   </div>
                 </CardContent>
