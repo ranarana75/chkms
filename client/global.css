@@ -144,21 +144,46 @@
 @layer utilities {
   /* Bengali font utility classes */
   .font-bengali {
-    font-family: 'Noto Serif Bengali', serif;
+    font-family: 'Noto Serif Bengali', serif !important;
   }
 
   .font-bengali-title {
-    font-family: 'Noto Serif Bengali', serif;
+    font-family: 'Noto Serif Bengali', serif !important;
     font-weight: 600;
   }
 
   .font-bengali-heading {
-    font-family: 'Noto Serif Bengali', serif;
+    font-family: 'Noto Serif Bengali', serif !important;
     font-weight: 700;
   }
 
   .font-bengali-body {
-    font-family: 'Noto Serif Bengali', serif;
+    font-family: 'Noto Serif Bengali', serif !important;
     font-weight: 400;
+  }
+}
+
+@layer components {
+  /* Apply Bengali font to all Radix UI components and common UI elements */
+  [data-radix-popper-content-wrapper] *,
+  [data-radix-dropdown-menu-content] *,
+  [data-radix-select-content] *,
+  [data-radix-dialog-content] *,
+  [data-radix-toast-viewport] *,
+  .card *, .button *, .badge *, .label *, .input, .textarea, .select *,
+  .navigation *, .header *, .footer *, .sidebar *,
+  [role="dialog"] *, [role="menu"] *, [role="menuitem"] *,
+  [role="button"], [role="tab"] *, [role="tabpanel"] * {
+    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif !important;
+  }
+
+  /* Specific overrides for button and form elements */
+  button, input, textarea, select, option {
+    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif !important;
+  }
+
+  /* Navigation and common UI component fonts */
+  nav *, .nav *, .menu *, .dropdown *, .tabs *, .accordion * {
+    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif !important;
   }
 }
