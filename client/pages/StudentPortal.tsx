@@ -35,13 +35,32 @@ import {
 } from "lucide-react";
 
 export default function StudentPortal() {
+  const { data: students, loading: studentsLoading, refresh } = useLocalData(studentsDB);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Update current time every minute
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Get current student (in real app, this would come from auth)
+  const currentStudent = students.find(s => s.studentId === "STD001");
+
   const studentData = {
-    name: "মোহাম্মদ আবদুল্লাহ",
-    id: "STD001",
-    class: "আলিম প্রথম বর্ষ",
-    section: "ক",
-    roll: "০৫",
-    photo: "/placeholder.svg",
+    name: currentStudent?.name || "মোহাম্মদ আবদুল্লাহ",
+    id: currentStudent?.studentId || "STD001",
+    class: currentStudent?.class || "আল��ম প্রথম বর্ষ",
+    section: currentStudent?.section || "ক",
+    roll: currentStudent?.roll || "০৫",
+    photo: currentStudent?.photo || "/placeholder.svg",
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refresh();
+    setTimeout(() => setIsRefreshing(false), 1000);
   };
 
   const attendance = {
