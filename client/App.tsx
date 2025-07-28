@@ -5,6 +5,7 @@ import LoginPage from "./pages/Login";
 import StudentPortal from "./pages/StudentPortal";
 import TeacherPortal from "./pages/TeacherPortal";
 import AdminPortal from "./pages/AdminPortal";
+import ExaminationDashboard from "./pages/ExaminationDashboard";
 import PlaceholderPage from "./pages/PlaceholderPage";
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
         <Route path="/student" element={<StudentPortal />} />
         <Route path="/teacher" element={<TeacherPortal />} />
         <Route path="/admin" element={<AdminPortal />} />
-        <Route path="/finance" element={<PlaceholderPage title="আর্থিক ব্যবস্থাপনা" description="ফাইনান্স মডিউল শীঘ্রই আসছে" />} />
+        <Route path="/finance" element={<PlaceholderPage title="আর্��িক ব্যবস্থাপনা" description="ফাইনান্স মডিউল শীঘ্রই আসছে" />} />
         <Route path="/library" element={<PlaceholderPage title="লাইব্রেরি সিস্টেম" description="লাইব্রেরি মডিউল শীঘ্রই আসছে" />} />
         <Route path="/hostel" element={<PlaceholderPage title="হোস্টেল ব্যবস্থাপনা" description="হোস্টেল মডিউল শীঘ্রই আসছে" />} />
         <Route path="/transport" element={<PlaceholderPage title="ট্রান্সপোর্ট সিস্টেম" description="ট্রান্সপোর্ট মডিউল শীঘ্রই আসছে" />} />
