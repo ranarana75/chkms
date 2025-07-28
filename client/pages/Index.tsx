@@ -53,25 +53,25 @@ export default function Index() {
       label: "মোট শিক্ষার্থী",
       value: isLoading ? "..." : `${stats.totalStudents}+`,
       icon: <Users className="h-5 w-5" />,
-      trend: "+৫ এই মাসে"
+      trend: "+৫ এই মাসে",
     },
     {
       label: "শিক্ষক",
       value: isLoading ? "..." : `${stats.totalTeachers}+`,
       icon: <GraduationCap className="h-5 w-5" />,
-      trend: "+২ নতুন য��গদান"
+      trend: "+২ নতুন য��গদান",
     },
     {
       label: "সক্রিয় নোটিশ",
       value: isLoading ? "..." : `${stats.activeNotices}`,
       icon: <FileText className="h-5 w-5" />,
-      trend: "আজ প্রকাশিত"
+      trend: "আজ প্রকাশিত",
     },
     {
       label: "সফলতার হার",
       value: isLoading ? "..." : `${stats.collectionRate}%`,
       icon: <Star className="h-5 w-5" />,
-      trend: `↗ ${Math.floor(Math.random() * 5) + 1}% বৃদ্ধি`
+      trend: `↗ ${Math.floor(Math.random() * 5) + 1}% বৃদ্ধি`,
     },
   ];
   const features = [
@@ -132,8 +132,6 @@ export default function Index() {
       link: "/islamic",
     },
   ];
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
@@ -229,7 +227,11 @@ export default function Index() {
               >
                 <CardContent className="pt-6">
                   <div className="flex justify-center mb-2 text-islamic-green">
-                    {isLoading ? <Activity className="h-5 w-5 animate-spin" /> : stat.icon}
+                    {isLoading ? (
+                      <Activity className="h-5 w-5 animate-spin" />
+                    ) : (
+                      stat.icon
+                    )}
                   </div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
                     {stat.value}
@@ -310,7 +312,8 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 dark:text-gray-300">
-                  স্থানীয় সময় অনুযায়��� স্বয়ংক্রি��় নামাজে��� ওয়াক��ত আপডেট
+                  স্থানীয় সময় অনুযায়��� স্বয়ংক্রি��় নামাজে��� ওয়াক��ত
+                  আপডেট
                 </p>
               </CardContent>
             </Card>

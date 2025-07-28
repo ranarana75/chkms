@@ -35,7 +35,11 @@ import {
 } from "lucide-react";
 
 export default function StudentPortal() {
-  const { data: students, loading: studentsLoading, refresh } = useLocalData(studentsDB as any);
+  const {
+    data: students,
+    loading: studentsLoading,
+    refresh,
+  } = useLocalData(studentsDB as any);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -87,15 +91,20 @@ export default function StudentPortal() {
       setAttendance({
         present,
         total,
-        percentage: Math.round((present / total) * 100 * 10) / 10
+        percentage: Math.round((present / total) * 100 * 10) / 10,
       });
 
       // Occasionally update marks
       if (Math.random() > 0.7) {
-        setRecentMarks(prev => prev.map(mark => ({
-          ...mark,
-          marks: Math.max(70, Math.min(100, mark.marks + (Math.random() > 0.5 ? 1 : -1))),
-        })));
+        setRecentMarks((prev) =>
+          prev.map((mark) => ({
+            ...mark,
+            marks: Math.max(
+              70,
+              Math.min(100, mark.marks + (Math.random() > 0.5 ? 1 : -1)),
+            ),
+          })),
+        );
       }
     }, 30000); // Update every 30 seconds
 
@@ -180,7 +189,9 @@ export default function StudentPortal() {
                 onClick={handleRefresh}
                 disabled={isRefreshing || studentsLoading}
               >
-                <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                <RefreshCw
+                  className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+                />
               </Button>
               <Button variant="ghost" size="sm">
                 <Bell className="h-4 w-4" />
@@ -228,10 +239,11 @@ export default function StudentPortal() {
           <Card className="border-green-200 bg-green-50 dark:bg-green-950">
             <CardContent className="p-6">
               <div className="flex items-center space-x-2">
-                {studentsLoading || isRefreshing ?
-                  <Activity className="h-8 w-8 text-islamic-green animate-spin" /> :
+                {studentsLoading || isRefreshing ? (
+                  <Activity className="h-8 w-8 text-islamic-green animate-spin" />
+                ) : (
                   <CheckCircle className="h-8 w-8 text-islamic-green" />
-                }
+                )}
                 <div>
                   <p className="text-2xl font-bold text-islamic-green">
                     {studentsLoading ? "..." : `${attendance.percentage}%`}
