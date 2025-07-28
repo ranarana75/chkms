@@ -13,12 +13,16 @@ const mockRooms = [
     amenities: ["ফ্যান", "আলো", "ওয়ারড্রোব"],
     status: "occupied",
     residents: [
-      { studentId: "STD001", name: "মোহাম্মদ আবদুল্লাহ", checkInDate: "২০২৪-০১-১৫" },
-      { studentId: "STD002", name: "আবুল কাসেম", checkInDate: "২০২৪-০১-২০" }
-    ]
+      {
+        studentId: "STD001",
+        name: "মোহাম্মদ আবদুল্লাহ",
+        checkInDate: "২০২৪-০১-১৫",
+      },
+      { studentId: "STD002", name: "আবুল কাসেম", checkInDate: "২০২৪-০১-২০" },
+    ],
   },
   {
-    id: "RM002", 
+    id: "RM002",
     roomNumber: "১০২",
     floor: 1,
     type: "triple",
@@ -28,39 +32,43 @@ const mockRooms = [
     amenities: ["ফ্যান", "আলো", "ওয়ারড্রোব"],
     status: "available",
     residents: [
-      { studentId: "STD003", name: "মোহাম্মদ ইব্রাহিম", checkInDate: "২০২৪-০২-০১" },
-      { studentId: "STD004", name: "আব্দুর রহমান", checkInDate: "২০২৪-০২-০৫" }
-    ]
-  }
+      {
+        studentId: "STD003",
+        name: "মোহাম্মদ ইব্রাহিম",
+        checkInDate: "২০২৪-০২-০১",
+      },
+      { studentId: "STD004", name: "আব্দুর রহমান", checkInDate: "২০২৪-০২-০৫" },
+    ],
+  },
 ];
 
 const mockMessData = {
   monthlyFee: 4500,
   mealPlan: {
     breakfast: "সকাল ৭:০০ - ৯:০০",
-    lunch: "দুপুর ১২:৩০ - ২:৩০", 
-    dinner: "সন্ধ্যা ৭:০০ - ৯:০০"
+    lunch: "দুপুর ১২:৩০ - ২:৩০",
+    dinner: "সন্ধ্যা ৭:০০ - ৯:০০",
   },
   weeklyMenu: [
     {
       day: "শনিবার",
       breakfast: "রুটি, ডিম, চা",
       lunch: "ভাত, ডাল, সবজি, মাছ",
-      dinner: "ভাত, তরকারি, মাংস"
+      dinner: "ভাত, তরকারি, মাংস",
     },
     {
-      day: "রবিবার", 
+      day: "রবিবার",
       breakfast: "পরোটা, সবজি, চা",
       lunch: "ভাত, ডাল, ভর্তা, মাছ",
-      dinner: "খিচুড়ি, ডিম"
+      dinner: "খিচুড়ি, ডিম",
     },
     {
       day: "সোমবার",
-      breakfast: "রুটি, ভাজি, চা", 
+      breakfast: "রুটি, ভাজি, চা",
       lunch: "ভাত, ডাল, সবজি, মুরগি",
-      dinner: "ভাত, তরকারি, মাছ"
-    }
-  ]
+      dinner: "ভাত, তরকারি, মাছ",
+    },
+  ],
 };
 
 const mockComplaints = [
@@ -74,11 +82,11 @@ const mockComplaints = [
     priority: "high",
     status: "pending",
     submittedDate: "২০২৪-১২-১৪",
-    resolvedDate: null
+    resolvedDate: null,
   },
   {
     id: "CMP002",
-    studentId: "STD003", 
+    studentId: "STD003",
     studentName: "মোহাম্মদ ইব্রাহিম",
     roomNumber: "১০২",
     category: "পানি",
@@ -86,16 +94,21 @@ const mockComplaints = [
     priority: "medium",
     status: "in_progress",
     submittedDate: "২০২৪-১২-১২",
-    resolvedDate: null
-  }
+    resolvedDate: null,
+  },
 ];
 
 export const getHostelDashboard: RequestHandler = (req, res) => {
   const totalRooms = mockRooms.length;
-  const occupiedRooms = mockRooms.filter(r => r.status === 'occupied').length;
+  const occupiedRooms = mockRooms.filter((r) => r.status === "occupied").length;
   const availableRooms = totalRooms - occupiedRooms;
-  const totalResidents = mockRooms.reduce((sum, room) => sum + room.currentOccupancy, 0);
-  const occupancyRate = (totalResidents / mockRooms.reduce((sum, room) => sum + room.capacity, 0)) * 100;
+  const totalResidents = mockRooms.reduce(
+    (sum, room) => sum + room.currentOccupancy,
+    0,
+  );
+  const occupancyRate =
+    (totalResidents / mockRooms.reduce((sum, room) => sum + room.capacity, 0)) *
+    100;
 
   res.json({
     success: true,
@@ -106,58 +119,61 @@ export const getHostelDashboard: RequestHandler = (req, res) => {
       totalResidents,
       occupancyRate: occupancyRate.toFixed(1),
       monthlyRevenue: totalResidents * 3000, // Average fee
-      pendingComplaints: mockComplaints.filter(c => c.status === 'pending').length,
+      pendingComplaints: mockComplaints.filter((c) => c.status === "pending")
+        .length,
       recentActivity: [
         {
           type: "check_in",
           description: "নতুন শি��্ষার্থী চেক-ইন",
           student: "মোহাম্মদ হাসান",
           room: "১০৫",
-          time: "২ ঘন্টা আগে"
+          time: "২ ঘন্টা আগে",
         },
         {
-          type: "complaint", 
+          type: "complaint",
           description: "নতুন অভিযোগ জমা",
           student: "আবু বকর",
           room: "২০৩",
-          time: "৪ ঘন্টা আগে"
-        }
-      ]
-    }
+          time: "৪ ঘন্টা আগে",
+        },
+      ],
+    },
   });
 };
 
 export const getRooms: RequestHandler = (req, res) => {
   const { floor, type, status } = req.query;
-  
+
   let filteredRooms = [...mockRooms];
-  
+
   if (floor) {
-    filteredRooms = filteredRooms.filter(room => room.floor === Number(floor));
+    filteredRooms = filteredRooms.filter(
+      (room) => room.floor === Number(floor),
+    );
   }
-  
-  if (type && type !== 'all') {
-    filteredRooms = filteredRooms.filter(room => room.type === type);
+
+  if (type && type !== "all") {
+    filteredRooms = filteredRooms.filter((room) => room.type === type);
   }
-  
-  if (status && status !== 'all') {
-    filteredRooms = filteredRooms.filter(room => room.status === status);
+
+  if (status && status !== "all") {
+    filteredRooms = filteredRooms.filter((room) => room.status === status);
   }
 
   res.json({
     success: true,
-    rooms: filteredRooms
+    rooms: filteredRooms,
   });
 };
 
 export const getRoomDetails: RequestHandler = (req, res) => {
   const roomId = req.params.roomId;
-  const room = mockRooms.find(r => r.id === roomId);
-  
+  const room = mockRooms.find((r) => r.id === roomId);
+
   if (!room) {
     return res.status(404).json({
       success: false,
-      message: "রুম পাওয়া যায়নি"
+      message: "রুম পাওয়া যায়নি",
     });
   }
 
@@ -170,34 +186,34 @@ export const getRoomDetails: RequestHandler = (req, res) => {
           month: "নভেম্বর ২০২৪",
           amount: room.monthlyFee,
           status: "paid",
-          paidDate: "২০২ৄ-১১-০৫"
+          paidDate: "২০২ৄ-১১-০৫",
         },
         {
           month: "ডিসেম্বর ২০২৪",
           amount: room.monthlyFee,
           status: "pending",
-          dueDate: "২০২৪-১২-০৫"
-        }
-      ]
-    }
+          dueDate: "২০২৪-১২-০৫",
+        },
+      ],
+    },
   });
 };
 
 export const allocateRoom: RequestHandler = (req, res) => {
   const { studentId, roomId, checkInDate } = req.body;
-  
-  const room = mockRooms.find(r => r.id === roomId);
+
+  const room = mockRooms.find((r) => r.id === roomId);
   if (!room) {
     return res.status(404).json({
       success: false,
-      message: "রুম পাওয়া যায়নি"
+      message: "রুম পাওয়া যায়নি",
     });
   }
 
   if (room.currentOccupancy >= room.capacity) {
     return res.status(400).json({
       success: false,
-      message: "রুমে জায়গা নেই"
+      message: "রুমে জায়গা নেই",
     });
   }
 
@@ -205,9 +221,9 @@ export const allocateRoom: RequestHandler = (req, res) => {
   room.residents.push({
     studentId,
     name: "নতুন শিক্ষার্থী", // Should fetch from student data
-    checkInDate
+    checkInDate,
   });
-  
+
   room.currentOccupancy += 1;
   if (room.currentOccupancy >= room.capacity) {
     room.status = "occupied";
@@ -221,27 +237,29 @@ export const allocateRoom: RequestHandler = (req, res) => {
       roomId,
       roomNumber: room.roomNumber,
       checkInDate,
-      monthlyFee: room.monthlyFee
-    }
+      monthlyFee: room.monthlyFee,
+    },
   });
 };
 
 export const checkOutStudent: RequestHandler = (req, res) => {
   const { studentId, roomId, checkOutDate } = req.body;
-  
-  const room = mockRooms.find(r => r.id === roomId);
+
+  const room = mockRooms.find((r) => r.id === roomId);
   if (!room) {
     return res.status(404).json({
       success: false,
-      message: "রুম পাওয়া যায়নি"
+      message: "রুম পাওয়া যায়নি",
     });
   }
 
-  const residentIndex = room.residents.findIndex(r => r.studentId === studentId);
+  const residentIndex = room.residents.findIndex(
+    (r) => r.studentId === studentId,
+  );
   if (residentIndex === -1) {
     return res.status(404).json({
       success: false,
-      message: "এই রুমে শিক্ষার্থী খুঁজে পাওয়া যায়নি"
+      message: "এই রুমে শিক্ষার্থী খুঁজে পাওয়া যায়নি",
     });
   }
 
@@ -257,22 +275,22 @@ export const checkOutStudent: RequestHandler = (req, res) => {
       studentId,
       roomId,
       roomNumber: room.roomNumber,
-      checkOutDate
-    }
+      checkOutDate,
+    },
   });
 };
 
 export const getMessMenu: RequestHandler = (req, res) => {
   res.json({
     success: true,
-    messData: mockMessData
+    messData: mockMessData,
   });
 };
 
 export const updateMessMenu: RequestHandler = (req, res) => {
   const { day, breakfast, lunch, dinner } = req.body;
-  
-  const dayMenu = mockMessData.weeklyMenu.find(menu => menu.day === day);
+
+  const dayMenu = mockMessData.weeklyMenu.find((menu) => menu.day === day);
   if (dayMenu) {
     if (breakfast) dayMenu.breakfast = breakfast;
     if (lunch) dayMenu.lunch = lunch;
@@ -282,36 +300,40 @@ export const updateMessMenu: RequestHandler = (req, res) => {
   res.json({
     success: true,
     message: "মেনু আপডেট করা হয়েছে",
-    updatedMenu: dayMenu
+    updatedMenu: dayMenu,
   });
 };
 
 export const getComplaints: RequestHandler = (req, res) => {
   const { status, priority, studentId } = req.query;
-  
+
   let filteredComplaints = [...mockComplaints];
-  
-  if (status && status !== 'all') {
-    filteredComplaints = filteredComplaints.filter(c => c.status === status);
+
+  if (status && status !== "all") {
+    filteredComplaints = filteredComplaints.filter((c) => c.status === status);
   }
-  
-  if (priority && priority !== 'all') {
-    filteredComplaints = filteredComplaints.filter(c => c.priority === priority);
+
+  if (priority && priority !== "all") {
+    filteredComplaints = filteredComplaints.filter(
+      (c) => c.priority === priority,
+    );
   }
-  
+
   if (studentId) {
-    filteredComplaints = filteredComplaints.filter(c => c.studentId === studentId);
+    filteredComplaints = filteredComplaints.filter(
+      (c) => c.studentId === studentId,
+    );
   }
 
   res.json({
     success: true,
-    complaints: filteredComplaints
+    complaints: filteredComplaints,
   });
 };
 
 export const submitComplaint: RequestHandler = (req, res) => {
   const { studentId, roomNumber, category, description, priority } = req.body;
-  
+
   const newComplaint = {
     id: `CMP${Date.now()}`,
     studentId,
@@ -319,12 +341,12 @@ export const submitComplaint: RequestHandler = (req, res) => {
     roomNumber,
     category,
     description,
-    priority: priority || 'medium',
-    status: 'pending',
-    submittedDate: new Date().toISOString().split('T')[0],
+    priority: priority || "medium",
+    status: "pending",
+    submittedDate: new Date().toISOString().split("T")[0],
     resolvedDate: null,
     resolution: null,
-    resolvedBy: null
+    resolvedBy: null,
   };
 
   mockComplaints.push(newComplaint);
@@ -332,36 +354,36 @@ export const submitComplaint: RequestHandler = (req, res) => {
   res.json({
     success: true,
     message: "অভিযোগ জমা দেওয়া হয়েছে",
-    complaint: newComplaint
+    complaint: newComplaint,
   });
 };
 
 export const resolveComplaint: RequestHandler = (req, res) => {
   const { complaintId, resolution, resolvedBy } = req.body;
-  
-  const complaint = mockComplaints.find(c => c.id === complaintId);
+
+  const complaint = mockComplaints.find((c) => c.id === complaintId);
   if (!complaint) {
     return res.status(404).json({
       success: false,
-      message: "অভিযোগ পাওয়া যায়নি"
+      message: "অভিযোগ পাওয়া যায়নি",
     });
   }
 
-  (complaint as any).status = 'resolved';
-  (complaint as any).resolvedDate = new Date().toISOString().split('T')[0];
+  (complaint as any).status = "resolved";
+  (complaint as any).resolvedDate = new Date().toISOString().split("T")[0];
   (complaint as any).resolution = resolution;
   (complaint as any).resolvedBy = resolvedBy;
 
   res.json({
     success: true,
     message: "অভিযোগ সমাধান করা হয়েছে",
-    complaint
+    complaint,
   });
 };
 
 export const getHostelReports: RequestHandler = (req, res) => {
   const { reportType, startDate, endDate } = req.query;
-  
+
   res.json({
     success: true,
     message: "রিপোর্ট তৈরি করা হচ্ছে",
@@ -370,7 +392,7 @@ export const getHostelReports: RequestHandler = (req, res) => {
       type: reportType,
       period: `${startDate} থেকে ${endDate}`,
       downloadUrl: `/api/hostel/reports/HST_RPT${Date.now()}.pdf`,
-      createdAt: new Date().toISOString()
-    }
+      createdAt: new Date().toISOString(),
+    },
   });
 };

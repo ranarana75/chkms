@@ -4,7 +4,7 @@ export interface User {
   id: string;
   email: string;
   password: string;
-  role: 'student' | 'teacher' | 'admin' | 'parent';
+  role: "student" | "teacher" | "admin" | "parent";
   name: string;
   phone?: string;
   address?: string;
@@ -57,7 +57,7 @@ export interface Subject {
   id: string;
   name: string;
   code: string;
-  type: 'compulsory' | 'optional' | 'islamic';
+  type: "compulsory" | "optional" | "islamic";
   creditHours: number;
   isActive: boolean;
 }
@@ -67,7 +67,7 @@ export interface Attendance {
   studentId: string;
   classId: string;
   date: Date;
-  status: 'present' | 'absent' | 'late' | 'excused';
+  status: "present" | "absent" | "late" | "excused";
   remarks?: string;
   markedBy: string;
 }
@@ -76,7 +76,7 @@ export interface Marks {
   id: string;
   studentId: string;
   subjectId: string;
-  examType: 'monthly' | 'midterm' | 'final' | 'assignment' | 'quiz';
+  examType: "monthly" | "midterm" | "final" | "assignment" | "quiz";
   totalMarks: number;
   obtainedMarks: number;
   examDate: Date;
@@ -88,11 +88,17 @@ export interface Fee {
   id: string;
   studentId: string;
   amount: number;
-  type: 'tuition' | 'library' | 'transport' | 'hostel' | 'exam' | 'miscellaneous';
+  type:
+    | "tuition"
+    | "library"
+    | "transport"
+    | "hostel"
+    | "exam"
+    | "miscellaneous";
   dueDate: Date;
   paidDate?: Date;
-  status: 'pending' | 'paid' | 'partial' | 'overdue';
-  paymentMethod?: 'cash' | 'bkash' | 'nagad' | 'bank';
+  status: "pending" | "paid" | "partial" | "overdue";
+  paymentMethod?: "cash" | "bkash" | "nagad" | "bank";
   transactionId?: string;
 }
 
@@ -105,7 +111,7 @@ export interface Library {
   category: string;
   totalCopies: number;
   availableCopies: number;
-  language: 'bangla' | 'arabic' | 'english' | 'urdu';
+  language: "bangla" | "arabic" | "english" | "urdu";
 }
 
 export interface LibraryIssue {
@@ -116,7 +122,7 @@ export interface LibraryIssue {
   dueDate: Date;
   returnDate?: Date;
   fine?: number;
-  status: 'issued' | 'returned' | 'overdue';
+  status: "issued" | "returned" | "overdue";
 }
 
 export interface Hostel {
@@ -124,7 +130,7 @@ export interface Hostel {
   roomNumber: string;
   capacity: number;
   currentOccupancy: number;
-  type: 'single' | 'double' | 'triple' | 'dormitory';
+  type: "single" | "double" | "triple" | "dormitory";
   monthlyFee: number;
   isActive: boolean;
 }
@@ -135,7 +141,7 @@ export interface HostelResident {
   roomId: string;
   checkInDate: Date;
   checkOutDate?: Date;
-  status: 'active' | 'inactive';
+  status: "active" | "inactive";
 }
 
 export interface Transport {
@@ -155,7 +161,7 @@ export interface TransportUser {
   studentId: string;
   transportId: string;
   pickupPoint: string;
-  status: 'active' | 'inactive';
+  status: "active" | "inactive";
 }
 
 export interface HifzProgress {
@@ -165,7 +171,7 @@ export interface HifzProgress {
   ayahFrom: number;
   ayahTo: number;
   completedDate: Date;
-  grade: 'excellent' | 'good' | 'average' | 'needs_improvement';
+  grade: "excellent" | "good" | "average" | "needs_improvement";
   teacherId: string;
   remarks?: string;
 }
@@ -174,9 +180,9 @@ export interface Notice {
   id: string;
   title: string;
   content: string;
-  type: 'general' | 'urgent' | 'exam' | 'holiday' | 'event';
-  priority: 'high' | 'medium' | 'low';
-  targetAudience: 'all' | 'students' | 'teachers' | 'parents';
+  type: "general" | "urgent" | "exam" | "holiday" | "event";
+  priority: "high" | "medium" | "low";
+  targetAudience: "all" | "students" | "teachers" | "parents";
   publishDate: Date;
   expiryDate?: Date;
   publishedBy: string;
@@ -187,7 +193,7 @@ export interface Event {
   id: string;
   title: string;
   description: string;
-  type: 'exam' | 'holiday' | 'competition' | 'islamic' | 'cultural';
+  type: "exam" | "holiday" | "competition" | "islamic" | "cultural";
   startDate: Date;
   endDate: Date;
   venue?: string;
@@ -198,11 +204,11 @@ export interface Event {
 export interface Examination {
   id: string;
   name: string;
-  type: 'annual' | 'half_yearly' | 'quarterly' | 'monthly' | 'unit_test';
+  type: "annual" | "half_yearly" | "quarterly" | "monthly" | "unit_test";
   class: string;
   startDate: string;
   endDate: string;
-  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+  status: "upcoming" | "ongoing" | "completed" | "cancelled";
   totalMarks: number;
   passingMarks: number;
   createdAt: string;
@@ -227,11 +233,11 @@ export interface Question {
   examinationId: string;
   subject: string;
   questionText: string;
-  questionType: 'mcq' | 'short_answer' | 'long_answer' | 'true_false';
+  questionType: "mcq" | "short_answer" | "long_answer" | "true_false";
   options?: string[];
   correctAnswer?: string;
   marks: number;
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: "easy" | "medium" | "hard";
 }
 
 export interface ExamResult {
@@ -244,7 +250,7 @@ export interface ExamResult {
   grade: string;
   gpa: number;
   position: number;
-  status: 'pass' | 'fail';
+  status: "pass" | "fail";
 }
 
 export interface ReportCard {
@@ -277,7 +283,7 @@ export interface AdmissionSession {
   academicYear: string;
   startDate: string;
   endDate: string;
-  status: 'active' | 'inactive' | 'completed';
+  status: "active" | "inactive" | "completed";
   totalSeats: number;
   availableSeats: number;
   applicationFee: number;
@@ -292,7 +298,7 @@ export interface AdmissionApplication {
   fatherName: string;
   motherName: string;
   dateOfBirth: string;
-  gender: 'male' | 'female';
+  gender: "male" | "female";
   nationality: string;
   religion: string;
   bloodGroup?: string;
@@ -302,9 +308,9 @@ export interface AdmissionApplication {
   guardianEmail?: string;
   previousInstitution?: string;
   classAppliedFor: string;
-  status: 'pending' | 'selected' | 'rejected' | 'waiting';
+  status: "pending" | "selected" | "rejected" | "waiting";
   applicationDate: string;
-  paymentStatus: 'pending' | 'paid' | 'failed';
+  paymentStatus: "pending" | "paid" | "failed";
   transactionId?: string;
   documents: string[];
   testScore?: number;
@@ -324,7 +330,7 @@ export interface AdmissionTest {
   subjects: string[];
   totalMarks: number;
   passingMarks: number;
-  status: 'scheduled' | 'completed' | 'cancelled';
+  status: "scheduled" | "completed" | "cancelled";
 }
 
 export interface AdmissionCriteria {
@@ -356,7 +362,7 @@ export interface AdmissionResult {
   applicationId: string;
   studentName: string;
   class: string;
-  status: 'selected' | 'waiting' | 'rejected';
+  status: "selected" | "waiting" | "rejected";
   rank: number;
   totalScore: number;
   writtenMarks: number;
@@ -372,8 +378,8 @@ export interface Announcement {
   id: string;
   title: string;
   content: string;
-  type: 'general' | 'urgent';
-  targetAudience: 'all' | 'students' | 'teachers' | 'parents';
+  type: "general" | "urgent";
+  targetAudience: "all" | "students" | "teachers" | "parents";
   publishDate: string;
   expiryDate?: string;
   publishedBy: string;
@@ -391,12 +397,17 @@ export interface CalendarEvent {
   endDate: string;
   startTime: string;
   endTime: string;
-  type: 'meeting' | 'competition' | 'workshop' | 'cultural' | 'sports' | 'exam';
-  category: 'academic' | 'administrative' | 'islamic' | 'entertainment' | 'professional';
+  type: "meeting" | "competition" | "workshop" | "cultural" | "sports" | "exam";
+  category:
+    | "academic"
+    | "administrative"
+    | "islamic"
+    | "entertainment"
+    | "professional";
   location: string;
   organizer: string;
-  targetAudience: 'all' | 'students' | 'teachers' | 'parents';
-  status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
+  targetAudience: "all" | "students" | "teachers" | "parents";
+  status: "scheduled" | "ongoing" | "completed" | "cancelled";
   isPublic: boolean;
   attendees: {
     userId: string;
@@ -418,7 +429,7 @@ export interface AcademicCalendar {
     name: string;
     startDate: string;
     endDate: string;
-    status: 'active' | 'completed' | 'upcoming';
+    status: "active" | "completed" | "upcoming";
   }[];
   isActive: boolean;
   createdAt: string;
@@ -430,7 +441,7 @@ export interface Holiday {
   name: string;
   startDate: string;
   endDate: string;
-  type: 'religious' | 'national' | 'academic';
+  type: "religious" | "national" | "academic";
   description?: string;
   isRecurring: boolean;
   isActive: boolean;
@@ -439,15 +450,21 @@ export interface Holiday {
 export interface Report {
   id: string;
   title: string;
-  type: 'attendance' | 'academic' | 'financial' | 'library' | 'teacher' | 'analytics';
-  category: 'academic' | 'performance' | 'finance' | 'hr' | 'data';
+  type:
+    | "attendance"
+    | "academic"
+    | "financial"
+    | "library"
+    | "teacher"
+    | "analytics";
+  category: "academic" | "performance" | "finance" | "hr" | "data";
   description: string;
   generatedBy: string;
   generatedByName: string;
   generatedAt: string;
   parameters: Record<string, any>;
-  format: 'pdf' | 'excel' | 'csv';
-  status: 'pending' | 'completed' | 'failed';
+  format: "pdf" | "excel" | "csv";
+  status: "pending" | "completed" | "failed";
   downloadUrl: string;
   size: string;
 }
@@ -455,13 +472,13 @@ export interface Report {
 export interface ReportTemplate {
   id: string;
   name: string;
-  type: 'attendance' | 'academic' | 'financial' | 'library' | 'teacher';
-  category: 'academic' | 'performance' | 'finance' | 'hr';
+  type: "attendance" | "academic" | "financial" | "library" | "teacher";
+  category: "academic" | "performance" | "finance" | "hr";
   description: string;
   parameters: {
     name: string;
     label: string;
-    type: 'text' | 'number' | 'date' | 'select' | 'checkbox';
+    type: "text" | "number" | "date" | "select" | "checkbox";
     required: boolean;
     options?: string[];
   }[];
