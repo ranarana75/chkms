@@ -50,8 +50,8 @@ interface LibraryStats {
 }
 
 export default function LibraryDashboard() {
-  const [books, setBooks] = useLocalData<Book[]>('libraryBooks', []);
-  const [issues, setIssues] = useLocalData<LibraryIssue[]>('libraryIssues', []);
+  const [books, setBooks] = useLocalStorage<Book[]>('libraryBooks', []);
+  const [issues, setIssues] = useLocalStorage<LibraryIssue[]>('libraryIssues', []);
   const [stats, setStats] = useState<LibraryStats>({
     totalBooks: 0,
     totalIssues: 0,
@@ -117,7 +117,7 @@ export default function LibraryDashboard() {
         {
           id: '1',
           bookId: '1',
-          bookTitle: 'সহ��হ বুখারী',
+          bookTitle: 'সহীহ বুখারী',
           studentId: 'STD001',
           studentName: 'মোহাম্মদ আব্দুল্লাহ',
           issueDate: '2024-01-15',
@@ -376,7 +376,7 @@ export default function LibraryDashboard() {
                           <h3 className="text-lg font-semibold">{book.title}</h3>
                           <Badge variant="outline">{book.category}</Badge>
                           <Badge variant={book.availableCopies > 0 ? "default" : "destructive"}>
-                            {book.availableCopies > 0 ? '��পলব্ধ' : 'নেই'}
+                            {book.availableCopies > 0 ? 'উপলব্ধ' : 'নেই'}
                           </Badge>
                         </div>
                         <div className="grid grid-cols-2 gap-4 text-sm">
