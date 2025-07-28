@@ -17,7 +17,8 @@ import {
   ArrowRight,
   Phone,
   Mail,
-  MapPin
+  MapPin,
+  FileText
 } from "lucide-react";
 
 export default function Index() {
@@ -99,7 +100,7 @@ export default function Index() {
         <div className="container mx-auto text-center">
           <div className="flex justify-center mb-6">
             <Badge className="bg-islamic-gold/10 text-islamic-gold border-islamic-gold/20 px-6 py-2 text-lg">
-              আধুনিক মাদ্রাসা ব্যবস্থাপনা
+              আধুনিক মাদ্রাসা ব্যবস্থা��না
             </Badge>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
