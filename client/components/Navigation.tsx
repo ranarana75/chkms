@@ -68,7 +68,7 @@ const Navigation: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors font-bengali ${
                     isActive(item.path)
                       ? "bg-islamic-green text-white"
                       : "text-gray-700 hover:bg-gray-100 hover:text-islamic-green"
