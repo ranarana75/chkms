@@ -67,5 +67,15 @@ export function createServer() {
   app.get("/api/library/overdue", getOverdueBooks);
   app.get("/api/library/reports", getLibraryReports);
 
+  // Islamic routes
+  app.get("/api/islamic/prayer-times", getPrayerTimes);
+  app.get("/api/islamic/hifz/:studentId", getHifzProgress);
+  app.post("/api/islamic/hifz", addHifzProgress);
+  app.get("/api/islamic/akhlaq/:studentId", getAkhlaqPoints);
+  app.post("/api/islamic/akhlaq", addAkhlaqPoints);
+  app.get("/api/islamic/events", getIslamicEvents);
+  app.get("/api/islamic/calendar", getIslamicCalendar);
+  app.get("/api/islamic/tajweed", getTajweedLessons);
+
   return app;
 }
