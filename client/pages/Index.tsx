@@ -80,7 +80,7 @@ export default function Index() {
     },
     {
       icon: <School className="h-8 w-8 text-green-600" />,
-      title: "ইসলামিক ফিচারস",
+      title: "ইসলামিক ফিচ���রস",
       description: "নামাজের সময়, হিফজ ট্র্যাক��ং এবং আখলাক পয়েন্ট",
       color: "bg-emerald-50 dark:bg-emerald-950",
       link: "/islamic",
@@ -156,7 +156,7 @@ export default function Index() {
         <div className="container mx-auto text-center">
           <div className="flex justify-center mb-6">
             <Badge className="bg-islamic-gold/10 text-islamic-gold border-islamic-gold/20 px-6 py-2 text-lg">
-              আধুনিক মাদ্রাসা ব্যবস্থাপন���
+              আধুনিক মাদ্রাসা ব্যবস্থাপন��
             </Badge>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 font-bengali-heading">
@@ -166,7 +166,7 @@ export default function Index() {
             </span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto font-bengali-body">
-            ইসলামিক শিক্ষার ঐতিহ্য রক্ষা করে আধুনিক প্রযুক্তির সমন্বয়ে একটি
+            ইসলামিক শিক্ষার ঐতিহ্য রক্ষা করে আধুনিক প্রযুক্তির সমন্ব���়ে একটি
             সম্পূর্ণ ���িজিটাল শিক্ষা ব্যবস্থাপনা
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -312,10 +312,10 @@ export default function Index() {
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 font-bengali-heading">
                 যোগাযোগ করুন
               </h2>
-              <p className="text-lg mb-8 text-green-100">
+              <p className="text-lg mb-8 text-green-100 font-bengali-body">
                 আমাদের সাথে যোগাযোগ করুন এবং আধুনিক মাদ্রাসা ব্যবস্থাপনার
                 অংশীদার হন
               </p>
