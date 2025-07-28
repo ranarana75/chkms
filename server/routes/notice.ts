@@ -54,6 +54,7 @@ const notices: Notice[] = [
     title: 'অভিভাবক সভা আয়োজন',
     content: 'আগামী শুক্রবার বিকাল ৩টায় অভিভাবক সভা অনুষ্ঠিত হবে। সকল অভিভাবকদের উপস্থিত থাকার জন্য অনুরোধ করা হচ্ছে।',
     type: 'event',
+    priority: 'medium',
     targetAudience: 'parents',
     publishDate: new Date('2024-12-06'),
     expiryDate: new Date('2024-12-15'),
