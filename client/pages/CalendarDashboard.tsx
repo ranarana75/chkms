@@ -59,8 +59,8 @@ const months = [
 ];
 
 export default function CalendarDashboard() {
-  const [events, setEvents] = useLocalData<CalendarEvent[]>('calendarEvents', []);
-  const [schedules, setSchedules] = useLocalData<Schedule[]>('classSchedules', []);
+  const [events, setEvents] = useLocalStorage<CalendarEvent[]>('calendarEvents', []);
+  const [schedules, setSchedules] = useLocalStorage<Schedule[]>('classSchedules', []);
   const [stats, setStats] = useState<CalendarStats>({
     totalEvents: 0,
     todayEvents: 0,
@@ -128,7 +128,7 @@ export default function CalendarDashboard() {
           type: 'prayer',
           priority: 'high',
           location: 'মাদ্রাসা মসজিদ',
-          organizer: 'ইমাম সাহেব',
+          organizer: 'ইমাম সা��েব',
           participants: ['সকল শিক্ষার্থী ও শিক্ষক'],
           recurring: 'weekly',
           status: 'completed',
@@ -659,7 +659,7 @@ export default function CalendarDashboard() {
                             </p>
                           </div>
                           <div>
-                            <p className="text-gray-600 mb-1">আয়��জক: {event.organizer}</p>
+                            <p className="text-gray-600 mb-1">আয়োজক: {event.organizer}</p>
                             <p className="text-gray-600 mb-1">রিমাইন্ডার: {event.reminderMinutes} মিনিট আগে</p>
                             {event.recurring !== 'none' && (
                               <Badge variant="outline">নিয়মিত: {event.recurring}</Badge>
@@ -1088,7 +1088,7 @@ function ScheduleForm({ onSubmit }: { onSubmit: (data: Omit<Schedule, 'id'>) => 
           id="semester"
           value={formData.semester}
           onChange={(e) => setFormData({...formData, semester: e.target.value})}
-          placeholder="প্রথম সেমিস্টার"
+          placeholder="প্রথম সেমিস্টা��"
           required
         />
       </div>
