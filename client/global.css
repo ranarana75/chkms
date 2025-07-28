@@ -120,7 +120,13 @@
   }
 
   /* Apply Noto Serif Bengali to all Bengali text elements */
-  h1, h2, h3, h4, h5, h6, p, span, div, button, label, input, textarea, select {
+  h1, h2, h3, h4, h5, h6, p, span, div, button, label, input, textarea, select,
+  a, li, td, th, caption, legend, figcaption {
+    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Specific font rules for common UI elements */
+  .rounded-lg, .inline-flex, [role="button"], [data-radix-collection-item] {
     font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif;
   }
 
