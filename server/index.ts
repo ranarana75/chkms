@@ -5,6 +5,7 @@ import { handleDemo } from "./routes/demo";
 import { handleLogin, handleLogout, handleVerifyToken } from "./routes/auth";
 import { getStudentDashboard, getStudentProfile, getStudentAttendance, getStudentMarks, getStudentFees } from "./routes/student";
 import { getTeacherDashboard, getTeacherProfile, getTeacherClasses, markAttendance, enterMarks, getStudentsByClass, createAssignment } from "./routes/teacher";
+import { getFinancialOverview, getFinancialTransactions, createTransaction, getStudentFeeStatus, processFeePayment, getExpenseCategories, generateFinancialReport, getDashboardStats } from "./routes/finance";
 
 export function createServer() {
   const app = express();
