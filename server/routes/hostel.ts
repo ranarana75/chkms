@@ -110,7 +110,7 @@ export const getHostelDashboard: RequestHandler = (req, res) => {
       recentActivity: [
         {
           type: "check_in",
-          description: "নতুন শিক্ষার্থী চেক-ইন",
+          description: "নতুন শি��্ষার্থী চেক-ইন",
           student: "মোহাম্মদ হাসান",
           room: "১০৫",
           time: "২ ঘন্টা আগে"
@@ -347,10 +347,10 @@ export const resolveComplaint: RequestHandler = (req, res) => {
     });
   }
 
-  complaint.status = 'resolved';
-  complaint.resolvedDate = new Date().toISOString().split('T')[0];
-  complaint.resolution = resolution;
-  complaint.resolvedBy = resolvedBy;
+  (complaint as any).status = 'resolved';
+  (complaint as any).resolvedDate = new Date().toISOString().split('T')[0];
+  (complaint as any).resolution = resolution;
+  (complaint as any).resolvedBy = resolvedBy;
 
   res.json({
     success: true,
