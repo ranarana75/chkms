@@ -130,10 +130,10 @@ export default function TeacherMarks() {
     student.roll.includes(searchTerm)
   );
 
-  const enteredMarksCount = Object.values(marks).filter(m => m.obtainedMarks !== '').length;
+  const enteredMarksCount = Object.values(marks).filter((m: any) => m.obtainedMarks !== '').length;
   const averageMarks = Object.values(marks)
-    .filter(m => m.obtainedMarks !== '')
-    .reduce((sum, m) => sum + parseFloat(m.obtainedMarks), 0) / enteredMarksCount || 0;
+    .filter((m: any) => m.obtainedMarks !== '')
+    .reduce((sum, m: any) => sum + parseFloat(m.obtainedMarks), 0) / enteredMarksCount || 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
@@ -218,7 +218,7 @@ export default function TeacherMarks() {
               </div>
 
               <div>
-                <Label htmlFor="totalMarks">পূর্ণ নম্বর</Label>
+                <Label htmlFor="totalMarks">প���র্ণ নম্বর</Label>
                 <Input
                   type="number"
                   placeholder="১০০"
@@ -309,7 +309,7 @@ export default function TeacherMarks() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  <span>ছাত্রদের মার্কস এন্ট্রি</span>
+                  <span>ছাত্��দের মার্কস এন্ট্রি</span>
                   <Badge variant="outline">{filteredStudents.length} জন ছাত্র</Badge>
                 </CardTitle>
                 <CardDescription>
