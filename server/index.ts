@@ -34,5 +34,14 @@ export function createServer() {
   app.get("/api/student/:studentId/marks", getStudentMarks);
   app.get("/api/student/:studentId/fees", getStudentFees);
 
+  // Teacher routes
+  app.get("/api/teacher/:teacherId/dashboard", getTeacherDashboard);
+  app.get("/api/teacher/:teacherId/profile", getTeacherProfile);
+  app.get("/api/teacher/:teacherId/classes", getTeacherClasses);
+  app.get("/api/teacher/:teacherId/students/:classId", getStudentsByClass);
+  app.post("/api/teacher/attendance", markAttendance);
+  app.post("/api/teacher/marks", enterMarks);
+  app.post("/api/teacher/assignment", createAssignment);
+
   return app;
 }
