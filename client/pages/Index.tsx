@@ -39,7 +39,7 @@ export default function Index() {
     {
       icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
       title: "শিক্ষক পোর্টাল",
-      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্��ক ড্যা���বোর্ড",
+      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যা���বোর্ড",
       color: "bg-blue-50 dark:bg-blue-950",
       link: "/teacher",
     },
@@ -66,7 +66,7 @@ export default function Index() {
     },
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
-      title: "হোস্টেল ব্যবস্থাপনা",
+      title: "হোস্টেল ব্যবস্থাপ��া",
       description: "রুম অ্যালোকেশন, মেস ব্যবস্থাপনা এবং হোস্টেল সেবা",
       color: "bg-orange-50 dark:bg-orange-950",
       link: "/hostel",
@@ -130,7 +130,7 @@ export default function Index() {
               </Link>
               <Link
                 to="#features"
-                className="text-gray-600 hover:text-islamic-green transition-colors"
+                className="text-gray-600 hover:text-islamic-green transition-colors font-bengali"
               >
                 বৈশিষ্ট্য
               </Link>
@@ -156,7 +156,7 @@ export default function Index() {
         <div className="container mx-auto text-center">
           <div className="flex justify-center mb-6">
             <Badge className="bg-islamic-gold/10 text-islamic-gold border-islamic-gold/20 px-6 py-2 text-lg">
-              আধুনিক মাদ্রাসা ব্যবস্থাপনা
+              আধুনিক মাদ্রাসা ব্যবস্থাপন��
             </Badge>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 font-bengali-heading">
@@ -294,7 +294,7 @@ export default function Index() {
               <CardHeader>
                 <Star className="h-12 w-12 text-islamic-blue mx-auto mb-4" />
                 <CardTitle className="text-islamic-blue">
-                  আখলা��� পয়েন্ট
+                  আখলাক পয়েন্ট
                 </CardTitle>
               </CardHeader>
               <CardContent>
