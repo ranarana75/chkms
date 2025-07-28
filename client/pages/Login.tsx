@@ -84,9 +84,9 @@ export default function LoginPage() {
         {/* Login Card */}
         <Card className="shadow-2xl border-0">
           <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-2xl font-bold text-gray-900">লগইন করুন</CardTitle>
-            <CardDescription>
-              আপনার অ্যাকাউন্���ে প্রবেশ করুন
+            <CardTitle className="text-2xl font-bold text-gray-900 font-bengali-heading">লগইন করুন</CardTitle>
+            <CardDescription className="font-bengali-body">
+              আপনার অ্যাকাউন্টে প্রবেশ করুন
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -139,7 +139,7 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="আপনার পাসওয়���র্ড লিখুন"
+                  placeholder="আপনার পাসওয়ার্ড লিখুন"
                   className="border-gray-300 focus:border-islamic-green focus:ring-islamic-green pr-10"
                 />
                 <button
