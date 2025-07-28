@@ -27,43 +27,50 @@ export default function Index() {
       icon: <Users className="h-8 w-8 text-islamic-green" />,
       title: "শিক্ষার্থী ব্যবস্থাপনা",
       description: "সম্পূর্ণ ছাত্র তথ্য, উপস্থিতি এবং পারফরম্যান্স ট্র্যাকিং",
-      color: "bg-green-50 dark:bg-green-950"
+      color: "bg-green-50 dark:bg-green-950",
+      link: "/student"
     },
     {
       icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
       title: "শিক্ষক পোর্টাল",
       description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যাশবোর্ড",
-      color: "bg-blue-50 dark:bg-blue-950"
+      color: "bg-blue-50 dark:bg-blue-950",
+      link: "/teacher"
     },
     {
       icon: <Calculator className="h-8 w-8 text-islamic-gold" />,
       title: "আর্থিক ব্যবস্থাপনা",
       description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর্ট",
-      color: "bg-yellow-50 dark:bg-yellow-950"
+      color: "bg-yellow-50 dark:bg-yellow-950",
+      link: "/finance"
     },
     {
       icon: <FileText className="h-8 w-8 text-red-600" />,
       title: "পরীক্ষা ব্যবস্থাপনা",
       description: "পরীক্ষার সময়সূচি, প্রশ্নপত্র এবং ফলাফল ব্যবস্থাপনা",
-      color: "bg-red-50 dark:bg-red-950"
+      color: "bg-red-50 dark:bg-red-950",
+      link: "/examination"
     },
     {
       icon: <BookOpen className="h-8 w-8 text-purple-600" />,
       title: "লাইব্রেরি সিস্টেম",
       description: "ডিজিটাল বুক ক্যাটালগ এবং ইস্যু-রিটার্��� ব্যবস্থা",
-      color: "bg-purple-50 dark:bg-purple-950"
+      color: "bg-purple-50 dark:bg-purple-950",
+      link: "/library"
     },
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
       title: "হোস্টেল ব্যবস্থাপনা",
       description: "রুম অ্যালোকেশন, মেস ব্যবস্থাপনা এবং হোস্টেল সেবা",
-      color: "bg-orange-50 dark:bg-orange-950"
+      color: "bg-orange-50 dark:bg-orange-950",
+      link: "/hostel"
     },
     {
       icon: <Bus className="h-8 w-8 text-indigo-600" />,
       title: "ট্রান্সপোর্ট সিস্টেম",
       description: "রুট পরিকল্পনা, GPS ট্র্যাকিং এবং নিরাপত্তা",
-      color: "bg-indigo-50 dark:bg-indigo-950"
+      color: "bg-indigo-50 dark:bg-indigo-950",
+      link: "/transport"
     }
   ];
 
@@ -192,7 +199,7 @@ export default function Index() {
                 <CardTitle className="text-islamic-green">নামাজের সময়সূচি</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 dark:text-gray-300">স্থানীয় সময় অনুযায়ী স্বয়ংক্রিয় নামাজের ওয়াক্ত আপডেট</p>
+                <p className="text-gray-600 dark:text-gray-300">স্থানীয় সময় অনুযায়ী স্বয়ংক্রি��় নামাজের ওয়াক্ত আপডেট</p>
               </CardContent>
             </Card>
 
@@ -239,7 +246,7 @@ export default function Index() {
                 </div>
                 <div className="flex items-center space-x-3">
                   <MapPin className="h-5 w-5" />
-                  <span>চুনতি, লক্ষ্মীপুর, বাংলাদেশ</span>
+                  <span>চুনতি, লক্ষ্মীপুর, বা���লাদেশ</span>
                 </div>
               </div>
             </div>
@@ -268,7 +275,7 @@ export default function Index() {
             </div>
           </div>
           <p className="text-gray-400">
-            © 2024 চুনতি হাকিমিয়া কামিল মাদ্রাসা ম্যানেজমেন্ট সিস্টেম। সকল অধিকার সংরক্ষিত।
+            © 2024 চুনতি হাকিমিয়া কামিল মাদ্র���সা ম্যানেজমেন্ট সিস্টেম। সকল অধিকার সংরক্ষিত।
           </p>
         </div>
       </footer>
