@@ -44,5 +44,15 @@ export function createServer() {
   app.post("/api/teacher/marks", enterMarks);
   app.post("/api/teacher/assignment", createAssignment);
 
+  // Finance routes
+  app.get("/api/finance/overview", getFinancialOverview);
+  app.get("/api/finance/transactions", getFinancialTransactions);
+  app.post("/api/finance/transaction", createTransaction);
+  app.get("/api/finance/student/:studentId/fees", getStudentFeeStatus);
+  app.post("/api/finance/payment", processFeePayment);
+  app.get("/api/finance/expenses", getExpenseCategories);
+  app.get("/api/finance/report", generateFinancialReport);
+  app.get("/api/finance/dashboard", getDashboardStats);
+
   return app;
 }
