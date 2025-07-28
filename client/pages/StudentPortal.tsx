@@ -46,7 +46,7 @@ export default function StudentPortal() {
   }, []);
 
   // Get current student (in real app, this would come from auth)
-  const currentStudent = students.find(s => s.studentId === "STD001");
+  const currentStudent = students.find((s: any) => s.studentId === "STD001");
 
   const studentData = {
     name: currentStudent?.name || "মোহাম্মদ আবদুল্লাহ",
@@ -256,7 +256,7 @@ export default function StudentPortal() {
                 <div>
                   <p className="text-2xl font-bold text-islamic-blue">৮৫.৫</p>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
-                    গড় নম্বর
+                    গ��় নম্বর
                   </p>
                 </div>
               </div>
@@ -288,7 +288,7 @@ export default function StudentPortal() {
                     ৳{feeStatus.due}
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
-                    বকেয়া ফি
+                    বকে���়া ফি
                   </p>
                 </div>
               </div>
