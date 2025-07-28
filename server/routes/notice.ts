@@ -8,7 +8,7 @@ const notices: Notice[] = [
   {
     id: '1',
     title: 'ঈদুল ফিতর ছুটির নোটিশ',
-    content: 'আগামী ঈদুল ফিতর উপলক্ষে মাদ্রাসা ৭ দিন বন্ধ থাকবে। ছুটির পর ক্লাস নিয়মিত হবে।',
+    content: 'আগামী ঈদুল ফিতর উপলক্ষে মাদ্���াসা ৭ দিন বন্ধ থাকবে। ছুটির পর ক্লাস নিয়মিত হবে।',
     type: 'holiday',
     targetAudience: 'all',
     publishDate: new Date('2024-12-10'),
@@ -63,12 +63,12 @@ const notices: Notice[] = [
   },
   {
     id: '5',
-    title: 'শিক্ষক নিয়োগ বিজ্ঞপ্তি',
+    title: 'শিক্ষক ��িয়োগ বিজ্ঞপ্তি',
     content: 'আরবি ও ইসলামিক স্টাডিজ বিভাগে নতুন শিক্ষক নিয়োগের জন্য আবেদন আহ্বান করা হচ্ছে।',
     type: 'general',
     targetAudience: 'all',
     publishDate: new Date('2024-12-05'),
-    expiryDate: new Date('2024-12-20').toISOString(),
+    expiryDate: new Date('2024-12-20'),
     publishedBy: 'admin-001',
     publisherName: 'মাওলানা আব্দুর রহমান',
     isActive: true,
@@ -94,7 +94,7 @@ const announcements: Announcement[] = [
   },
   {
     id: '2',
-    title: 'নামাজের সময় পরিবর্তন',
+    title: 'নামাজ��র সময় পরিবর্তন',
     content: 'শীতকালীন সময়সূ���ি অনুযায়ী নামাজের সময় পরিবর্তিত হয়েছে।',
     type: 'general',
     targetAudience: 'all',
