@@ -116,5 +116,18 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', 'Noto Serif Bengali', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Apply Noto Serif Bengali to all Bengali text elements */
+  h1, h2, h3, h4, h5, h6, p, span, div, button, label, input, textarea, select {
+    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Ensure proper rendering for Bengali characters */
+  body, * {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
