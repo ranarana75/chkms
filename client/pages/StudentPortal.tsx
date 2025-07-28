@@ -110,7 +110,7 @@ export default function StudentPortal() {
 
   const upcomingEvents = [
     { title: "মাসিক পরীক্ষা", date: "১৫ ডিসেম্বর", type: "পরীক্ষা" },
-    { title: "জুমার খুতবা", date: "১৮ ডিসেম্বর", type: "ইবাদত" },
+    { title: "জুমার খুতবা", date: "১৮ ডিসেম্বর", type: "ই���াদত" },
     {
       title: "বার্ষিক ক্রীড়া প্রতিযোগিতা",
       date: "২২ ডিসেম্বর",
@@ -174,6 +174,14 @@ export default function StudentPortal() {
             </nav>
 
             <div className="flex items-center space-x-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleRefresh}
+                disabled={isRefreshing || studentsLoading}
+              >
+                <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              </Button>
               <Button variant="ghost" size="sm">
                 <Bell className="h-4 w-4" />
               </Button>
