@@ -335,11 +335,11 @@ export default function Index() {
               </div>
             </div>
             <div className="bg-white rounded-lg p-8 text-gray-900">
-              <h3 className="text-xl font-bold mb-4">আজই শুরু করুন</h3>
-              <p className="mb-6">
+              <h3 className="text-xl font-bold mb-4 font-bengali-title">আজই শুরু করুন</h3>
+              <p className="mb-6 font-bengali-body">
                 আপনার মাদ্রাসার জন্য আধুনিক ব্যবস্থাপনা সিস্টেম ব্যবহার করুন
               </p>
-              <Button className="w-full bg-islamic-green hover:bg-islamic-green-dark text-white">
+              <Button className="w-full bg-islamic-green hover:bg-islamic-green-dark text-white font-bengali">
                 ডেমো বুক করুন
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
