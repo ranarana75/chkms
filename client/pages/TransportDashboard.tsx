@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useLocalData, useNotifications } from '@/hooks/useLocalData';
+import { useLocalStorage, useNotifications } from '@/hooks/useLocalData';
 import { Bus, Users, MapPin, Clock, Plus, Edit, Trash2, Route, AlertCircle } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 
@@ -318,7 +318,7 @@ export default function TransportDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-800">{stats.totalVehicles}</div>
-              <p className="text-xs text-blue-600">সক্রিয়: {stats.activeVehicles}</p>
+              <p className="text-xs text-blue-600">সক্���িয়: {stats.activeVehicles}</p>
             </CardContent>
           </Card>
 
