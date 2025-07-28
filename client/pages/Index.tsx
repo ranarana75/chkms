@@ -126,7 +126,7 @@ export default function Index() {
                 to="#about"
                 className="text-gray-600 hover:text-islamic-green transition-colors font-bengali"
               >
-                সম্পর্কে
+                সম্পর���কে
               </Link>
               <Link
                 to="#features"
@@ -279,12 +279,12 @@ export default function Index() {
             <Card className="text-center border-islamic-gold/20 bg-yellow-50 dark:bg-yellow-950">
               <CardHeader>
                 <BookOpen className="h-12 w-12 text-islamic-gold mx-auto mb-4" />
-                <CardTitle className="text-islamic-gold">
+                <CardTitle className="text-islamic-gold font-bengali-title">
                   হিফজ ট্র্যাকিং
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-gray-600 dark:text-gray-300 font-bengali-body">
                   কুরআন মুখস্থের অগ্রগতি ও তাজবীদ মূল্যায়ন
                 </p>
               </CardContent>
@@ -294,12 +294,12 @@ export default function Index() {
               <CardHeader>
                 <Star className="h-12 w-12 text-islamic-blue mx-auto mb-4" />
                 <CardTitle className="text-islamic-blue">
-                  আখলাক পয়ে���্ট
+                  আখলাক ��য়ে���্ট
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 dark:text-gray-300">
-                  নৈতিক আচরণ ও ইসলামিক মূল্যবোধের মূল্যায়ন
+                  নৈ��িক আচরণ ও ইসলামিক মূল্যবোধের মূল্যায়ন
                 </p>
               </CardContent>
             </Card>
