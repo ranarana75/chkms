@@ -165,7 +165,7 @@ export default function Index() {
               ম্যানেজমেন্ট সিস্টেম
             </span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto font-bengali-body">
             ইসলামিক শিক্ষার ঐতিহ্য রক্ষা করে আধুনিক প্রযুক্তির সমন্বয়ে একটি
             সম্পূর্ণ ���িজিটাল শিক্ষা ব্যবস্থাপনা
           </p>
