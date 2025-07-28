@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { useLocalData, useNotifications } from '@/hooks/useLocalData';
+import { useLocalStorage, useNotifications } from '@/hooks/useLocalData';
 import { 
   Users, 
   UserPlus, 
@@ -145,8 +145,8 @@ export default function AdmissionDashboard() {
           nationality: 'বাংলাদেশী',
           religion: 'ইসলাম',
           bloodGroup: 'B+',
-          presentAddress: 'বাড়ি নং ২৫, রোড নং ৩, ধানমন্ডি, ঢাকা',
-          permanentAddress: 'গ্রাম: কামারপাড়া, উপজেলা: কালিয়াকৈর, জেল��: গাজীপুর',
+          presentAddress: 'বাড়ি নং ২৫, রোড নং ��, ধানমন্ডি, ঢাকা',
+          permanentAddress: 'গ্রাম: কামারপাড়া, উপজেলা: কালিয়াকৈর, জেলা: গাজীপুর',
           phoneNumber: '০১৭১১১১১১১১',
           email: 'abdullah@example.com',
           guardianName: 'মোহাম্মদ আব্দুর রহমান',
@@ -234,7 +234,7 @@ export default function AdmissionDashboard() {
           className: 'আলিম ১ম বর্ষ',
           minimumAge: 16,
           maximumAge: 20,
-          requiredDocuments: ['জন্ম সনদ', 'পাসপো��্ট সাইজ ছবি', 'HSC/দাখিল সনদ', 'অভিভাবকের পরিচয়পত্র'],
+          requiredDocuments: ['জন্ম সনদ', 'পাসপোর্ট সাইজ ছবি', 'HSC/দাখিল সনদ', 'অভিভাবকের পরিচয়পত্র'],
           admissionFee: 7000,
           monthlyFee: 2500,
           totalSeats: 80,
@@ -293,7 +293,7 @@ export default function AdmissionDashboard() {
       createdAt: new Date().toISOString()
     };
     setApplications([...applications, newApplication]);
-    addNotification('ভর্তির আবেদন সফলভাবে ���মা হয়েছে', 'success');
+    addNotification('ভর্তির আবেদন সফলভাবে জমা হয়েছে', 'success');
     setIsApplicationDialogOpen(false);
   };
 
@@ -595,7 +595,7 @@ export default function AdmissionDashboard() {
               <Dialog open={!!selectedApplication} onOpenChange={() => setSelectedApplication(null)}>
                 <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle>আবেদনের বিস্তারি�� - {selectedApplication.applicationNumber}</DialogTitle>
+                    <DialogTitle>আবেদনের বিস্তারিত - {selectedApplication.applicationNumber}</DialogTitle>
                   </DialogHeader>
                   <ApplicationDetails application={selectedApplication} />
                 </DialogContent>
