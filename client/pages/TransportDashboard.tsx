@@ -63,9 +63,9 @@ interface TransportStats {
 }
 
 export default function TransportDashboard() {
-  const [vehicles, setVehicles] = useLocalData<Vehicle[]>('vehicles', []);
-  const [routes, setRoutes] = useLocalData<TransportRoute[]>('transportRoutes', []);
-  const [transportUsers, setTransportUsers] = useLocalData<TransportUser[]>('transportUsers', []);
+  const [vehicles, setVehicles] = useLocalStorage<Vehicle[]>('vehicles', []);
+  const [routes, setRoutes] = useLocalStorage<TransportRoute[]>('transportRoutes', []);
+  const [transportUsers, setTransportUsers] = useLocalStorage<TransportUser[]>('transportUsers', []);
   const [stats, setStats] = useState<TransportStats>({
     totalVehicles: 0,
     totalRoutes: 0,
@@ -247,7 +247,7 @@ export default function TransportDashboard() {
           : v
       );
       setVehicles(updatedVehicles);
-      addNotification('যানবাহনের তথ্য আপডেট হয়েছে', 'success');
+      addNotification('যানবাহনের তথ্য আপড��ট হয়েছে', 'success');
       setEditingVehicle(null);
       setIsVehicleDialogOpen(false);
     }
@@ -318,7 +318,7 @@ export default function TransportDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-800">{stats.totalVehicles}</div>
-              <p className="text-xs text-blue-600">সক্���িয়: {stats.activeVehicles}</p>
+              <p className="text-xs text-blue-600">সক্রিয়: {stats.activeVehicles}</p>
             </CardContent>
           </Card>
 
@@ -335,7 +335,7 @@ export default function TransportDashboard() {
 
           <Card className="bg-purple-50 border-purple-200">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-purple-700">মোট শিক্ষার্থী</CardTitle>
+              <CardTitle className="text-sm font-medium text-purple-700">মোট শিক্���ার্থী</CardTitle>
               <Users className="h-4 w-4 text-purple-600" />
             </CardHeader>
             <CardContent>
@@ -568,7 +568,7 @@ export default function TransportDashboard() {
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>শিক্ষার্থী নিবন্ধন</DialogTitle>
+                    <DialogTitle>শিক্��ার্থী নিবন্ধন</DialogTitle>
                     <DialogDescription>
                       পরিবহন সেবার জন্য শিক্ষার্থী নিবন্ধন করুন
                     </DialogDescription>
