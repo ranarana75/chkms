@@ -22,6 +22,45 @@ export default function LoginPage() {
 
   const from = location.state?.from?.pathname || "/";
 
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!userType || !username || !password) {
+      setError("সকল ফিল্ড পূরণ করুন");
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    const success = await login({
+      username,
+      password,
+      userType: userType as any
+    });
+
+    if (success) {
+      // Redirect based on user type
+      switch(userType) {
+        case 'student':
+          navigate('/student');
+          break;
+        case 'teacher':
+          navigate('/teacher');
+          break;
+        case 'admin':
+          navigate('/admin');
+          break;
+        default:
+          navigate(from);
+      }
+    } else {
+      setError("ভুল ব্যবহারকারী নাম বা পাসওয়ার্ড");
+    }
+
+    setIsLoading(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-islamic-green via-islamic-blue to-islamic-green-dark flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -47,7 +86,7 @@ export default function LoginPage() {
           <CardHeader className="space-y-1 text-center">
             <CardTitle className="text-2xl font-bold text-gray-900">লগইন করুন</CardTitle>
             <CardDescription>
-              আপন���র অ্যাকাউন্টে প্রবেশ করুন
+              আপনার অ্যাকাউন্টে প্রবেশ করুন
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -71,7 +110,7 @@ export default function LoginPage() {
             <div className="space-y-2">
               <Label htmlFor="username">
                 {userType === 'student' ? 'শিক্ষার্থী আইডি' : 
-                 userType === 'teacher' ? 'শ��ক্ষক আইডি' :
+                 userType === 'teacher' ? 'শিক্ষক আইডি' :
                  userType === 'admin' ? 'প্রশাসক আইডি' :
                  'ব্যবহারকারী আইডি'}
               </Label>
