@@ -105,7 +105,7 @@ export default function Index() {
     },
     {
       icon: <BookOpen className="h-8 w-8 text-purple-600" />,
-      title: "লাইব্রেরি সিস্টেম",
+      title: "লাইব্রেরি সিস��টেম",
       description: "ডিজিটাল বুক ক্যাটালগ এবং ইস্যু-রিটার্ন ব্যবস্থা",
       color: "bg-purple-50 dark:bg-purple-950",
       link: "/library",
@@ -133,24 +133,7 @@ export default function Index() {
     },
   ];
 
-  const stats = [
-    {
-      label: "মোট শিক্ষা���্থী",
-      value: "1,200+",
-      icon: <Users className="h-5 w-5" />,
-    },
-    {
-      label: "শিক্ষক",
-      value: "85+",
-      icon: <GraduationCap className="h-5 w-5" />,
-    },
-    { label: "বিভাগ", value: "12", icon: <Building2 className="h-5 w-5" /> },
-    {
-      label: "সফলতার হার",
-      value: "95%",
-      icon: <Star className="h-5 w-5" />,
-    },
-  ];
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
