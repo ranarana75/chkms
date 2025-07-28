@@ -322,7 +322,9 @@ export const submitComplaint: RequestHandler = (req, res) => {
     priority: priority || 'medium',
     status: 'pending',
     submittedDate: new Date().toISOString().split('T')[0],
-    resolvedDate: null
+    resolvedDate: null,
+    resolution: null,
+    resolvedBy: null
   };
 
   mockComplaints.push(newComplaint);
