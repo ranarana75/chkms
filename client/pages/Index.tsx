@@ -67,7 +67,7 @@ export default function Index() {
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
       title: "হোস্টেল ব্যবস্থাপ��া",
-      description: "রুম অ্যালোকেশন, মেস ব্যবস্থাপনা এবং হোস্টেল সেবা",
+      description: "রুম অ্যালোকেশন, মেস ব্যবস্থাপনা ���বং হোস্টেল সেবা",
       color: "bg-orange-50 dark:bg-orange-950",
       link: "/hostel",
     },
@@ -136,7 +136,7 @@ export default function Index() {
               </Link>
               <Link
                 to="#contact"
-                className="text-gray-600 hover:text-islamic-green transition-colors"
+                className="text-gray-600 hover:text-islamic-green transition-colors font-bengali"
               >
                 য���গাযোগ
               </Link>
@@ -330,7 +330,7 @@ export default function Index() {
                 </div>
                 <div className="flex items-center space-x-3">
                   <MapPin className="h-5 w-5" />
-                  <span>চুনতি, ���ক্ষ্মীপুর, বা���লাদেশ</span>
+                  <span>চুনতি, �����ক্ষ্মীপুর, বা���লাদেশ</span>
                 </div>
               </div>
             </div>
