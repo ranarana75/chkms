@@ -39,7 +39,7 @@ export default function Index() {
     {
       icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
       title: "শিক্ষক পোর্টাল",
-      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যা���বোর্ড",
+      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যা���বোর্��",
       color: "bg-blue-50 dark:bg-blue-950",
       link: "/teacher",
     },
@@ -166,7 +166,7 @@ export default function Index() {
             </span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto font-bengali-body">
-            ইসলামিক শিক্ষার ���তিহ্য রক্ষা করে আধুনিক প্রযুক্তির সমন্বয়ে একটি
+            ইসলামিক শিক্ষার ঐতিহ্য রক্ষা করে আধুনিক প্রযুক্তির সমন্বয়ে একটি
             সম্পূর্ণ ���িজিটাল শিক্ষা ব্যবস্থাপনা
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -236,7 +236,7 @@ export default function Index() {
                     <div className="flex justify-center mb-4">
                       {feature.icon}
                     </div>
-                    <CardTitle className="text-xl text-gray-900 dark:text-white">
+                    <CardTitle className="text-xl text-gray-900 dark:text-white font-bengali-title">
                       {feature.title}
                     </CardTitle>
                   </CardHeader>
@@ -337,7 +337,7 @@ export default function Index() {
             <div className="bg-white rounded-lg p-8 text-gray-900">
               <h3 className="text-xl font-bold mb-4">আজই শুরু করুন</h3>
               <p className="mb-6">
-                আপনার মাদ্রাসার জন্য আধুনিক ব্যব��্থাপনা সিস্টেম ব্যবহার করুন
+                আপনার মাদ্রাসার জন্য আধুনিক ব্যবস্থাপনা সিস্টেম ব্যবহার করুন
               </p>
               <Button className="w-full bg-islamic-green hover:bg-islamic-green-dark text-white">
                 ডেমো বুক করুন
@@ -364,7 +364,7 @@ export default function Index() {
           </div>
           <p className="text-gray-400">
             © 2024 চুনতি হাকিম��য়া কামিল মাদ্র���সা ম্যানেজমেন্ট সিস্টেম। সকল
-            অধিকার সংর��্ষিত।
+            অধিকার সংরক্ষিত।
           </p>
         </div>
       </footer>
