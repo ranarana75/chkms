@@ -68,9 +68,16 @@ export default function Index() {
     {
       icon: <Bus className="h-8 w-8 text-indigo-600" />,
       title: "ট্রান্সপোর্ট সিস্টেম",
-      description: "রুট পরিকল্পনা, GPS ট্র্যাকিং এবং নিরাপত্তা",
+      description: "রুট পরিকল্পনা, GPS ট্র্��াকিং এবং নিরাপত্তা",
       color: "bg-indigo-50 dark:bg-indigo-950",
       link: "/transport"
+    },
+    {
+      icon: <School className="h-8 w-8 text-green-600" />,
+      title: "ইসলামিক ফিচারস",
+      description: "নামাজের সময়, হিফজ ট্র্যাকিং এবং আখলাক পয়েন্ট",
+      color: "bg-emerald-50 dark:bg-emerald-950",
+      link: "/islamic"
     }
   ];
 
@@ -201,7 +208,7 @@ export default function Index() {
                 <CardTitle className="text-islamic-green">নামাজের সময়সূচি</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 dark:text-gray-300">স্থানীয় সময় অনুযায়ী স্বয়ংক্রি��় নামাজের ওয়াক্ত আপডেট</p>
+                <p className="text-gray-600 dark:text-gray-300">স্থানীয় সময় অনুযায়��� স্বয়ংক্রি��় নামাজের ওয়াক্ত আপডেট</p>
               </CardContent>
             </Card>
 
@@ -248,7 +255,7 @@ export default function Index() {
                 </div>
                 <div className="flex items-center space-x-3">
                   <MapPin className="h-5 w-5" />
-                  <span>চুনতি, লক্ষ্মীপুর, বা���লাদেশ</span>
+                  <span>চুনতি, ���ক্ষ্মীপুর, বা���লাদেশ</span>
                 </div>
               </div>
             </div>
@@ -277,7 +284,7 @@ export default function Index() {
             </div>
           </div>
           <p className="text-gray-400">
-            © 2024 চুনতি হাকিমিয়া কামিল মাদ্র���সা ম্যানেজমেন্ট সিস্টেম। সকল অধিকার সংরক্ষিত।
+            © 2024 চুনতি হাকিম��য়া কামিল মাদ্র���সা ম্যানেজমেন্ট সিস্টেম। সকল অধিকার সংরক্ষিত।
           </p>
         </div>
       </footer>
