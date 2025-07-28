@@ -40,7 +40,14 @@ import {
   Eye,
   Edit,
   Trash2,
+  RefreshCw,
+  Activity,
+  PieChart,
+  Calculator,
+  Wallet
 } from "lucide-react";
+import { useLocalData, useNotifications } from "@/hooks/useLocalData";
+import { LocalDB, STORAGE_KEYS } from "@shared/localDatabase";
 
 interface Transaction {
   id: string;
@@ -51,6 +58,10 @@ interface Transaction {
   date: string;
   method: string;
   status: "completed" | "pending" | "failed";
+  reference?: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface FinancialStats {
@@ -62,117 +73,254 @@ interface FinancialStats {
   monthlyRevenue: number;
   monthlyExpenses: number;
   feeCollectionRate: number;
+  lastUpdated: Date;
 }
 
+// Create transactions database
+const transactionsDB = new LocalDB<Transaction>(STORAGE_KEYS.FINANCIAL_TRANSACTIONS);
+
 const FinanceDashboard: React.FC = () => {
-  const [financialStats, setFinancialStats] = useState<FinancialStats | null>(
-    null,
-  );
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [financialStats, setFinancialStats] = useState<FinancialStats>({
+    totalRevenue: 0,
+    totalExpenses: 0,
+    netProfit: 0,
+    feeCollection: 0,
+    outstandingFees: 0,
+    monthlyRevenue: 0,
+    monthlyExpenses: 0,
+    feeCollectionRate: 0,
+    lastUpdated: new Date(),
+  });
   const [isCreateTransactionOpen, setIsCreateTransactionOpen] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState("this-month");
   const [newTransaction, setNewTransaction] = useState({
     type: "",
     description: "",
     amount: "",
     category: "",
     method: "",
+    reference: "",
   });
 
+  const { data: transactions, loading, addItem: addTransaction, updateItem, removeItem, refresh } = useLocalData(transactionsDB);
+  const { addNotification } = useNotifications();
+
   useEffect(() => {
-    fetchFinancialData();
-    fetchTransactions();
+    initializeSampleTransactions();
+    calculateStats();
   }, []);
 
-  const fetchFinancialData = async () => {
-    try {
-      const response = await fetch("/api/finance/dashboard");
-      const data = await response.json();
-      setFinancialStats(data.stats);
-    } catch (error) {
-      console.error("Error fetching financial data:", error);
-      // Mock data for demo
-      setFinancialStats({
-        totalRevenue: 2500000,
-        totalExpenses: 1800000,
-        netProfit: 700000,
-        feeCollection: 2200000,
-        outstandingFees: 300000,
-        monthlyRevenue: 220000,
-        monthlyExpenses: 150000,
-        feeCollectionRate: 88.5,
-      });
-    }
-  };
+  useEffect(() => {
+    calculateStats();
+  }, [transactions]);
 
-  const fetchTransactions = async () => {
-    try {
-      const response = await fetch("/api/finance/transactions");
-      const data = await response.json();
-      setTransactions(data);
-    } catch (error) {
-      console.error("Error fetching transactions:", error);
-      // Mock data for demo
-      setTransactions([
+  const initializeSampleTransactions = () => {
+    if (transactions.length === 0) {
+      const sampleTransactions: Transaction[] = [
         {
           id: "1",
           type: "income",
-          description: "মাসিক টিউশন ফি - ক্লাস ৮",
-          amount: 15000,
+          description: "মাসিক টিউশন ফি - আলিম প্রথম বর্ষ",
+          amount: 45000,
           category: "tuition",
           date: "2024-12-10",
           method: "বিকাশ",
           status: "completed",
+          reference: "TXN001",
+          createdBy: "admin-001",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
         },
         {
           id: "2",
           type: "expense",
-          description: "বিদ্যুৎ বিল",
+          description: "বিদ্যুৎ বিল - ডিসেম্বর ২০২৪",
           amount: 8500,
           category: "utilities",
           date: "2024-12-09",
           method: "ক্যাশ",
           status: "completed",
+          reference: "EXP001",
+          createdBy: "admin-001",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
         },
         {
           id: "3",
           type: "income",
-          description: "লাইব্রেরি ফি",
-          amount: 2500,
+          description: "লাইব্রেরি ফি - ডিসেম্বর",
+          amount: 12500,
           category: "library",
           date: "2024-12-08",
           method: "নগদ",
           status: "completed",
+          reference: "TXN002",
+          createdBy: "admin-001",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
         },
         {
           id: "4",
           type: "expense",
-          description: "শিক্ষকদের বেতন",
+          description: "শিক্ষকদের বেতন - ডিসেম্বর",
           amount: 85000,
           category: "salary",
           date: "2024-12-05",
           method: "ব্যাংক ট্রান্সফার",
           status: "completed",
+          reference: "SAL001",
+          createdBy: "admin-001",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
         },
-      ]);
+        {
+          id: "5",
+          type: "income",
+          description: "পরিবহন ফি - আলিম দ্বিতীয় বর্ষ",
+          amount: 25000,
+          category: "transport",
+          date: "2024-12-07",
+          method: "বিকাশ",
+          status: "completed",
+          reference: "TXN003",
+          createdBy: "admin-001",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        {
+          id: "6",
+          type: "expense",
+          description: "স্টেশনারি ক্রয়",
+          amount: 15000,
+          category: "supplies",
+          date: "2024-12-06",
+          method: "ক্যাশ",
+          status: "completed",
+          reference: "EXP002",
+          createdBy: "admin-001",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        {
+          id: "7",
+          type: "income",
+          description: "হোস্টেল ফি - ডিসেম্বর",
+          amount: 35000,
+          category: "hostel",
+          date: "2024-12-04",
+          method: "নগদ",
+          status: "completed",
+          reference: "TXN004",
+          createdBy: "admin-001",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }
+      ];
+
+      sampleTransactions.forEach(transaction => {
+        transactionsDB.add(transaction);
+      });
     }
   };
 
-  const handleCreateTransaction = async () => {
-    try {
-      const response = await fetch("/api/finance/transaction", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...newTransaction,
-          amount: parseFloat(newTransaction.amount),
-          status: "completed",
-          date: new Date().toISOString().split("T")[0],
-        }),
-      });
+  const calculateStats = () => {
+    if (!transactions.length) return;
 
-      if (response.ok) {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+
+    // Calculate totals
+    const totalRevenue = transactions
+      .filter((t: Transaction) => t.type === "income" && t.status === "completed")
+      .reduce((sum, t: Transaction) => sum + t.amount, 0);
+
+    const totalExpenses = transactions
+      .filter((t: Transaction) => t.type === "expense" && t.status === "completed")
+      .reduce((sum, t: Transaction) => sum + t.amount, 0);
+
+    // Calculate monthly figures
+    const monthlyRevenue = transactions
+      .filter((t: Transaction) => {
+        const transactionDate = new Date(t.date);
+        return t.type === "income" && 
+               t.status === "completed" &&
+               transactionDate.getMonth() === currentMonth &&
+               transactionDate.getFullYear() === currentYear;
+      })
+      .reduce((sum, t: Transaction) => sum + t.amount, 0);
+
+    const monthlyExpenses = transactions
+      .filter((t: Transaction) => {
+        const transactionDate = new Date(t.date);
+        return t.type === "expense" && 
+               t.status === "completed" &&
+               transactionDate.getMonth() === currentMonth &&
+               transactionDate.getFullYear() === currentYear;
+      })
+      .reduce((sum, t: Transaction) => sum + t.amount, 0);
+
+    // Calculate fee collection
+    const feeCollection = transactions
+      .filter((t: Transaction) => 
+        t.type === "income" && 
+        t.status === "completed" &&
+        ['tuition', 'library', 'transport', 'hostel'].includes(t.category)
+      )
+      .reduce((sum, t: Transaction) => sum + t.amount, 0);
+
+    // Estimate outstanding fees (mock calculation)
+    const outstandingFees = Math.max(0, Math.floor(feeCollection * 0.15));
+
+    // Calculate fee collection rate
+    const totalExpectedFees = feeCollection + outstandingFees;
+    const feeCollectionRate = totalExpectedFees > 0 ? (feeCollection / totalExpectedFees) * 100 : 0;
+
+    setFinancialStats({
+      totalRevenue,
+      totalExpenses,
+      netProfit: totalRevenue - totalExpenses,
+      feeCollection,
+      outstandingFees,
+      monthlyRevenue,
+      monthlyExpenses,
+      feeCollectionRate: Math.round(feeCollectionRate * 10) / 10,
+      lastUpdated: new Date(),
+    });
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refresh();
+    calculateStats();
+    addNotification("success", "ডেটা আপডেট", "আর্থিক তথ্য সফলভাবে আপডেট হয়েছে");
+    setTimeout(() => setIsRefreshing(false), 1000);
+  };
+
+  const handleCreateTransaction = async () => {
+    if (!newTransaction.type || !newTransaction.description || !newTransaction.amount || !newTransaction.category || !newTransaction.method) {
+      addNotification("error", "ত্রুটি", "সব ক্ষেত্র পূরণ করুন");
+      return;
+    }
+
+    try {
+      const transaction: Transaction = {
+        id: Date.now().toString(),
+        type: newTransaction.type as "income" | "expense",
+        description: newTransaction.description,
+        amount: parseFloat(newTransaction.amount),
+        category: newTransaction.category,
+        date: new Date().toISOString().split("T")[0],
+        method: newTransaction.method,
+        status: "completed",
+        reference: newTransaction.reference || `TXN${Date.now()}`,
+        createdBy: "admin-001",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      const success = await addTransaction(transaction);
+      if (success) {
         setIsCreateTransactionOpen(false);
         setNewTransaction({
           type: "",
@@ -180,12 +328,13 @@ const FinanceDashboard: React.FC = () => {
           amount: "",
           category: "",
           method: "",
+          reference: "",
         });
-        fetchTransactions();
-        fetchFinancialData();
+        addNotification("success", "লেনদেন যোগ", "নতুন লেনদেন সফলভাবে যোগ করা হয়েছে");
+        calculateStats();
       }
     } catch (error) {
-      console.error("Error creating transaction:", error);
+      addNotification("error", "ত্রুটি", "লেনদেন যোগ করতে সমস্যা হয়েছে");
     }
   };
 
@@ -229,11 +378,30 @@ const FinanceDashboard: React.FC = () => {
     }
   };
 
-  if (!financialStats) {
-    return (
-      <div className="flex justify-center items-center h-64">লোড হচ্ছে...</div>
-    );
-  }
+  // Calculate category-wise summary
+  const categoryWiseSummary = React.useMemo(() => {
+    const summary: Record<string, { income: number; expense: number; net: number }> = {};
+    
+    transactions.forEach((transaction: Transaction) => {
+      if (transaction.status === "completed") {
+        if (!summary[transaction.category]) {
+          summary[transaction.category] = { income: 0, expense: 0, net: 0 };
+        }
+        
+        if (transaction.type === "income") {
+          summary[transaction.category].income += transaction.amount;
+        } else {
+          summary[transaction.category].expense += transaction.amount;
+        }
+        summary[transaction.category].net = summary[transaction.category].income - summary[transaction.category].expense;
+      }
+    });
+    
+    return Object.entries(summary).map(([category, data]) => ({
+      category,
+      ...data,
+    }));
+  }, [transactions]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -248,8 +416,15 @@ const FinanceDashboard: React.FC = () => {
             <p className="text-gray-600 mt-1">
               আয়-ব্যয় এবং ফি কালেকশন ট্র্যাকিং
             </p>
+            <p className="text-sm text-gray-500 mt-1">
+              শেষ আপডেট: {financialStats.lastUpdated.toLocaleString('bn-BD')}
+            </p>
           </div>
           <div className="flex space-x-2">
+            <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing}>
+              <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+              রিফ্রেশ
+            </Button>
             <Button variant="outline">
               <Download className="w-4 h-4 mr-2" />
               রিপোর্ট ডাউনলোড
@@ -266,7 +441,7 @@ const FinanceDashboard: React.FC = () => {
               </DialogTrigger>
               <DialogContent className="max-w-md">
                 <DialogHeader>
-                  <DialogTitle>নতুন লেনদেন ���োগ করুন</DialogTitle>
+                  <DialogTitle>নতুন লেনদেন যোগ করুন</DialogTitle>
                   <DialogDescription>
                     লেনদেনের বিস্তারিত তথ্য প্রদান করুন
                   </DialogDescription>
@@ -364,7 +539,7 @@ const FinanceDashboard: React.FC = () => {
                       }
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="পেমেন্ট ���দ্ধতি নির্বাচন করুন" />
+                        <SelectValue placeholder="পেমেন্ট পদ্ধতি নির্বাচন করুন" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="cash">ক্যাশ</SelectItem>
@@ -373,6 +548,17 @@ const FinanceDashboard: React.FC = () => {
                         <SelectItem value="bank">ব্যাংক ট্রান্সফার</SelectItem>
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="transactionReference">রেফারেন্স (ঐচ্ছিক)</Label>
+                    <Input
+                      id="transactionReference"
+                      value={newTransaction.reference}
+                      onChange={(e) =>
+                        setNewTransaction({ ...newTransaction, reference: e.target.value })
+                      }
+                      placeholder="TXN001"
+                    />
                   </div>
                   <Button
                     onClick={handleCreateTransaction}
@@ -394,7 +580,11 @@ const FinanceDashboard: React.FC = () => {
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-600">মোট আয়</p>
                   <p className="text-2xl font-bold text-green-600">
-                    ৳{financialStats.totalRevenue.toLocaleString()}
+                    {loading ? (
+                      <Activity className="h-8 w-8 animate-spin" />
+                    ) : (
+                      `৳${financialStats.totalRevenue.toLocaleString()}`
+                    )}
                   </p>
                   <p className="text-xs text-gray-500">
                     এই মাস: ৳{financialStats.monthlyRevenue.toLocaleString()}
@@ -411,7 +601,11 @@ const FinanceDashboard: React.FC = () => {
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-600">মোট ব্যয়</p>
                   <p className="text-2xl font-bold text-red-600">
-                    ৳{financialStats.totalExpenses.toLocaleString()}
+                    {loading ? (
+                      <Activity className="h-8 w-8 animate-spin" />
+                    ) : (
+                      `৳${financialStats.totalExpenses.toLocaleString()}`
+                    )}
                   </p>
                   <p className="text-xs text-gray-500">
                     এই মাস: ৳{financialStats.monthlyExpenses.toLocaleString()}
@@ -427,11 +621,15 @@ const FinanceDashboard: React.FC = () => {
               <div className="flex items-center">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-600">নিট লাভ</p>
-                  <p className="text-2xl font-bold text-blue-600">
-                    ৳{financialStats.netProfit.toLocaleString()}
+                  <p className={`text-2xl font-bold ${financialStats.netProfit >= 0 ? 'text-blue-600' : 'text-red-600'}`}>
+                    {loading ? (
+                      <Activity className="h-8 w-8 animate-spin" />
+                    ) : (
+                      `৳${financialStats.netProfit.toLocaleString()}`
+                    )}
                   </p>
                   <p className="text-xs text-gray-500">
-                    গত মাসের তুলনায় ↗ ১২%
+                    মাসিক: ৳{(financialStats.monthlyRevenue - financialStats.monthlyExpenses).toLocaleString()}
                   </p>
                 </div>
                 <DollarSign className="h-8 w-8 text-blue-600" />
@@ -447,7 +645,11 @@ const FinanceDashboard: React.FC = () => {
                     ফি কালেকশন
                   </p>
                   <p className="text-2xl font-bold text-purple-600">
-                    {financialStats.feeCollectionRate}%
+                    {loading ? (
+                      <Activity className="h-8 w-8 animate-spin" />
+                    ) : (
+                      `${financialStats.feeCollectionRate}%`
+                    )}
                   </p>
                   <p className="text-xs text-gray-500">
                     বকেয়া: ৳{financialStats.outstandingFees.toLocaleString()}
@@ -459,6 +661,44 @@ const FinanceDashboard: React.FC = () => {
           </Card>
         </div>
 
+        {/* Category-wise Summary */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <PieChart className="w-5 h-5 text-blue-600" />
+              <span>বিভাগ অনুযায়ী সারসংক্ষেপ</span>
+            </CardTitle>
+            <CardDescription>প্রতিটি বিভাগের আয়-ব্যয়ের বিবরণ</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {categoryWiseSummary.map((summary) => (
+                <div key={summary.category} className="p-4 border rounded-lg">
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    {getCategoryText(summary.category)}
+                  </h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-green-600">আয়:</span>
+                      <span className="font-medium">৳{summary.income.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-red-600">ব্যয়:</span>
+                      <span className="font-medium">৳{summary.expense.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between border-t pt-2">
+                      <span className="font-medium">নিট:</span>
+                      <span className={`font-bold ${summary.net >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        ৳{summary.net.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Recent Transactions */}
         <Card>
           <CardHeader>
@@ -466,75 +706,82 @@ const FinanceDashboard: React.FC = () => {
               <FileText className="w-5 h-5 text-blue-600" />
               <span>সাম্প্রতিক লেনদেনসমূহ</span>
             </CardTitle>
-            <CardDescription>গত ৩০ দিনের লেনদেনের তালিকা</CardDescription>
+            <CardDescription>গত ৩০ দিনের লেনদ��নের তালিকা</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-2">তারিখ</th>
-                    <th className="text-left p-2">বিবরণ</th>
-                    <th className="text-left p-2">বিভাগ</th>
-                    <th className="text-left p-2">পদ্ধতি</th>
-                    <th className="text-left p-2">পরিমাণ</th>
-                    <th className="text-left p-2">অবস্থা</th>
-                    <th className="text-left p-2">কার্যক্রম</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {transactions.map((transaction) => (
-                    <tr
-                      key={transaction.id}
-                      className="border-b hover:bg-gray-50"
-                    >
-                      <td className="p-2">
-                        {new Date(transaction.date).toLocaleDateString("bn-BD")}
-                      </td>
-                      <td className="p-2 font-medium">
-                        {transaction.description}
-                      </td>
-                      <td className="p-2">
-                        {getCategoryText(transaction.category)}
-                      </td>
-                      <td className="p-2">{transaction.method}</td>
-                      <td
-                        className={`p-2 font-bold ${getTransactionColor(transaction.type)}`}
-                      >
-                        {transaction.type === "income" ? "+" : "-"}৳
-                        {transaction.amount.toLocaleString()}
-                      </td>
-                      <td className="p-2">
-                        <Badge className={getStatusColor(transaction.status)}>
-                          {transaction.status === "completed"
-                            ? "সম্পন্ন"
-                            : transaction.status === "pending"
-                              ? "অপেক্ষমান"
-                              : "ব্যর্থ"}
-                        </Badge>
-                      </td>
-                      <td className="p-2">
-                        <div className="flex space-x-2">
-                          <Button size="sm" variant="outline">
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </td>
+            {loading ? (
+              <div className="flex justify-center items-center py-8">
+                <Activity className="h-8 w-8 animate-spin text-islamic-green" />
+                <span className="ml-2">লোড হচ্ছে...</span>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left p-2">তারিখ</th>
+                      <th className="text-left p-2">বিবরণ</th>
+                      <th className="text-left p-2">বিভাগ</th>
+                      <th className="text-left p-2">পদ্ধতি</th>
+                      <th className="text-left p-2">পরিমাণ</th>
+                      <th className="text-left p-2">অবস্থা</th>
+                      <th className="text-left p-2">কার্যক্রম</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {transactions.slice(0, 10).map((transaction: Transaction) => (
+                      <tr
+                        key={transaction.id}
+                        className="border-b hover:bg-gray-50"
+                      >
+                        <td className="p-2">
+                          {new Date(transaction.date).toLocaleDateString("bn-BD")}
+                        </td>
+                        <td className="p-2 font-medium">
+                          {transaction.description}
+                        </td>
+                        <td className="p-2">
+                          {getCategoryText(transaction.category)}
+                        </td>
+                        <td className="p-2">{transaction.method}</td>
+                        <td
+                          className={`p-2 font-bold ${getTransactionColor(transaction.type)}`}
+                        >
+                          {transaction.type === "income" ? "+" : "-"}৳
+                          {transaction.amount.toLocaleString()}
+                        </td>
+                        <td className="p-2">
+                          <Badge className={getStatusColor(transaction.status)}>
+                            {transaction.status === "completed"
+                              ? "সম্পন্ন"
+                              : transaction.status === "pending"
+                                ? "অপেক্ষ��ান"
+                                : "ব্যর্থ"}
+                          </Badge>
+                        </td>
+                        <td className="p-2">
+                          <div className="flex space-x-2">
+                            <Button size="sm" variant="outline">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button size="sm" variant="outline">
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-red-600 hover:text-red-700"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
