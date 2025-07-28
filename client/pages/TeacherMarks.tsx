@@ -131,9 +131,9 @@ export default function TeacherMarks() {
   );
 
   const enteredMarksCount = Object.values(marks).filter((m: any) => m.obtainedMarks !== '').length;
-  const averageMarks = Object.values(marks)
+  const averageMarks = enteredMarksCount > 0 ? Object.values(marks)
     .filter((m: any) => m.obtainedMarks !== '')
-    .reduce((sum, m: any) => sum + parseFloat(m.obtainedMarks), 0) / enteredMarksCount || 0;
+    .reduce((sum: number, m: any) => sum + parseFloat(m.obtainedMarks), 0) / enteredMarksCount : 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
@@ -218,7 +218,7 @@ export default function TeacherMarks() {
               </div>
 
               <div>
-                <Label htmlFor="totalMarks">প���র্ণ নম্বর</Label>
+                <Label htmlFor="totalMarks">পূর্ণ নম্বর</Label>
                 <Input
                   type="number"
                   placeholder="১০০"
@@ -274,7 +274,7 @@ export default function TeacherMarks() {
                     <FileText className="h-6 w-6 text-islamic-green" />
                     <div>
                       <p className="text-lg font-bold text-islamic-green">{enteredMarksCount}</p>
-                      <p className="text-sm text-gray-600">এন্ট্রি সম্পন্ন</p>
+                      <p className="text-sm text-gray-600">��ন্ট্রি সম্পন্ন</p>
                     </div>
                   </div>
                 </CardContent>
@@ -309,7 +309,7 @@ export default function TeacherMarks() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  <span>ছাত্��দের মার্কস এন্ট্রি</span>
+                  <span>ছাত্রদের মার্কস এন্ট্রি</span>
                   <Badge variant="outline">{filteredStudents.length} জন ছাত্র</Badge>
                 </CardTitle>
                 <CardDescription>
