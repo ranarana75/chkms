@@ -46,7 +46,7 @@ export default function Index() {
     {
       icon: <Calculator className="h-8 w-8 text-islamic-gold" />,
       title: "আ��্থিক ব্যবস্থাপনা",
-      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর��ট",
+      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর্ট",
       color: "bg-yellow-50 dark:bg-yellow-950",
       link: "/finance",
     },
@@ -67,7 +67,7 @@ export default function Index() {
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
       title: "হোস্টেল ব্যবস্থাপনা",
-      description: "রুম অ্যালোকেশন, মেস ব্যবস্থাপনা এ���ং হোস্টেল সেবা",
+      description: "রুম অ্যালোকেশন, মেস ব্যবস্থাপনা এ���ং হোস্��েল সেবা",
       color: "bg-orange-50 dark:bg-orange-950",
       link: "/hostel",
     },
@@ -81,7 +81,7 @@ export default function Index() {
     {
       icon: <School className="h-8 w-8 text-green-600" />,
       title: "ইসলামিক ফিচারস",
-      description: "নামাজের সময়, হিফজ ট্র্যাক��ং এবং আখলাক পয়েন্ট",
+      description: "নামাজের সময়, হিফজ ট্র্যাকিং এবং আখলাক পয়েন্ট",
       color: "bg-emerald-50 dark:bg-emerald-950",
       link: "/islamic",
     },
@@ -219,7 +219,7 @@ export default function Index() {
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 font-bengali-heading">
-              সিস্ট��মের বৈশিষ্ট্যসমূহ
+              সিস্টেমের বৈশিষ্ট্যসমূহ
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto font-bengali-body">
               আধুনিক প্রযুক্তি ব্যবহার করে মাদ্রাসার সকল কার্যক্রম ডিজিটাইজেশন
@@ -271,7 +271,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 dark:text-gray-300">
-                  স্থানীয় সময় অনুযায়��� স্বয়ং���্রি��় নামাজের ওয়াক্ত আপডেট
+                  স্থানীয় সময় অনুযায়��� স্বয়ংক্রি��় নামাজের ওয়াক্ত আপডেট
                 </p>
               </CardContent>
             </Card>
