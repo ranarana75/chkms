@@ -26,5 +26,12 @@ export function createServer() {
   app.post("/api/auth/logout", handleLogout);
   app.get("/api/auth/verify", handleVerifyToken);
 
+  // Student routes
+  app.get("/api/student/:studentId/dashboard", getStudentDashboard);
+  app.get("/api/student/:studentId/profile", getStudentProfile);
+  app.get("/api/student/:studentId/attendance", getStudentAttendance);
+  app.get("/api/student/:studentId/marks", getStudentMarks);
+  app.get("/api/student/:studentId/fees", getStudentFees);
+
   return app;
 }
