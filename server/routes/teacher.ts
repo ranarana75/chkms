@@ -12,9 +12,9 @@ const mockTeacherData = {
       photo: "/placeholder.svg"
     },
     todayClasses: [
-      { subject: "আরবি সাহিত্য", class: "আলিম প্রথম", time: "৯:০০ - ১০:০০", room: "১০১", status: "completed" },
-      { subject: "তাফসীর", class: "আলিম দ্বিতীয়", time: "১১:০০ - ১২:০০", room: "২০৫", status: "ongoing" },
-      { subject: "আরবি সাহিত্য", class: "আলিম প্রথম", time: "২:০০ - ৩:০০", room: "১০১", status: "upcoming" }
+      { subject: "আরবি সাহিত্য", class: "আলিম প্রথম", time: "৯:০০ - ১০:০০", room: "১০১", status: "completed" as const },
+      { subject: "তাফসীর", class: "আলিম দ্বিতীয়", time: "১১:০০ - ১২:০০", room: "২০৫", status: "ongoing" as const },
+      { subject: "আরবি সাহিত্য", class: "আলিম প্রথম", time: "২:০০ - ৩:০০", room: "১০১", status: "upcoming" as const }
     ],
     classStatistics: [
       { class: "আলিম প্রথম", students: 35, attendance: 85, avgMarks: 78 },
@@ -88,7 +88,7 @@ export const getTeacherClasses: RequestHandler = (req, res) => {
       status: "completed",
       students: 35,
       present: 32,
-      topic: "আরবি কবিতার ছন্দ"
+      topic: "আরবি কবিতা��� ছন্দ"
     },
     { 
       id: "CLS002",
@@ -175,7 +175,7 @@ export const getStudentsByClass: RequestHandler = (req, res) => {
       photo: "/placeholder.svg",
       attendance: 94.4,
       lastExamMarks: 85,
-      phone: "০১৭১২৩৪৫৬৭৮"
+      phone: "০১��১২৩৪৫৬৭৮"
     },
     { 
       id: "STD002", 
