@@ -93,13 +93,13 @@ export default function LoginPage() {
             <form onSubmit={handleLogin}>
             {/* User Type Selection */}
             <div className="space-y-2">
-              <Label htmlFor="userType">ব্যবহারকারীর ধরন</Label>
+              <Label htmlFor="userType" className="font-bengali">ব্যবহারকারীর ধরন</Label>
               <Select value={userType} onValueChange={setUserType}>
                 <SelectTrigger>
                   <SelectValue placeholder="ব্যবহারকারীর ধরন নির্বাচন করুন" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="student">শিক্ষার্থী</SelectItem>
+                  <SelectItem value="student">শিক��ষার্থী</SelectItem>
                   <SelectItem value="teacher">শিক্ষক</SelectItem>
                   <SelectItem value="admin">প্রশাসক</SelectItem>
                   <SelectItem value="parent">অভিভাবক</SelectItem>
