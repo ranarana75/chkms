@@ -33,7 +33,7 @@ export default function Index() {
     {
       icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
       title: "শিক্ষক পোর্টাল",
-      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যাশবোর্ড",
+      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যা���বোর্ড",
       color: "bg-blue-50 dark:bg-blue-950",
       link: "/teacher"
     },
@@ -165,19 +165,21 @@ export default function Index() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className={`${feature.color} border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2`}>
-                <CardHeader className="text-center">
-                  <div className="flex justify-center mb-4">
-                    {feature.icon}
-                  </div>
-                  <CardTitle className="text-xl text-gray-900 dark:text-white">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center text-gray-600 dark:text-gray-300">
-                    {feature.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
+              <Link key={index} to={feature.link} className="block">
+                <Card className={`${feature.color} border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer`}>
+                  <CardHeader className="text-center">
+                    <div className="flex justify-center mb-4">
+                      {feature.icon}
+                    </div>
+                    <CardTitle className="text-xl text-gray-900 dark:text-white">{feature.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-center text-gray-600 dark:text-gray-300">
+                      {feature.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
