@@ -2,12 +2,18 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { 
-  ArrowLeft, 
-  Clock, 
+import {
+  ArrowLeft,
+  Clock,
   BookOpen,
   Star,
   Calendar,
@@ -15,7 +21,7 @@ import {
   Users,
   TrendingUp,
   School,
-  Plus
+  Plus,
 } from "lucide-react";
 
 export default function IslamicDashboard() {
@@ -44,8 +50,8 @@ export default function IslamicDashboard() {
             dhuhr: "১১:৫৫",
             asr: "৩:৩০",
             maghrib: "৫:১০",
-            isha: "৬:৩৫"
-          }
+            isha: "৬:৩৫",
+          },
         },
         hifzStats: {
           totalStudents: 156,
@@ -55,39 +61,66 @@ export default function IslamicDashboard() {
           topPerformers: [
             { name: "মোহাম্মদ আবদুল্লাহ", progress: 95, class: "আলিম প্রথম" },
             { name: "আবুল কাসেম", progress: 88, class: "আলিম দ্বিতীয়" },
-            { name: "মোহাম্মদ ইব্রাহিম", progress: 82, class: "আলিম প্রথম" }
-          ]
+            { name: "মোহাম্মদ ইব্রাহিম", progress: 82, class: "আলিম প্রথম" },
+          ],
         },
         akhlaqLeaders: [
-          { name: "আব্দুর রহমান", points: 185, level: "প্ল্যাটিনাম", class: "আলিম দ্বিতীয়" },
-          { name: "মোহাম্মদ হাসান", points: 142, level: "গোল্ড", class: "আলিম প���রথম" },
-          { name: "আবু বকর", points: 128, level: "গোল্ড", class: "আলিম দ্বিতীয়" }
+          {
+            name: "আব্দুর রহমান",
+            points: 185,
+            level: "প্ল্যাটিনাম",
+            class: "আলিম দ্বিতীয়",
+          },
+          {
+            name: "মোহাম্মদ হাসান",
+            points: 142,
+            level: "গোল্ড",
+            class: "আলিম প���রথম",
+          },
+          {
+            name: "আবু বকর",
+            points: 128,
+            level: "গোল্ড",
+            class: "আলিম দ্বিতীয়",
+          },
         ],
         upcomingEvents: [
           {
             name: "মাসিক ওয়াজ মাহফিল",
             date: "২০ ডিসেম্বর",
             time: "আসরের পর",
-            speaker: "মাওলানা আবুল হাসান"
+            speaker: "মাওলানা আবুল হাসান",
           },
           {
             name: "হিফজ প্রতিযোগিতা",
             date: "২৫ ডিসেম্বর",
             time: "সকাল ১০:০০",
-            venue: "মসজিদ"
+            venue: "মসজিদ",
           },
           {
             name: "ইসলামিক কুইজ",
             date: "৩০ ডিসেম্বর",
             time: "বিকাল ৩:০০",
-            venue: "ক্লাসরুম-১"
-          }
+            venue: "ক্লাসরুম-১",
+          },
         ],
         tajweedLessons: [
-          { title: "মাখরাজ (উচ্চারণস্থান)", level: "শুরুর পর্যায়", duration: "৩০ মিনিট" },
-          { title: "সিফাত (বর্ণের গুণাবলী)", level: "মধ্যম পর্যায়", duration: "৪৫ মিনিট" },
-          { title: "আহকামুল মাদ্দ", level: "উন্নত পর্যায়", duration: "৬০ মিনিট" }
-        ]
+          {
+            title: "মাখরাজ (উচ্চারণস্থান)",
+            level: "শুরুর পর্যায়",
+            duration: "৩০ মিনিট",
+          },
+          {
+            title: "সিফাত (বর্ণের গুণাবলী)",
+            level: "মধ্যম পর্যায়",
+            duration: "৪৫ মিনিট",
+          },
+          {
+            title: "আহকামুল মাদ্দ",
+            level: "উন্নত পর্যায়",
+            duration: "৬০ মিনিট",
+          },
+        ],
       });
       setLoading(false);
     }, 1000);
@@ -101,25 +134,34 @@ export default function IslamicDashboard() {
     );
   }
 
-  const { prayerTimes, hifzStats, akhlaqLeaders, upcomingEvents, tajweedLessons } = islamicData;
+  const {
+    prayerTimes,
+    hifzStats,
+    akhlaqLeaders,
+    upcomingEvents,
+    tajweedLessons,
+  } = islamicData;
 
   const getNextPrayer = () => {
     const now = currentTime;
     const currentHour = now.getHours();
     const currentMinute = now.getMinutes();
-    const currentTimeString = `${currentHour}:${currentMinute.toString().padStart(2, '0')}`;
+    const currentTimeString = `${currentHour}:${currentMinute.toString().padStart(2, "0")}`;
 
     const prayers = [
       { name: "ফজর", time: "5:15", display: "ফজর" },
       { name: "যোহর", time: "11:55", display: "যোহর" },
       { name: "আসর", time: "15:30", display: "আসর" },
       { name: "মাগরিব", time: "17:10", display: "মাগরিব" },
-      { name: "ইশা", time: "18:35", display: "ইশা" }
+      { name: "ইশা", time: "18:35", display: "ইশা" },
     ];
 
     for (const prayer of prayers) {
-      const [hour, minute] = prayer.time.split(':').map(Number);
-      if (currentHour < hour || (currentHour === hour && currentMinute < minute)) {
+      const [hour, minute] = prayer.time.split(":").map(Number);
+      if (
+        currentHour < hour ||
+        (currentHour === hour && currentMinute < minute)
+      ) {
         return prayer.display;
       }
     }
@@ -135,7 +177,10 @@ export default function IslamicDashboard() {
       <header className="border-b border-green-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/admin" className="inline-flex items-center text-islamic-green hover:text-islamic-green-dark transition-colors">
+            <Link
+              to="/admin"
+              className="inline-flex items-center text-islamic-green hover:text-islamic-green-dark transition-colors"
+            >
               <ArrowLeft className="h-4 w-4 mr-2" />
               ড্যাশবোর্ডে ফিরে যান
             </Link>
@@ -149,8 +194,12 @@ export default function IslamicDashboard() {
 
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">ইসলামিক বিভাগ</h1>
-          <p className="text-gray-600">নামাজের সময়, হিফজ অগ্রগতি, আখলাক পয়েন্ট এবং ইসলামিক কার্যক্রম</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            ইসলামিক বিভাগ
+          </h1>
+          <p className="text-gray-600">
+            নামাজের সময়, হিফজ অগ্রগতি, আখলাক পয়েন্ট এবং ইসলামিক কার্যক্রম
+          </p>
         </div>
 
         {/* Prayer Times Section */}
@@ -163,7 +212,9 @@ export default function IslamicDashboard() {
               </CardTitle>
               <div className="text-right">
                 <p className="text-sm text-gray-600">{prayerTimes.date}</p>
-                <p className="text-xs text-islamic-green">{prayerTimes.hijriDate}</p>
+                <p className="text-xs text-islamic-green">
+                  {prayerTimes.hijriDate}
+                </p>
               </div>
             </div>
           </CardHeader>
@@ -172,22 +223,29 @@ export default function IslamicDashboard() {
               {Object.entries(prayerTimes.times).map(([prayer, time]) => {
                 const prayerNames = {
                   fajr: "ফজর",
-                  dhuhr: "যোহর", 
+                  dhuhr: "যোহর",
                   asr: "আসর",
                   maghrib: "মাগরিব",
-                  isha: "ইশা"
+                  isha: "ইশা",
                 };
-                
+
                 const isNext = prayerNames[prayer] === nextPrayer;
-                
+
                 return (
-                  <div key={prayer} className={`text-center p-4 rounded-lg ${
-                    isNext ? 'bg-islamic-green text-white' : 'bg-white border'
-                  }`}>
-                    <p className={`text-sm font-medium ${isNext ? 'text-white' : 'text-gray-600'}`}>
+                  <div
+                    key={prayer}
+                    className={`text-center p-4 rounded-lg ${
+                      isNext ? "bg-islamic-green text-white" : "bg-white border"
+                    }`}
+                  >
+                    <p
+                      className={`text-sm font-medium ${isNext ? "text-white" : "text-gray-600"}`}
+                    >
                       {prayerNames[prayer]}
                     </p>
-                    <p className={`text-xl font-bold ${isNext ? 'text-white' : 'text-islamic-green'}`}>
+                    <p
+                      className={`text-xl font-bold ${isNext ? "text-white" : "text-islamic-green"}`}
+                    >
                       {time}
                     </p>
                     {isNext && (
@@ -212,7 +270,9 @@ export default function IslamicDashboard() {
               <div className="flex items-center space-x-2">
                 <BookOpen className="h-8 w-8 text-islamic-green" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-green">{hifzStats.activeHifzStudents}</p>
+                  <p className="text-2xl font-bold text-islamic-green">
+                    {hifzStats.activeHifzStudents}
+                  </p>
                   <p className="text-sm text-gray-600">সক্রিয় হাফেজ</p>
                 </div>
               </div>
@@ -224,7 +284,9 @@ export default function IslamicDashboard() {
               <div className="flex items-center space-x-2">
                 <Award className="h-8 w-8 text-islamic-blue" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-blue">{hifzStats.completedHifz}</p>
+                  <p className="text-2xl font-bold text-islamic-blue">
+                    {hifzStats.completedHifz}
+                  </p>
                   <p className="text-sm text-gray-600">সম্পূর্ণ হাফেজ</p>
                 </div>
               </div>
@@ -236,7 +298,9 @@ export default function IslamicDashboard() {
               <div className="flex items-center space-x-2">
                 <Star className="h-8 w-8 text-islamic-gold" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-gold">{hifzStats.averageProgress}%</p>
+                  <p className="text-2xl font-bold text-islamic-gold">
+                    {hifzStats.averageProgress}%
+                  </p>
                   <p className="text-sm text-gray-600">গড় অগ্রগতি</p>
                 </div>
               </div>
@@ -248,7 +312,9 @@ export default function IslamicDashboard() {
               <div className="flex items-center space-x-2">
                 <Users className="h-8 w-8 text-purple-600" />
                 <div>
-                  <p className="text-2xl font-bold text-purple-600">{hifzStats.totalStudents}</p>
+                  <p className="text-2xl font-bold text-purple-600">
+                    {hifzStats.totalStudents}
+                  </p>
                   <p className="text-sm text-gray-600">মোট শিক্ষার্থী</p>
                 </div>
               </div>
@@ -268,15 +334,26 @@ export default function IslamicDashboard() {
             <CardContent>
               <div className="space-y-4">
                 {hifzStats.topPerformers.map((student, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 rounded-lg bg-gray-50"
+                  >
                     <div className="flex items-center space-x-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                        index === 0 ? 'bg-yellow-500' : index === 1 ? 'bg-gray-400' : 'bg-orange-600'
-                      }`}>
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
+                          index === 0
+                            ? "bg-yellow-500"
+                            : index === 1
+                              ? "bg-gray-400"
+                              : "bg-orange-600"
+                        }`}
+                      >
                         {index + 1}
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{student.name}</p>
+                        <p className="font-medium text-gray-900">
+                          {student.name}
+                        </p>
                         <p className="text-sm text-gray-600">{student.class}</p>
                       </div>
                     </div>
@@ -302,27 +379,44 @@ export default function IslamicDashboard() {
             <CardContent>
               <div className="space-y-4">
                 {akhlaqLeaders.map((student, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 rounded-lg bg-gray-50"
+                  >
                     <div className="flex items-center space-x-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                        index === 0 ? 'bg-yellow-500' : index === 1 ? 'bg-gray-400' : 'bg-orange-600'
-                      }`}>
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
+                          index === 0
+                            ? "bg-yellow-500"
+                            : index === 1
+                              ? "bg-gray-400"
+                              : "bg-orange-600"
+                        }`}
+                      >
                         {index + 1}
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{student.name}</p>
+                        <p className="font-medium text-gray-900">
+                          {student.name}
+                        </p>
                         <p className="text-sm text-gray-600">{student.class}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <Badge className={`${
-                        student.level === 'প��ল্যাটিনাম' ? 'bg-gray-700' :
-                        student.level === 'গোল্ড' ? 'bg-yellow-600' :
-                        'bg-gray-500'
-                      } text-white`}>
+                      <Badge
+                        className={`${
+                          student.level === "প��ল্যাটিনাম"
+                            ? "bg-gray-700"
+                            : student.level === "গোল্ড"
+                              ? "bg-yellow-600"
+                              : "bg-gray-500"
+                        } text-white`}
+                      >
                         {student.points} পয়েন্ট
                       </Badge>
-                      <p className="text-xs text-gray-600 mt-1">{student.level}</p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        {student.level}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -343,17 +437,23 @@ export default function IslamicDashboard() {
                 {upcomingEvents.map((event, index) => (
                   <div key={index} className="p-3 border rounded-lg">
                     <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-medium text-gray-900">{event.name}</h4>
+                      <h4 className="font-medium text-gray-900">
+                        {event.name}
+                      </h4>
                       <Badge variant="outline" className="text-xs">
                         {event.date}
                       </Badge>
                     </div>
                     <p className="text-sm text-gray-600 mb-1">{event.time}</p>
                     {event.speaker && (
-                      <p className="text-sm text-islamic-green">ব���্তা: {event.speaker}</p>
+                      <p className="text-sm text-islamic-green">
+                        ব���্তা: {event.speaker}
+                      </p>
                     )}
                     {event.venue && (
-                      <p className="text-sm text-gray-500">স্থান: {event.venue}</p>
+                      <p className="text-sm text-gray-500">
+                        স্থান: {event.venue}
+                      </p>
                     )}
                   </div>
                 ))}
@@ -380,15 +480,25 @@ export default function IslamicDashboard() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {tajweedLessons.map((lesson, index) => (
-                <div key={index} className="p-4 border rounded-lg hover:border-islamic-green/50 transition-colors">
-                  <h3 className="font-semibold text-gray-900 mb-2">{lesson.title}</h3>
+                <div
+                  key={index}
+                  className="p-4 border rounded-lg hover:border-islamic-green/50 transition-colors"
+                >
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    {lesson.title}
+                  </h3>
                   <div className="flex items-center justify-between mb-2">
                     <Badge variant="outline" className="text-xs">
                       {lesson.level}
                     </Badge>
-                    <span className="text-sm text-gray-600">{lesson.duration}</span>
+                    <span className="text-sm text-gray-600">
+                      {lesson.duration}
+                    </span>
                   </div>
-                  <Button size="sm" className="w-full bg-islamic-blue hover:bg-islamic-blue-dark">
+                  <Button
+                    size="sm"
+                    className="w-full bg-islamic-blue hover:bg-islamic-blue-dark"
+                  >
                     পাঠ শুরু করুন
                   </Button>
                 </div>

@@ -1,15 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Textarea } from '../components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import Navigation from '../components/Navigation';
-import { 
-  BookOpen, 
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import Navigation from "../components/Navigation";
+import {
+  BookOpen,
   Users,
   Clock,
   Search,
@@ -21,8 +40,8 @@ import {
   Edit,
   Trash2,
   Library,
-  FileText
-} from 'lucide-react';
+  FileText,
+} from "lucide-react";
 
 interface Book {
   id: string;
@@ -30,7 +49,7 @@ interface Book {
   author: string;
   isbn: string;
   category: string;
-  language: 'bangla' | 'arabic' | 'english' | 'urdu';
+  language: "bangla" | "arabic" | "english" | "urdu";
   totalCopies: number;
   availableCopies: number;
   issuedCopies: number;
@@ -46,7 +65,7 @@ interface LibraryIssue {
   dueDate: string;
   returnDate?: string;
   fine?: number;
-  status: 'issued' | 'returned' | 'overdue';
+  status: "issued" | "returned" | "overdue";
 }
 
 interface LibraryStats {
@@ -62,22 +81,22 @@ const LibraryDashboard: React.FC = () => {
   const [libraryStats, setLibraryStats] = useState<LibraryStats | null>(null);
   const [books, setBooks] = useState<Book[]>([]);
   const [issues, setIssues] = useState<LibraryIssue[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [isAddBookOpen, setIsAddBookOpen] = useState(false);
   const [isIssueBookOpen, setIsIssueBookOpen] = useState(false);
   const [newBook, setNewBook] = useState({
-    title: '',
-    author: '',
-    isbn: '',
-    category: '',
-    language: '',
-    totalCopies: ''
+    title: "",
+    author: "",
+    isbn: "",
+    category: "",
+    language: "",
+    totalCopies: "",
   });
   const [issueBook, setIssueBook] = useState({
-    bookId: '',
-    studentId: '',
-    studentName: ''
+    bookId: "",
+    studentId: "",
+    studentName: "",
   });
 
   useEffect(() => {
@@ -88,11 +107,11 @@ const LibraryDashboard: React.FC = () => {
 
   const fetchLibraryData = async () => {
     try {
-      const response = await fetch('/api/library/dashboard');
+      const response = await fetch("/api/library/dashboard");
       const data = await response.json();
       setLibraryStats(data.stats);
     } catch (error) {
-      console.error('Error fetching library data:', error);
+      console.error("Error fetching library data:", error);
       // Mock data for demo
       setLibraryStats({
         totalBooks: 2850,
@@ -100,186 +119,188 @@ const LibraryDashboard: React.FC = () => {
         booksIssued: 485,
         overdueBooks: 23,
         totalFines: 4500,
-        popularBooks: 156
+        popularBooks: 156,
       });
     }
   };
 
   const fetchBooks = async () => {
     try {
-      const response = await fetch('/api/library/books');
+      const response = await fetch("/api/library/books");
       const data = await response.json();
       setBooks(data);
     } catch (error) {
-      console.error('Error fetching books:', error);
+      console.error("Error fetching books:", error);
       // Mock data for demo
       setBooks([
         {
-          id: '1',
-          title: 'তাফসীরে ইবনে কাসীর',
-          author: 'ইমাম ইবনে কাসীর',
-          isbn: '978-984-123-456-7',
-          category: 'islamic',
-          language: 'bangla',
+          id: "1",
+          title: "তাফসীরে ইবনে কাসীর",
+          author: "ইমাম ইবনে কাসীর",
+          isbn: "978-984-123-456-7",
+          category: "islamic",
+          language: "bangla",
           totalCopies: 10,
           availableCopies: 7,
-          issuedCopies: 3
+          issuedCopies: 3,
         },
         {
-          id: '2',
-          title: 'সহীহ বুখারী',
-          author: 'ইমাম বুখারী',
-          isbn: '978-984-123-457-8',
-          category: 'hadith',
-          language: 'arabic',
+          id: "2",
+          title: "সহীহ বুখারী",
+          author: "ইমাম বুখারী",
+          isbn: "978-984-123-457-8",
+          category: "hadith",
+          language: "arabic",
           totalCopies: 15,
           availableCopies: 12,
-          issuedCopies: 3
+          issuedCopies: 3,
         },
         {
-          id: '3',
-          title: 'বাংলা ব্যাকরণ',
-          author: 'ড. মুহাম্মদ শহীদুল্লাহ',
-          isbn: '978-984-123-458-9',
-          category: 'academic',
-          language: 'bangla',
+          id: "3",
+          title: "বাংলা ব্যাকরণ",
+          author: "ড. মুহাম্মদ শহীদুল্লাহ",
+          isbn: "978-984-123-458-9",
+          category: "academic",
+          language: "bangla",
           totalCopies: 20,
           availableCopies: 15,
-          issuedCopies: 5
-        }
+          issuedCopies: 5,
+        },
       ]);
     }
   };
 
   const fetchIssues = async () => {
     try {
-      const response = await fetch('/api/library/issues');
+      const response = await fetch("/api/library/issues");
       const data = await response.json();
       setIssues(data);
     } catch (error) {
-      console.error('Error fetching issues:', error);
+      console.error("Error fetching issues:", error);
       // Mock data for demo
       setIssues([
         {
-          id: '1',
-          bookId: '1',
-          bookTitle: 'তাফসীরে ইবনে কাসীর',
-          studentId: 'std-001',
-          studentName: 'মোহাম্মদ আব্দুল্লাহ',
-          issueDate: '2024-11-15',
-          dueDate: '2024-12-15',
-          status: 'issued'
+          id: "1",
+          bookId: "1",
+          bookTitle: "তাফসীরে ইবনে কাসীর",
+          studentId: "std-001",
+          studentName: "মোহাম্মদ আব্দুল্লাহ",
+          issueDate: "2024-11-15",
+          dueDate: "2024-12-15",
+          status: "issued",
         },
         {
-          id: '2',
-          bookId: '2',
-          bookTitle: 'সহীহ বুখারী',
-          studentId: 'std-002',
-          studentName: 'ফাতিমা খাতুন',
-          issueDate: '2024-11-10',
-          dueDate: '2024-12-10',
-          status: 'overdue',
-          fine: 50
+          id: "2",
+          bookId: "2",
+          bookTitle: "সহীহ বুখারী",
+          studentId: "std-002",
+          studentName: "ফাতিমা খাতুন",
+          issueDate: "2024-11-10",
+          dueDate: "2024-12-10",
+          status: "overdue",
+          fine: 50,
         },
         {
-          id: '3',
-          bookId: '3',
-          bookTitle: 'বাংলা ব্যাকরণ',
-          studentId: 'std-003',
-          studentName: 'আবু বকর সিদ্দিক',
-          issueDate: '2024-11-20',
-          dueDate: '2024-12-20',
-          returnDate: '2024-12-05',
-          status: 'returned'
-        }
+          id: "3",
+          bookId: "3",
+          bookTitle: "বাংলা ব্যাকরণ",
+          studentId: "std-003",
+          studentName: "আবু বকর সিদ্দিক",
+          issueDate: "2024-11-20",
+          dueDate: "2024-12-20",
+          returnDate: "2024-12-05",
+          status: "returned",
+        },
       ]);
     }
   };
 
   const handleAddBook = async () => {
     try {
-      const response = await fetch('/api/library/books', {
-        method: 'POST',
+      const response = await fetch("/api/library/books", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...newBook,
           totalCopies: parseInt(newBook.totalCopies),
           availableCopies: parseInt(newBook.totalCopies),
-          issuedCopies: 0
+          issuedCopies: 0,
         }),
       });
 
       if (response.ok) {
         setIsAddBookOpen(false);
         setNewBook({
-          title: '',
-          author: '',
-          isbn: '',
-          category: '',
-          language: '',
-          totalCopies: ''
+          title: "",
+          author: "",
+          isbn: "",
+          category: "",
+          language: "",
+          totalCopies: "",
         });
         fetchBooks();
         fetchLibraryData();
       }
     } catch (error) {
-      console.error('Error adding book:', error);
+      console.error("Error adding book:", error);
     }
   };
 
   const handleIssueBook = async () => {
     try {
-      const response = await fetch('/api/library/issue', {
-        method: 'POST',
+      const response = await fetch("/api/library/issue", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...issueBook,
-          issueDate: new Date().toISOString().split('T')[0],
-          dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+          issueDate: new Date().toISOString().split("T")[0],
+          dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+            .toISOString()
+            .split("T")[0],
         }),
       });
 
       if (response.ok) {
         setIsIssueBookOpen(false);
         setIssueBook({
-          bookId: '',
-          studentId: '',
-          studentName: ''
+          bookId: "",
+          studentId: "",
+          studentName: "",
         });
         fetchIssues();
         fetchBooks();
         fetchLibraryData();
       }
     } catch (error) {
-      console.error('Error issuing book:', error);
+      console.error("Error issuing book:", error);
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'issued':
-        return 'bg-blue-100 text-blue-800';
-      case 'returned':
-        return 'bg-green-100 text-green-800';
-      case 'overdue':
-        return 'bg-red-100 text-red-800';
+      case "issued":
+        return "bg-blue-100 text-blue-800";
+      case "returned":
+        return "bg-green-100 text-green-800";
+      case "overdue":
+        return "bg-red-100 text-red-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'issued':
-        return 'ইস্যুকৃত';
-      case 'returned':
-        return 'ফেরত';
-      case 'overdue':
-        return 'অতিরিক্ত সময়';
+      case "issued":
+        return "ইস্যুকৃত";
+      case "returned":
+        return "ফেরত";
+      case "overdue":
+        return "অতিরিক্ত সময়";
       default:
         return status;
     }
@@ -287,16 +308,16 @@ const LibraryDashboard: React.FC = () => {
 
   const getCategoryText = (category: string) => {
     switch (category) {
-      case 'islamic':
-        return 'ইসলামিক';
-      case 'hadith':
-        return 'হাদিস';
-      case 'academic':
-        return 'একাডেমিক';
-      case 'literature':
-        return 'সাহিত্য';
-      case 'science':
-        return 'বিজ্ঞান';
+      case "islamic":
+        return "ইসলামিক";
+      case "hadith":
+        return "হাদিস";
+      case "academic":
+        return "একাডেমিক";
+      case "literature":
+        return "সাহিত্য";
+      case "science":
+        return "বিজ্ঞান";
       default:
         return category;
     }
@@ -304,28 +325,32 @@ const LibraryDashboard: React.FC = () => {
 
   const getLanguageText = (language: string) => {
     switch (language) {
-      case 'bangla':
-        return 'বাংলা';
-      case 'arabic':
-        return 'আরবি';
-      case 'english':
-        return 'ইংরেজি';
-      case 'urdu':
-        return 'উর্দু';
+      case "bangla":
+        return "বাংলা";
+      case "arabic":
+        return "আরবি";
+      case "english":
+        return "ইংরেজি";
+      case "urdu":
+        return "উর্দু";
       default:
         return language;
     }
   };
 
-  const filteredBooks = books.filter(book => {
-    const matchesSearch = book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         book.author.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || book.category === selectedCategory;
+  const filteredBooks = books.filter((book) => {
+    const matchesSearch =
+      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "all" || book.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   if (!libraryStats) {
-    return <div className="flex justify-center items-center h-64">লোড হচ্ছে...</div>;
+    return (
+      <div className="flex justify-center items-center h-64">লোড হচ্ছে...</div>
+    );
   }
 
   return (
@@ -335,8 +360,12 @@ const LibraryDashboard: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">লাইব্রেরি ব্যবস্থাপনা</h1>
-            <p className="text-gray-600 mt-1">বই ক্যাটালগ এবং ইস্যু-রিটার্ন ব্যবস্থাপনা</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              লাইব্রেরি ব্যবস্থাপনা
+            </h1>
+            <p className="text-gray-600 mt-1">
+              বই ক্যাটালগ এবং ইস্যু-রিটার্ন ব্যবস্থাপনা
+            </p>
           </div>
           <div className="flex space-x-2">
             <Button variant="outline">
@@ -360,16 +389,24 @@ const LibraryDashboard: React.FC = () => {
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="issueBookId">বই নির্বাচন</Label>
-                    <Select value={issueBook.bookId} onValueChange={(value) => setIssueBook({ ...issueBook, bookId: value })}>
+                    <Select
+                      value={issueBook.bookId}
+                      onValueChange={(value) =>
+                        setIssueBook({ ...issueBook, bookId: value })
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="বই নির্বাচন করুন" />
                       </SelectTrigger>
                       <SelectContent>
-                        {books.filter(book => book.availableCopies > 0).map((book) => (
-                          <SelectItem key={book.id} value={book.id}>
-                            {book.title} - {book.author} (উপলব্ধ: {book.availableCopies})
-                          </SelectItem>
-                        ))}
+                        {books
+                          .filter((book) => book.availableCopies > 0)
+                          .map((book) => (
+                            <SelectItem key={book.id} value={book.id}>
+                              {book.title} - {book.author} (উপলব্ধ:{" "}
+                              {book.availableCopies})
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -378,7 +415,12 @@ const LibraryDashboard: React.FC = () => {
                     <Input
                       id="issueStudentId"
                       value={issueBook.studentId}
-                      onChange={(e) => setIssueBook({ ...issueBook, studentId: e.target.value })}
+                      onChange={(e) =>
+                        setIssueBook({
+                          ...issueBook,
+                          studentId: e.target.value,
+                        })
+                      }
                       placeholder="std-001"
                     />
                   </div>
@@ -387,11 +429,19 @@ const LibraryDashboard: React.FC = () => {
                     <Input
                       id="issueStudentName"
                       value={issueBook.studentName}
-                      onChange={(e) => setIssueBook({ ...issueBook, studentName: e.target.value })}
+                      onChange={(e) =>
+                        setIssueBook({
+                          ...issueBook,
+                          studentName: e.target.value,
+                        })
+                      }
                       placeholder="শিক্ষার্থীর নাম"
                     />
                   </div>
-                  <Button onClick={handleIssueBook} className="w-full bg-blue-600 hover:bg-blue-700">
+                  <Button
+                    onClick={handleIssueBook}
+                    className="w-full bg-blue-600 hover:bg-blue-700"
+                  >
                     বই ইস্যু করুন
                   </Button>
                 </div>
@@ -417,7 +467,9 @@ const LibraryDashboard: React.FC = () => {
                     <Input
                       id="bookTitle"
                       value={newBook.title}
-                      onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
+                      onChange={(e) =>
+                        setNewBook({ ...newBook, title: e.target.value })
+                      }
                       placeholder="বইয়ের নাম"
                     />
                   </div>
@@ -426,7 +478,9 @@ const LibraryDashboard: React.FC = () => {
                     <Input
                       id="bookAuthor"
                       value={newBook.author}
-                      onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
+                      onChange={(e) =>
+                        setNewBook({ ...newBook, author: e.target.value })
+                      }
                       placeholder="লেখকের নাম"
                     />
                   </div>
@@ -435,14 +489,21 @@ const LibraryDashboard: React.FC = () => {
                     <Input
                       id="bookIsbn"
                       value={newBook.isbn}
-                      onChange={(e) => setNewBook({ ...newBook, isbn: e.target.value })}
+                      onChange={(e) =>
+                        setNewBook({ ...newBook, isbn: e.target.value })
+                      }
                       placeholder="978-984-123-456-7"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="bookCategory">বিভাগ</Label>
-                      <Select value={newBook.category} onValueChange={(value) => setNewBook({ ...newBook, category: value })}>
+                      <Select
+                        value={newBook.category}
+                        onValueChange={(value) =>
+                          setNewBook({ ...newBook, category: value })
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="বিভাগ নির্বা��ন করুন" />
                         </SelectTrigger>
@@ -457,7 +518,12 @@ const LibraryDashboard: React.FC = () => {
                     </div>
                     <div>
                       <Label htmlFor="bookLanguage">ভাষা</Label>
-                      <Select value={newBook.language} onValueChange={(value) => setNewBook({ ...newBook, language: value })}>
+                      <Select
+                        value={newBook.language}
+                        onValueChange={(value) =>
+                          setNewBook({ ...newBook, language: value })
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="ভাষা নির্বাচন করুন" />
                         </SelectTrigger>
@@ -476,11 +542,16 @@ const LibraryDashboard: React.FC = () => {
                       id="bookCopies"
                       type="number"
                       value={newBook.totalCopies}
-                      onChange={(e) => setNewBook({ ...newBook, totalCopies: e.target.value })}
+                      onChange={(e) =>
+                        setNewBook({ ...newBook, totalCopies: e.target.value })
+                      }
                       placeholder="১০"
                     />
                   </div>
-                  <Button onClick={handleAddBook} className="w-full bg-green-600 hover:bg-green-700">
+                  <Button
+                    onClick={handleAddBook}
+                    className="w-full bg-green-600 hover:bg-green-700"
+                  >
                     বই যোগ করুন
                   </Button>
                 </div>
@@ -497,7 +568,9 @@ const LibraryDashboard: React.FC = () => {
                 <BookOpen className="w-8 h-8 text-blue-600" />
                 <div>
                   <p className="text-sm font-medium text-gray-600">মোট বই</p>
-                  <p className="text-2xl font-bold text-gray-900">{libraryStats.totalBooks}</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {libraryStats.totalBooks}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -508,8 +581,12 @@ const LibraryDashboard: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <Users className="w-8 h-8 text-green-600" />
                 <div>
-                  <p className="text-sm font-medium text-gray-600">নিবন্ধিত শিক্ষার্থী</p>
-                  <p className="text-2xl font-bold text-gray-900">{libraryStats.totalStudents}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    নিবন্ধিত শিক্ষার্থী
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {libraryStats.totalStudents}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -520,8 +597,12 @@ const LibraryDashboard: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <FileText className="w-8 h-8 text-purple-600" />
                 <div>
-                  <p className="text-sm font-medium text-gray-600">ইস্যুকৃত বই</p>
-                  <p className="text-2xl font-bold text-gray-900">{libraryStats.booksIssued}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    ইস্যুকৃত বই
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {libraryStats.booksIssued}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -532,8 +613,12 @@ const LibraryDashboard: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <AlertTriangle className="w-8 h-8 text-red-600" />
                 <div>
-                  <p className="text-sm font-medium text-gray-600">বিলম্বিত বই</p>
-                  <p className="text-2xl font-bold text-gray-900">{libraryStats.overdueBooks}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    বিলম্বিত বই
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {libraryStats.overdueBooks}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -545,7 +630,9 @@ const LibraryDashboard: React.FC = () => {
                 <Clock className="w-8 h-8 text-orange-600" />
                 <div>
                   <p className="text-sm font-medium text-gray-600">জরিমানা</p>
-                  <p className="text-2xl font-bold text-gray-900">৳{libraryStats.totalFines}</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    ৳{libraryStats.totalFines}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -556,8 +643,12 @@ const LibraryDashboard: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-8 h-8 text-emerald-600" />
                 <div>
-                  <p className="text-sm font-medium text-gray-600">জনপ্রিয় বই</p>
-                  <p className="text-2xl font-bold text-gray-900">{libraryStats.popularBooks}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    জনপ্রিয় বই
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {libraryStats.popularBooks}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -582,7 +673,10 @@ const LibraryDashboard: React.FC = () => {
                   />
                 </div>
               </div>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
                 <SelectTrigger className="w-48">
                   <SelectValue placeholder="বিভাগ নির্বাচন করুন" />
                 </SelectTrigger>
@@ -603,7 +697,9 @@ const LibraryDashboard: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>বইয়ের তালিকা</CardTitle>
-            <CardDescription>লাইব্রেরির সকল বইয়ের তালিকা এবং প্রাপ্যতা</CardDescription>
+            <CardDescription>
+              লাইব্রেরির সকল বইয়ের তালিকা এবং প্রাপ্যতা
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
@@ -629,7 +725,13 @@ const LibraryDashboard: React.FC = () => {
                       <td className="p-2">{getLanguageText(book.language)}</td>
                       <td className="p-2">{book.totalCopies}</td>
                       <td className="p-2">
-                        <Badge className={book.availableCopies > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                        <Badge
+                          className={
+                            book.availableCopies > 0
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }
+                        >
                           {book.availableCopies}
                         </Badge>
                       </td>
@@ -656,7 +758,9 @@ const LibraryDashboard: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle>সাম্প্রতিক ইস্যু/রিটার্ন</CardTitle>
-            <CardDescription>গত ৩০ দিনের বই ইস্যু এবং রিটার্নের তালিকা</CardDescription>
+            <CardDescription>
+              গত ৩০ দিনের বই ইস্যু এবং রিটার্নের তালিকা
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
@@ -677,9 +781,15 @@ const LibraryDashboard: React.FC = () => {
                     <tr key={issue.id} className="border-b hover:bg-gray-50">
                       <td className="p-2 font-medium">{issue.bookTitle}</td>
                       <td className="p-2">{issue.studentName}</td>
-                      <td className="p-2">{new Date(issue.issueDate).toLocaleDateString('bn-BD')}</td>
-                      <td className="p-2">{new Date(issue.dueDate).toLocaleDateString('bn-BD')}</td>
-                      <td className="p-2">{issue.fine ? `৳${issue.fine}` : '-'}</td>
+                      <td className="p-2">
+                        {new Date(issue.issueDate).toLocaleDateString("bn-BD")}
+                      </td>
+                      <td className="p-2">
+                        {new Date(issue.dueDate).toLocaleDateString("bn-BD")}
+                      </td>
+                      <td className="p-2">
+                        {issue.fine ? `৳${issue.fine}` : "-"}
+                      </td>
                       <td className="p-2">
                         <Badge className={getStatusColor(issue.status)}>
                           {getStatusText(issue.status)}
@@ -690,8 +800,11 @@ const LibraryDashboard: React.FC = () => {
                           <Button size="sm" variant="outline">
                             <Eye className="w-4 h-4" />
                           </Button>
-                          {issue.status === 'issued' && (
-                            <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                          {issue.status === "issued" && (
+                            <Button
+                              size="sm"
+                              className="bg-green-600 hover:bg-green-700 text-white"
+                            >
                               ফেরত
                             </Button>
                           )}
