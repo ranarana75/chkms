@@ -32,7 +32,7 @@ export default function Index() {
     {
       icon: <Users className="h-8 w-8 text-islamic-green" />,
       title: "শিক্ষার্থী ব্যবস্থাপনা",
-      description: "সম্পূর্ণ ছাত্র তথ্য, উপস্থিতি এবং পারফরম্যান্স ট্র্যাকিং",
+      description: "সম্পূর্ণ ছাত্র তথ্য, উপস্থিতি এব�� পারফরম্যান্স ট্র্যাকিং",
       color: "bg-green-50 dark:bg-green-950",
       link: "/student",
     },
@@ -81,7 +81,7 @@ export default function Index() {
     {
       icon: <School className="h-8 w-8 text-green-600" />,
       title: "ইসলামিক ফিচারস",
-      description: "নামাজের সময়, হিফজ ট্র্যাকিং এবং আখলাক পয়েন্ট",
+      description: "নামাজের সময়, হিফজ ট্র্যাক��ং এবং আখলাক পয়েন্ট",
       color: "bg-emerald-50 dark:bg-emerald-950",
       link: "/islamic",
     },
@@ -116,7 +116,7 @@ export default function Index() {
                 <h1 className="text-xl font-bold text-islamic-green-dark dark:text-islamic-green">
                   CHKMS
                 </h1>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground font-bengali">
                   চুনতি হাকিমিয়া কামিল মাদ্রাসা
                 </p>
               </div>
