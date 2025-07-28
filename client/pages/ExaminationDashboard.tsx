@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import Navigation from '../components/Navigation';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
@@ -154,7 +155,9 @@ const ExaminationDashboard: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
@@ -203,7 +206,7 @@ const ExaminationDashboard: React.FC = () => {
                 <Label htmlFor="examClass">শ্রেণী</Label>
                 <Select value={newExam.class} onValueChange={(value) => setNewExam({ ...newExam, class: value })}>
                   <SelectTrigger>
-                    <SelectValue placeholder="শ্রেণী নির্বাচ��� করুন" />
+                    <SelectValue placeholder="শ্রেণী নির্বাচন করুন" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="class-6">৬ম শ্রেণী</SelectItem>
@@ -236,7 +239,7 @@ const ExaminationDashboard: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="totalMarks">পূর্ণ নম্বর</Label>
+                  <Label htmlFor="totalMarks">পূ��্ণ নম্বর</Label>
                   <Input
                     id="totalMarks"
                     type="number"
@@ -451,7 +454,7 @@ const ExaminationDashboard: React.FC = () => {
               <thead>
                 <tr className="border-b">
                   <th className="text-left p-2">পরীক্ষার নাম</th>
-                  <th className="text-left p-2">ধরন</th>
+                  <th className="text-left p-2">ধর��</th>
                   <th className="text-left p-2">শ্রেণী</th>
                   <th className="text-left p-2">শুরুর তারিখ</th>
                   <th className="text-left p-2">শেষের তারিখ</th>
@@ -492,6 +495,7 @@ const ExaminationDashboard: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };
