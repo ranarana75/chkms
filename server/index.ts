@@ -7,6 +7,7 @@ import { getStudentDashboard, getStudentProfile, getStudentAttendance, getStuden
 import { getTeacherDashboard, getTeacherProfile, getTeacherClasses, markAttendance, enterMarks, getStudentsByClass, createAssignment } from "./routes/teacher";
 import { getFinancialOverview, getFinancialTransactions, createTransaction, getStudentFeeStatus, processFeePayment, getExpenseCategories, generateFinancialReport, getDashboardStats } from "./routes/finance";
 import { getLibraryDashboard, getBooks, getBookDetails, issueBook, returnBook, getIssuedBooks, addNewBook, getOverdueBooks, getLibraryReports } from "./routes/library";
+import { getPrayerTimes, getHifzProgress, addHifzProgress, getAkhlaqPoints, addAkhlaqPoints, getIslamicEvents, getIslamicCalendar, getTajweedLessons } from "./routes/islamic";
 
 export function createServer() {
   const app = express();
