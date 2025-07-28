@@ -269,3 +269,100 @@ export interface ReportCard {
   remarks: string;
   issueDate: string;
 }
+
+export interface AdmissionSession {
+  id: string;
+  name: string;
+  academicYear: string;
+  startDate: string;
+  endDate: string;
+  status: 'active' | 'inactive' | 'completed';
+  totalSeats: number;
+  availableSeats: number;
+  applicationFee: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdmissionApplication {
+  id: string;
+  sessionId: string;
+  studentName: string;
+  fatherName: string;
+  motherName: string;
+  dateOfBirth: string;
+  gender: 'male' | 'female';
+  nationality: string;
+  religion: string;
+  bloodGroup?: string;
+  presentAddress: string;
+  permanentAddress: string;
+  guardianPhone: string;
+  guardianEmail?: string;
+  previousInstitution?: string;
+  classAppliedFor: string;
+  status: 'pending' | 'selected' | 'rejected' | 'waiting';
+  applicationDate: string;
+  paymentStatus: 'pending' | 'paid' | 'failed';
+  transactionId?: string;
+  documents: string[];
+  testScore?: number;
+  interviewScore?: number;
+  totalScore?: number;
+  rank?: number;
+}
+
+export interface AdmissionTest {
+  id: string;
+  sessionId: string;
+  testName: string;
+  testDate: string;
+  testTime: string;
+  duration: number;
+  venue: string;
+  subjects: string[];
+  totalMarks: number;
+  passingMarks: number;
+  status: 'scheduled' | 'completed' | 'cancelled';
+}
+
+export interface AdmissionCriteria {
+  id: string;
+  sessionId: string;
+  class: string;
+  minimumAge: number;
+  maximumAge: number;
+  requiredDocuments: string[];
+  educationRequirement: string;
+  testRequired: boolean;
+  interviewRequired: boolean;
+  totalSeats: number;
+  reservedSeats: {
+    general: number;
+    quota: number;
+    staff: number;
+  };
+  selectionCriteria: {
+    written: number;
+    interview: number;
+    previous_result: number;
+  };
+}
+
+export interface AdmissionResult {
+  id: string;
+  sessionId: string;
+  applicationId: string;
+  studentName: string;
+  class: string;
+  status: 'selected' | 'waiting' | 'rejected';
+  rank: number;
+  totalScore: number;
+  writtenMarks: number;
+  interviewMarks: number;
+  previousResultMarks: number;
+  publishDate?: string;
+  admissionDeadline?: string;
+  admissionFee?: number;
+  remarks?: string;
+}
