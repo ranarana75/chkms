@@ -335,7 +335,9 @@ export default function Index() {
               </div>
             </div>
             <div className="bg-white rounded-lg p-8 text-gray-900">
-              <h3 className="text-xl font-bold mb-4 font-bengali-title">আজই শুরু করুন</h3>
+              <h3 className="text-xl font-bold mb-4 font-bengali-title">
+                আজই শুরু করুন
+              </h3>
               <p className="mb-6 font-bengali-body">
                 আপনার মাদ্রাসার জন্য আধুনিক ব্যবস্থাপনা সিস্টেম ব্যবহার করুন
               </p>

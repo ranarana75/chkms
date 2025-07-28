@@ -1,15 +1,21 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  BookOpen, 
-  Calendar, 
-  Clock, 
-  GraduationCap, 
-  Home, 
+import {
+  BookOpen,
+  Calendar,
+  Clock,
+  GraduationCap,
+  Home,
   Bell,
   LogOut,
   User,
@@ -20,7 +26,7 @@ import {
   Star,
   TrendingUp,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 
 export default function StudentPortal() {
@@ -30,38 +36,42 @@ export default function StudentPortal() {
     class: "আলিম প্রথম বর্ষ",
     section: "ক",
     roll: "০৫",
-    photo: "/placeholder.svg"
+    photo: "/placeholder.svg",
   };
 
   const attendance = {
     present: 85,
     total: 90,
-    percentage: 94.4
+    percentage: 94.4,
   };
 
   const recentMarks = [
     { subject: "আরবি সাহিত্য", marks: 85, total: 100 },
     { subject: "ইসলামিক স্টাডিজ", marks: 92, total: 100 },
     { subject: "বাংলা", marks: 78, total: 100 },
-    { subject: "গণিত", marks: 88, total: 100 }
+    { subject: "গণিত", marks: 88, total: 100 },
   ];
 
   const hifzProgress = {
     completed: 15,
     total: 30,
-    currentSurah: "সূরা আল-বাকারা"
+    currentSurah: "সূরা আল-বাকারা",
   };
 
   const upcomingEvents = [
     { title: "মাসিক পরীক্ষা", date: "১৫ ডিসেম্বর", type: "পরীক্ষা" },
     { title: "জুমার খুতবা", date: "১৮ ডিসেম্বর", type: "ইবাদত" },
-    { title: "বার্ষিক ক্রীড়া প্রতিযোগিতা", date: "২২ ডিসেম্বর", type: "অনুষ্ঠান" }
+    {
+      title: "বার্ষিক ক্রীড়া প্রতিযোগিতা",
+      date: "২২ ডিসেম্বর",
+      type: "অনুষ্ঠান",
+    },
   ];
 
   const feeStatus = {
     paid: 8500,
     due: 1500,
-    total: 10000
+    total: 10000,
   };
 
   return (
@@ -76,17 +86,41 @@ export default function StudentPortal() {
                   <School className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold text-islamic-green-dark">CHKMS</h1>
-                  <p className="text-xs text-muted-foreground">শিক্ষার্থী পোর্টাল</p>
+                  <h1 className="text-lg font-bold text-islamic-green-dark">
+                    CHKMS
+                  </h1>
+                  <p className="text-xs text-muted-foreground">
+                    শিক্ষার্থী পোর্টাল
+                  </p>
                 </div>
               </Link>
             </div>
-            
+
             <nav className="hidden md:flex items-center space-x-6">
-              <Link to="#dashboard" className="text-gray-600 hover:text-islamic-green transition-colors">ড্যাশবোর্ড</Link>
-              <Link to="#marks" className="text-gray-600 hover:text-islamic-green transition-colors">ফলাফল</Link>
-              <Link to="#attendance" className="text-gray-600 hover:text-islamic-green transition-colors">উপ��্থিতি</Link>
-              <Link to="#fees" className="text-gray-600 hover:text-islamic-green transition-colors">ফি</Link>
+              <Link
+                to="#dashboard"
+                className="text-gray-600 hover:text-islamic-green transition-colors"
+              >
+                ড্যাশবোর্ড
+              </Link>
+              <Link
+                to="#marks"
+                className="text-gray-600 hover:text-islamic-green transition-colors"
+              >
+                ফলাফল
+              </Link>
+              <Link
+                to="#attendance"
+                className="text-gray-600 hover:text-islamic-green transition-colors"
+              >
+                উপ��্থিতি
+              </Link>
+              <Link
+                to="#fees"
+                className="text-gray-600 hover:text-islamic-green transition-colors"
+              >
+                ফি
+              </Link>
             </nav>
 
             <div className="flex items-center space-x-4">
@@ -124,7 +158,8 @@ export default function StudentPortal() {
                 আসসালামু আলাইকুম, {studentData.name}
               </h1>
               <p className="text-gray-600 dark:text-gray-300 font-bengali-body">
-                {studentData.class} • রোল: {studentData.roll} • আইডি: {studentData.id}
+                {studentData.class} • রোল: {studentData.roll} • আইডি:{" "}
+                {studentData.id}
               </p>
             </div>
           </div>
@@ -137,8 +172,12 @@ export default function StudentPortal() {
               <div className="flex items-center space-x-2">
                 <CheckCircle className="h-8 w-8 text-islamic-green" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-green">{attendance.percentage}%</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">উপস্থিতি</p>
+                  <p className="text-2xl font-bold text-islamic-green">
+                    {attendance.percentage}%
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    উপস্থিতি
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -150,7 +189,9 @@ export default function StudentPortal() {
                 <Award className="h-8 w-8 text-islamic-blue" />
                 <div>
                   <p className="text-2xl font-bold text-islamic-blue">৮৫.৫</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">গড় নম্বর</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    গড় নম্বর
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -161,8 +202,12 @@ export default function StudentPortal() {
               <div className="flex items-center space-x-2">
                 <BookOpen className="h-8 w-8 text-islamic-gold" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-gold">{hifzProgress.completed}/{hifzProgress.total}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">হিফজ পারা</p>
+                  <p className="text-2xl font-bold text-islamic-gold">
+                    {hifzProgress.completed}/{hifzProgress.total}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    হিফজ পারা
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -173,8 +218,12 @@ export default function StudentPortal() {
               <div className="flex items-center space-x-2">
                 <AlertCircle className="h-8 w-8 text-red-600" />
                 <div>
-                  <p className="text-2xl font-bold text-red-600">৳{feeStatus.due}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">বকেয়া ফি</p>
+                  <p className="text-2xl font-bold text-red-600">
+                    ৳{feeStatus.due}
+                  </p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                    বকেয়া ফি
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -195,17 +244,33 @@ export default function StudentPortal() {
               <CardContent>
                 <div className="space-y-4">
                   {recentMarks.map((subject, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800"
+                    >
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-white">{subject.subject}</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">{subject.marks}/{subject.total}</p>
+                        <p className="font-medium text-gray-900 dark:text-white">
+                          {subject.subject}
+                        </p>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                          {subject.marks}/{subject.total}
+                        </p>
                       </div>
                       <div className="text-right">
-                        <Badge 
-                          variant={subject.marks >= 80 ? "default" : subject.marks >= 60 ? "secondary" : "destructive"}
+                        <Badge
+                          variant={
+                            subject.marks >= 80
+                              ? "default"
+                              : subject.marks >= 60
+                                ? "secondary"
+                                : "destructive"
+                          }
                           className={
-                            subject.marks >= 80 ? "bg-islamic-green hover:bg-islamic-green-dark" :
-                            subject.marks >= 60 ? "bg-islamic-gold hover:bg-islamic-gold" : ""
+                            subject.marks >= 80
+                              ? "bg-islamic-green hover:bg-islamic-green-dark"
+                              : subject.marks >= 60
+                                ? "bg-islamic-gold hover:bg-islamic-gold"
+                                : ""
                           }
                         >
                           {Math.round((subject.marks / subject.total) * 100)}%
@@ -230,15 +295,21 @@ export default function StudentPortal() {
                   <div>
                     <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-2">
                       <span>সম্পন্ন পারা</span>
-                      <span>{hifzProgress.completed}/{hifzProgress.total}</span>
+                      <span>
+                        {hifzProgress.completed}/{hifzProgress.total}
+                      </span>
                     </div>
-                    <Progress 
-                      value={(hifzProgress.completed / hifzProgress.total) * 100} 
+                    <Progress
+                      value={
+                        (hifzProgress.completed / hifzProgress.total) * 100
+                      }
                       className="h-3"
                     />
                   </div>
                   <div className="p-3 bg-green-50 dark:bg-green-950 rounded-lg">
-                    <p className="text-sm font-medium text-islamic-green">বর্তমান অধ্যয়ন:</p>
+                    <p className="text-sm font-medium text-islamic-green">
+                      বর্তমান অধ্যয়ন:
+                    </p>
                     <p className="text-lg font-bold text-islamic-green-dark dark:text-islamic-green">
                       {hifzProgress.currentSurah}
                     </p>
@@ -264,8 +335,12 @@ export default function StudentPortal() {
                     <div key={index} className="p-3 border rounded-lg">
                       <div className="flex items-start justify-between">
                         <div>
-                          <p className="font-medium text-gray-900 dark:text-white">{event.title}</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-300">{event.date}</p>
+                          <p className="font-medium text-gray-900 dark:text-white">
+                            {event.title}
+                          </p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            {event.date}
+                          </p>
                         </div>
                         <Badge variant="outline" className="text-xs">
                           {event.type}
@@ -289,15 +364,23 @@ export default function StudentPortal() {
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600 dark:text-gray-300">পরিশোধিত</span>
-                      <span className="font-medium text-islamic-green">৳{feeStatus.paid}</span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        পরিশোধিত
+                      </span>
+                      <span className="font-medium text-islamic-green">
+                        ৳{feeStatus.paid}
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600 dark:text-gray-300">বকেয়া</span>
-                      <span className="font-medium text-red-600">৳{feeStatus.due}</span>
+                      <span className="text-gray-600 dark:text-gray-300">
+                        বকেয়া
+                      </span>
+                      <span className="font-medium text-red-600">
+                        ৳{feeStatus.due}
+                      </span>
                     </div>
-                    <Progress 
-                      value={(feeStatus.paid / feeStatus.total) * 100} 
+                    <Progress
+                      value={(feeStatus.paid / feeStatus.total) * 100}
                       className="h-2"
                     />
                   </div>

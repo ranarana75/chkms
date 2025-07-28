@@ -116,25 +116,54 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', 'Noto Serif Bengali', system-ui, -apple-system, sans-serif;
+    font-family:
+      "Inter",
+      "Noto Serif Bengali",
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 
   /* Apply Noto Serif Bengali to all text elements by default */
   * {
-    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family:
+      "Noto Serif Bengali",
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 
   /* Ensure Bengali font applies to all UI components */
-  [class*="bg-"], [class*="text-"], [class*="border-"],
-  [class*="rounded"], [class*="p-"], [class*="m-"],
-  [data-radix-collection-item], [data-radix-dropdown-menu-item],
-  [data-radix-select-item], [role="button"], [role="menuitem"],
-  .card, .button, .badge, .label, .input, .textarea, .select {
-    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif !important;
+  [class*="bg-"],
+  [class*="text-"],
+  [class*="border-"],
+  [class*="rounded"],
+  [class*="p-"],
+  [class*="m-"],
+  [data-radix-collection-item],
+  [data-radix-dropdown-menu-item],
+  [data-radix-select-item],
+  [role="button"],
+  [role="menuitem"],
+  .card,
+  .button,
+  .badge,
+  .label,
+  .input,
+  .textarea,
+  .select {
+    font-family:
+      "Noto Serif Bengali",
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif !important;
   }
 
   /* Ensure proper rendering for Bengali characters */
-  body, * {
+  body,
+  * {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -144,21 +173,21 @@
 @layer utilities {
   /* Bengali font utility classes */
   .font-bengali {
-    font-family: 'Noto Serif Bengali', serif !important;
+    font-family: "Noto Serif Bengali", serif !important;
   }
 
   .font-bengali-title {
-    font-family: 'Noto Serif Bengali', serif !important;
+    font-family: "Noto Serif Bengali", serif !important;
     font-weight: 600;
   }
 
   .font-bengali-heading {
-    font-family: 'Noto Serif Bengali', serif !important;
+    font-family: "Noto Serif Bengali", serif !important;
     font-weight: 700;
   }
 
   .font-bengali-body {
-    font-family: 'Noto Serif Bengali', serif !important;
+    font-family: "Noto Serif Bengali", serif !important;
     font-weight: 400;
   }
 }
@@ -170,20 +199,57 @@
   [data-radix-select-content] *,
   [data-radix-dialog-content] *,
   [data-radix-toast-viewport] *,
-  .card *, .button *, .badge *, .label *, .input, .textarea, .select *,
-  .navigation *, .header *, .footer *, .sidebar *,
-  [role="dialog"] *, [role="menu"] *, [role="menuitem"] *,
-  [role="button"], [role="tab"] *, [role="tabpanel"] * {
-    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif !important;
+  .card *,
+  .button *,
+  .badge *,
+  .label *,
+  .input,
+  .textarea,
+  .select *,
+  .navigation *,
+  .header *,
+  .footer *,
+  .sidebar *,
+  [role="dialog"] *,
+  [role="menu"] *,
+  [role="menuitem"] *,
+  [role="button"],
+  [role="tab"] *,
+  [role="tabpanel"] * {
+    font-family:
+      "Noto Serif Bengali",
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif !important;
   }
 
   /* Specific overrides for button and form elements */
-  button, input, textarea, select, option {
-    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif !important;
+  button,
+  input,
+  textarea,
+  select,
+  option {
+    font-family:
+      "Noto Serif Bengali",
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif !important;
   }
 
   /* Navigation and common UI component fonts */
-  nav *, .nav *, .menu *, .dropdown *, .tabs *, .accordion * {
-    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif !important;
+  nav *,
+  .nav *,
+  .menu *,
+  .dropdown *,
+  .tabs *,
+  .accordion * {
+    font-family:
+      "Noto Serif Bengali",
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif !important;
   }
 }
