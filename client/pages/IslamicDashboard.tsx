@@ -42,7 +42,7 @@ export default function IslamicDashboard() {
       setIslamicData({
         prayerTimes: {
           date: "১৫ ডিসেম্বর ২০২৪",
-          hijriDate: "১৫ জমাদিউল আওয়াল ১৪৪৬",
+          hijriDate: "১৫ জমাদিউল আ���য়াল ১৪৪৬",
           location: "লক্ষ্মীপুর, বাংলাদেশ",
           times: {
             fajr: "���:১৫",
@@ -246,7 +246,7 @@ export default function IslamicDashboard() {
                     <p
                       className={`text-xl font-bold ${isNext ? "text-white" : "text-islamic-green"}`}
                     >
-                      {time}
+                      {String(time)}
                     </p>
                     {isNext && (
                       <Badge className="mt-1 bg-white text-islamic-green">
@@ -499,7 +499,7 @@ export default function IslamicDashboard() {
                     size="sm"
                     className="w-full bg-islamic-blue hover:bg-islamic-blue-dark"
                   >
-                    পাঠ শুরু করুন
+                    পাঠ ��ুরু করুন
                   </Button>
                 </div>
               ))}
