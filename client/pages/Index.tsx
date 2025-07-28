@@ -45,7 +45,7 @@ export default function Index() {
     },
     {
       icon: <Calculator className="h-8 w-8 text-islamic-gold" />,
-      title: "আ��্থিক ব্যবস্থাপনা",
+      title: "আ��্থিক ব্যবস্থা���না",
       description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর্ট",
       color: "bg-yellow-50 dark:bg-yellow-950",
       link: "/finance",
@@ -74,7 +74,7 @@ export default function Index() {
     {
       icon: <Bus className="h-8 w-8 text-indigo-600" />,
       title: "ট্রান্সপোর্ট সিস্টেম",
-      description: "রুট পরিকল্পনা, GPS ট্র্��াকিং এবং নিরাপত্তা",
+      description: "রুট পরিকল্পনা, GPS ট্র্যাকিং এবং নিরাপত্তা",
       color: "bg-indigo-50 dark:bg-indigo-950",
       link: "/transport",
     },
@@ -294,7 +294,7 @@ export default function Index() {
               <CardHeader>
                 <Star className="h-12 w-12 text-islamic-blue mx-auto mb-4" />
                 <CardTitle className="text-islamic-blue">
-                  আখলাক ��য়ে���্ট
+                  আ��লাক ��য়ে���্ট
                 </CardTitle>
               </CardHeader>
               <CardContent>
