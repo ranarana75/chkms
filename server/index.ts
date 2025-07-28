@@ -12,6 +12,7 @@ import { getHostelDashboard, getHostelReports } from "./routes/hostel";
 import { getTransportDashboard, getTransportUsers, addTransportUser, removeTransportUser, getTransportReports } from "./routes/transport";
 import examinationRoutes from "./routes/examination";
 import admissionRoutes from "./routes/admission";
+import noticeRoutes from "./routes/notice";
 
 export function createServer() {
   const app = express();
@@ -97,6 +98,9 @@ export function createServer() {
 
   // Admission routes
   app.use("/api/admission", admissionRoutes);
+
+  // Notice routes
+  app.use("/api/notice", noticeRoutes);
 
   return app;
 }

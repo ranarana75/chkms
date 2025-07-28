@@ -366,3 +366,18 @@ export interface AdmissionResult {
   admissionFee?: number;
   remarks?: string;
 }
+
+export interface Announcement {
+  id: string;
+  title: string;
+  content: string;
+  type: 'general' | 'urgent';
+  targetAudience: 'all' | 'students' | 'teachers' | 'parents';
+  publishDate: string;
+  expiryDate?: string;
+  publishedBy: string;
+  publisherName: string;
+  isActive: boolean;
+  isPinned: boolean;
+  autoExpire: boolean;
+}
