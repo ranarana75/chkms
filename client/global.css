@@ -131,3 +131,25 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+@layer utilities {
+  /* Bengali font utility classes */
+  .font-bengali {
+    font-family: 'Noto Serif Bengali', serif;
+  }
+
+  .font-bengali-title {
+    font-family: 'Noto Serif Bengali', serif;
+    font-weight: 600;
+  }
+
+  .font-bengali-heading {
+    font-family: 'Noto Serif Bengali', serif;
+    font-weight: 700;
+  }
+
+  .font-bengali-body {
+    font-family: 'Noto Serif Bengali', serif;
+    font-weight: 400;
+  }
+}
