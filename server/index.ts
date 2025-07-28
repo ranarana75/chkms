@@ -14,6 +14,7 @@ import examinationRoutes from "./routes/examination";
 import admissionRoutes from "./routes/admission";
 import noticeRoutes from "./routes/notice";
 import calendarRoutes from "./routes/calendar";
+import reportsRoutes from "./routes/reports";
 
 export function createServer() {
   const app = express();
@@ -105,6 +106,9 @@ export function createServer() {
 
   // Calendar routes
   app.use("/api/calendar", calendarRoutes);
+
+  // Reports routes
+  app.use("/api/reports", reportsRoutes);
 
   return app;
 }

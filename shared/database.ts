@@ -434,3 +434,92 @@ export interface Holiday {
   isRecurring: boolean;
   isActive: boolean;
 }
+
+export interface Report {
+  id: string;
+  title: string;
+  type: 'attendance' | 'academic' | 'financial' | 'library' | 'teacher' | 'analytics';
+  category: 'academic' | 'performance' | 'finance' | 'hr' | 'data';
+  description: string;
+  generatedBy: string;
+  generatedByName: string;
+  generatedAt: string;
+  parameters: Record<string, any>;
+  format: 'pdf' | 'excel' | 'csv';
+  status: 'pending' | 'completed' | 'failed';
+  downloadUrl: string;
+  size: string;
+}
+
+export interface ReportTemplate {
+  id: string;
+  name: string;
+  type: 'attendance' | 'academic' | 'financial' | 'library' | 'teacher';
+  category: 'academic' | 'performance' | 'finance' | 'hr';
+  description: string;
+  parameters: {
+    name: string;
+    label: string;
+    type: 'text' | 'number' | 'date' | 'select' | 'checkbox';
+    required: boolean;
+    options?: string[];
+  }[];
+  formats: string[];
+  isActive: boolean;
+}
+
+export interface AnalyticsData {
+  students: {
+    totalStudents: number;
+    activeStudents: number;
+    newAdmissions: number;
+    graduatedStudents: number;
+    averageAttendance: number;
+    classWiseDistribution: Record<string, number>;
+    genderDistribution: Record<string, number>;
+    performanceDistribution: Record<string, number>;
+  };
+  teachers: {
+    totalTeachers: number;
+    activeTeachers: number;
+    newRecruits: number;
+    departmentWiseDistribution: Record<string, number>;
+    experienceDistribution: Record<string, number>;
+    averageAttendance: number;
+  };
+  financial: {
+    totalRevenue: number;
+    totalExpenses: number;
+    netProfit: number;
+    feeCollection: number;
+    outstandingFees: number;
+    monthlyTrend: Array<{
+      month: string;
+      revenue: number;
+      expenses: number;
+    }>;
+    expenseCategories: Record<string, number>;
+  };
+  academic: {
+    totalClasses: number;
+    totalSubjects: number;
+    averageClassSize: number;
+    examResults: {
+      passRate: number;
+      averageGPA: number;
+      gradeDistribution: Record<string, number>;
+    };
+    subjectPerformance: Array<{
+      subject: string;
+      averageMarks: number;
+      passRate: number;
+    }>;
+  };
+  events: {
+    totalEvents: number;
+    completedEvents: number;
+    upcomingEvents: number;
+    averageAttendance: number;
+    eventTypes: Record<string, number>;
+  };
+}
