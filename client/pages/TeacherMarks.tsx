@@ -130,10 +130,11 @@ export default function TeacherMarks() {
     student.roll.includes(searchTerm)
   );
 
-  const marksArray = Object.values(marks).filter((m: any) => m.obtainedMarks !== '');
-  const enteredMarksCount: number = marksArray.length;
-  const totalSum: number = marksArray.reduce((sum: number, m: any) => sum + parseFloat(m.obtainedMarks), 0);
-  const averageMarks: number = enteredMarksCount > 0 ? totalSum / enteredMarksCount : 0;
+  const marksValues = Object.values(marks) as any[];
+  const enteredMarks = marksValues.filter(m => m.obtainedMarks !== '');
+  const enteredMarksCount = enteredMarks.length;
+  const totalSum = enteredMarks.reduce((sum, m) => sum + parseFloat(m.obtainedMarks), 0);
+  const averageMarks = enteredMarksCount > 0 ? totalSum / enteredMarksCount : 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
