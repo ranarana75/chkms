@@ -75,10 +75,10 @@ interface IslamicStats {
 }
 
 export default function IslamicDashboard() {
-  const [prayerTimes, setPrayerTimes] = useLocalData<PrayerTime[]>('prayerTimes', []);
-  const [hifzStudents, setHifzStudents] = useLocalData<HifzStudent[]>('hifzStudents', []);
-  const [hifzProgress, setHifzProgress] = useLocalData<HifzProgress[]>('hifzProgress', []);
-  const [islamicEvents, setIslamicEvents] = useLocalData<IslamicEvent[]>('islamicEvents', []);
+  const [prayerTimes, setPrayerTimes] = useLocalStorage<PrayerTime[]>('prayerTimes', []);
+  const [hifzStudents, setHifzStudents] = useLocalStorage<HifzStudent[]>('hifzStudents', []);
+  const [hifzProgress, setHifzProgress] = useLocalStorage<HifzProgress[]>('hifzProgress', []);
+  const [islamicEvents, setIslamicEvents] = useLocalStorage<IslamicEvent[]>('islamicEvents', []);
   
   const [stats, setStats] = useState<IslamicStats>({
     totalHifzStudents: 0,
@@ -124,7 +124,7 @@ export default function IslamicDashboard() {
           startDate: '2023-01-15',
           lastReviewDate: '2024-01-10',
           status: 'active',
-          notes: 'খুবই মেধাবী ছাত্র, নিয়মিত অনুশীলন করে'
+          notes: 'খুবই মেধাবী ছাত্র, নিয়মিত অনুশীলন ক���ে'
         },
         {
           id: '2',
@@ -140,7 +140,7 @@ export default function IslamicDashboard() {
           startDate: '2023-03-01',
           lastReviewDate: '2024-01-08',
           status: 'active',
-          notes: 'নিয়ম���ত তিলাওয়াত করে, ভালো অগ্রগতি'
+          notes: 'নিয়মিত তিলাওয়াত করে, ভালো অগ্রগতি'
         }
       ];
       setHifzStudents(sampleStudents);
@@ -780,7 +780,7 @@ function HifzStudentForm({ onSubmit }: { onSubmit: (data: Omit<HifzStudent, 'id'
           id="notes"
           value={formData.notes}
           onChange={(e) => setFormData({...formData, notes: e.target.value})}
-          placeholder="শিক্ষার্থী সম্পর্কে বিশেষ মন্তব্য..."
+          placeholder="শিক্ষার্থী সম্পর্কে বিশেষ মন্��ব্য..."
         />
       </div>
 
@@ -925,7 +925,7 @@ function ProgressForm({
             <SelectItem value="excellent">চমৎকার</SelectItem>
             <SelectItem value="good">ভালো</SelectItem>
             <SelectItem value="average">মধ্যম</SelectItem>
-            <SelectItem value="needs_improvement">উন্নতি প্রয়োজন</SelectItem>
+            <SelectItem value="needs_improvement">উন্নতি প্রয��োজন</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -1052,7 +1052,7 @@ function EventForm({ onSubmit }: { onSubmit: (data: Omit<IslamicEvent, 'id' | 'c
 
       <DialogFooter>
         <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
-          ইভেন্ট ��োগ করুন
+          ইভেন্ট যোগ করুন
         </Button>
       </DialogFooter>
     </form>
