@@ -8,6 +8,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useRealtimeStats } from "@/hooks/useLocalData";
+import { initializeSampleData } from "@shared/localDatabase";
+import { useEffect, useState } from "react";
 import {
   BookOpen,
   Users,
@@ -25,6 +28,8 @@ import {
   Mail,
   MapPin,
   FileText,
+  TrendingUp,
+  Activity,
 } from "lucide-react";
 
 export default function Index() {
@@ -39,14 +44,14 @@ export default function Index() {
     {
       icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
       title: "শিক্ষক পোর্টাল",
-      description: "ক্লা�� রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যাশবোর্ড",
+      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যাশবোর্ড",
       color: "bg-blue-50 dark:bg-blue-950",
       link: "/teacher",
     },
     {
       icon: <Calculator className="h-8 w-8 text-islamic-gold" />,
       title: "আ��্থিক ব্যবস্থাপনা",
-      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর্ট",
+      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এব��� আর্থিক রিপোর্ট",
       color: "bg-yellow-50 dark:bg-yellow-950",
       link: "/finance",
     },
@@ -164,7 +169,7 @@ export default function Index() {
             </Badge>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 font-bengali-heading">
-            চুনতি হাকিমিয়া কামিল মাদ্রাসা
+            চুনতি হাকিমিয়া ��ামিল মাদ্রাসা
             <span className="block text-islamic-green">
               ম্যানেজমেন্ট সিস্টেম
             </span>
@@ -187,7 +192,7 @@ export default function Index() {
               className="border-islamic-blue text-islamic-blue hover:bg-islamic-blue hover:text-white px-8 font-bengali"
             >
               <GraduationCap className="mr-2 h-5 w-5" />
-              শিক্ষক পোর্টাল
+              শ���ক্ষক পোর্টাল
             </Button>
           </div>
 
@@ -320,7 +325,7 @@ export default function Index() {
                 যোগাযোগ করুন
               </h2>
               <p className="text-lg mb-8 text-green-100 font-bengali-body">
-                আমা���ের সাথে যোগাযোগ করুন এবং আধুনিক মাদ্রাসা ব্যবস্থাপনার
+                আমাদের সাথে যোগাযোগ করুন এবং আধুনিক মাদ্রাসা ব্যবস্থাপনার
                 অংশীদার হন
               </p>
               <div className="space-y-4">
