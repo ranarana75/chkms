@@ -193,3 +193,79 @@ export interface Event {
   organizer: string;
   isActive: boolean;
 }
+
+export interface Examination {
+  id: string;
+  name: string;
+  type: 'annual' | 'half_yearly' | 'quarterly' | 'monthly' | 'unit_test';
+  class: string;
+  startDate: string;
+  endDate: string;
+  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+  totalMarks: number;
+  passingMarks: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ExamSchedule {
+  id: string;
+  examinationId: string;
+  subject: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  duration: number; // in minutes
+  room: string;
+  invigilator: string;
+  marks: number;
+}
+
+export interface Question {
+  id: string;
+  examinationId: string;
+  subject: string;
+  questionText: string;
+  questionType: 'mcq' | 'short_answer' | 'long_answer' | 'true_false';
+  options?: string[];
+  correctAnswer?: string;
+  marks: number;
+  difficulty: 'easy' | 'medium' | 'hard';
+}
+
+export interface ExamResult {
+  id: string;
+  examinationId: string;
+  studentId: string;
+  subject: string;
+  obtainedMarks: number;
+  totalMarks: number;
+  grade: string;
+  gpa: number;
+  position: number;
+  status: 'pass' | 'fail';
+}
+
+export interface ReportCard {
+  id: string;
+  examinationId: string;
+  studentId: string;
+  studentName: string;
+  class: string;
+  roll: string;
+  results: {
+    subject: string;
+    obtainedMarks: number;
+    totalMarks: number;
+    grade: string;
+    gpa: number;
+  }[];
+  totalObtained: number;
+  totalMarks: number;
+  cgpa: number;
+  overallGrade: string;
+  position: number;
+  totalStudents: number;
+  remarks: string;
+  issueDate: string;
+}

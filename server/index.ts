@@ -8,6 +8,7 @@ import { getTeacherDashboard, getTeacherProfile, getTeacherClasses, markAttendan
 import { getFinancialOverview, getFinancialTransactions, createTransaction, getStudentFeeStatus, processFeePayment, getExpenseCategories, generateFinancialReport, getDashboardStats } from "./routes/finance";
 import { getLibraryDashboard, getBooks, getBookDetails, issueBook, returnBook, getIssuedBooks, addNewBook, getOverdueBooks, getLibraryReports } from "./routes/library";
 import { getPrayerTimes, getHifzProgress, addHifzProgress, getAkhlaqPoints, addAkhlaqPoints, getIslamicEvents, getIslamicCalendar, getTajweedLessons } from "./routes/islamic";
+import examinationRoutes from "./routes/examination";
 
 export function createServer() {
   const app = express();
@@ -76,6 +77,9 @@ export function createServer() {
   app.get("/api/islamic/events", getIslamicEvents);
   app.get("/api/islamic/calendar", getIslamicCalendar);
   app.get("/api/islamic/tajweed", getTajweedLessons);
+
+  // Examination routes
+  app.use("/api/examination", examinationRoutes);
 
   return app;
 }
