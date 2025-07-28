@@ -9,8 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { useLocalData } from '@/hooks/useLocalData';
-import { useNotifications } from '@/hooks/useNotifications';
+import { useLocalData, useNotifications } from '@/hooks/useLocalData';
 import { Clock, Book, User, Plus, Edit, Trophy, Star, Calendar, Moon, Sun } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 
@@ -115,7 +114,7 @@ export default function IslamicDashboard() {
           id: '1',
           studentId: 'HFZ001',
           studentName: 'আবদুল্লাহ আল মামুন',
-          currentSurah: 'সূরা বাকারাহ',
+          currentSurah: 'সূরা ব���কারাহ',
           currentAyah: 145,
           totalAyahMemorized: 1250,
           totalParaCompleted: 3,
@@ -141,7 +140,7 @@ export default function IslamicDashboard() {
           startDate: '2023-03-01',
           lastReviewDate: '2024-01-08',
           status: 'active',
-          notes: 'নিয়মিত তিলাওয়াত ক���ে, ভালো অগ্রগতি'
+          notes: 'নিয়মিত তিলাওয়াত করে, ভাল�� অগ্রগতি'
         }
       ];
       setHifzStudents(sampleStudents);
@@ -312,7 +311,7 @@ export default function IslamicDashboard() {
       upcoming: 'আসন্ন',
       ongoing: 'চলমান',
       competition: 'প্রতিযোগিতা',
-      lecture: 'বক্তব্য',
+      lecture: '��ক্তব্য',
       celebration: 'উৎসব',
       program: 'অনুষ্ঠান'
     };
@@ -353,7 +352,7 @@ export default function IslamicDashboard() {
       
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-emerald-800 mb-2">ইসলামিক ড্যাশবোর্���</h1>
+          <h1 className="text-4xl font-bold text-emerald-800 mb-2">ইসলামিক ড্যাশবোর্ড</h1>
           <p className="text-emerald-600">নামাজের সময়সূচি ও হিফজ বিভাগ ব্যবস্থাপনা</p>
         </div>
 
@@ -563,7 +562,7 @@ export default function IslamicDashboard() {
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <p className="text-sm text-gray-600 mb-1">তারিখ: {new Date(progress.date).toLocaleDateString('bn-BD')}</p>
+                              <p className="text-sm text-gray-600 mb-1">তার��খ: {new Date(progress.date).toLocaleDateString('bn-BD')}</p>
                               <p className="text-sm text-gray-600 mb-1">সূরা: {progress.surahName}</p>
                               <p className="text-sm text-gray-600 mb-1">আয়াত: {progress.ayahFrom} - {progress.ayahTo}</p>
                             </div>
@@ -694,7 +693,7 @@ function HifzStudentForm({ onSubmit }: { onSubmit: (data: Omit<HifzStudent, 'id'
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="studentName">শিক���ষার্থীর নাম</Label>
+          <Label htmlFor="studentName">শিক্ষার্থীর নাম</Label>
           <Input
             id="studentName"
             value={formData.studentName}
@@ -943,7 +942,7 @@ function ProgressForm({
 
       <DialogFooter>
         <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
-          অগ্রগতি রেকর্ড করুন
+          ���গ্রগতি রেকর্ড করুন
         </Button>
       </DialogFooter>
     </form>
@@ -1053,7 +1052,7 @@ function EventForm({ onSubmit }: { onSubmit: (data: Omit<IslamicEvent, 'id' | 'c
 
       <DialogFooter>
         <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
-          ইভেন্��� যোগ করুন
+          ইভেন্ট যোগ করুন
         </Button>
       </DialogFooter>
     </form>
