@@ -60,7 +60,7 @@ export default function Index() {
     {
       icon: <BookOpen className="h-8 w-8 text-purple-600" />,
       title: "লাইব্রেরি সিস্টেম",
-      description: "ডিজিটাল বুক ক্যাটালগ এবং ইস্যু-রিটার্��� ব্যবস্থা",
+      description: "ডিজিটাল বুক ক্যাটালগ এবং ইস্যু-র���টার্��� ব্যবস্থা",
       color: "bg-purple-50 dark:bg-purple-950",
       link: "/library",
     },
@@ -89,7 +89,7 @@ export default function Index() {
 
   const stats = [
     {
-      label: "মোট শিক্ষার্থী",
+      label: "মোট শিক্ষা���্থী",
       value: "1,200+",
       icon: <Users className="h-5 w-5" />,
     },
@@ -159,7 +159,7 @@ export default function Index() {
               আধুনিক মাদ্রাসা ব্যবস্থাপনা
             </Badge>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 font-bengali-heading">
             চুনতি হাকিমিয়া কামিল মাদ্রাসা
             <span className="block text-islamic-green">
               ম্যানেজমেন্ট সিস্টেম
