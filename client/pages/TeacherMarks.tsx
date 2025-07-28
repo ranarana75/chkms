@@ -31,7 +31,7 @@ export default function TeacherMarks() {
 
   const classes = [
     { id: "CLS001", name: "আলিম প্রথম - ক" },
-    { id: "CLS002", name: "আলিম দ���বিতীয় - খ" },
+    { id: "CLS002", name: "আলিম দ্বিতীয় - খ" },
     { id: "CLS003", name: "আলিম প্রথম - খ" }
   ];
 
@@ -53,7 +53,7 @@ export default function TeacherMarks() {
         { id: "STD002", name: "আবুল কাসেম", roll: "০২", photo: "/placeholder.svg" },
         { id: "STD003", name: "মোহাম্মদ ইব্রাহিম", roll: "০৩", photo: "/placeholder.svg" },
         { id: "STD004", name: "আবদুর রহমান", roll: "০৪", photo: "/placeholder.svg" },
-        { id: "STD005", name: "মোহাম্মদ ��াসান", roll: "০৫", photo: "/placeholder.svg" },
+        { id: "STD005", name: "মোহাম্মদ হাসান", roll: "০৫", photo: "/placeholder.svg" },
         { id: "STD006", name: "আবু বকর", roll: "০৬", photo: "/placeholder.svg" },
         { id: "STD007", name: "উমর ফারুক", roll: "০৭", photo: "/placeholder.svg" },
         { id: "STD008", name: "আলী ইবনে তালিব", roll: "০৮", photo: "/placeholder.svg" }
@@ -132,9 +132,9 @@ export default function TeacherMarks() {
 
   const marksArray = Object.values(marks).filter((m: any) => m.obtainedMarks !== '');
   const enteredMarksCount = marksArray.length;
-  const totalMarks = enteredMarksCount > 0 ?
+  const totalSum = enteredMarksCount > 0 ?
     marksArray.reduce((sum: number, m: any) => sum + parseFloat(m.obtainedMarks), 0) : 0;
-  const averageMarks = enteredMarksCount > 0 ? totalMarks / enteredMarksCount : 0;
+  const averageMarks = enteredMarksCount > 0 ? totalSum / enteredMarksCount : 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
