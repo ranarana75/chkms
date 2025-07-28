@@ -175,6 +175,7 @@ export interface Notice {
   title: string;
   content: string;
   type: 'general' | 'urgent' | 'exam' | 'holiday' | 'event';
+  priority: 'high' | 'medium' | 'low';
   targetAudience: 'all' | 'students' | 'teachers' | 'parents';
   publishDate: Date;
   expiryDate?: Date;
