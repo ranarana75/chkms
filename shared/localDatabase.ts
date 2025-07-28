@@ -192,7 +192,7 @@ export function initializeSampleData() {
       section: 'ক',
       roll: '০৫',
       fatherName: 'মোহাম্মদ আব্দুল করিম',
-      motherName: 'ফা���েমা খাতুন',
+      motherName: 'ফাতেমা খাতুন',
       dateOfBirth: new Date('2005-03-10'),
       bloodGroup: 'B+',
       emergencyContact: '+8801712345678',
@@ -218,12 +218,13 @@ export function initializeSampleData() {
     }
   ];
 
-  // Sample teachers
-  const sampleTeachers: Teacher[] = [
+  // Sample teachers with additional fields
+  const sampleTeachers: any[] = [
     {
       id: '1',
       userId: 'teacher1',
       teacherId: 'TCH001',
+      name: 'উস্তাদ আবদুর রহমান',
       joiningDate: new Date('2020-01-15'),
       subjects: ['আরবি সাহিত্য', 'তাফসীর'],
       qualification: 'মাস্টার্স ইন ইসলামিক স্টাডিজ',
