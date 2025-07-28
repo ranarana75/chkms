@@ -119,15 +119,18 @@
     font-family: 'Inter', 'Noto Serif Bengali', system-ui, -apple-system, sans-serif;
   }
 
-  /* Apply Noto Serif Bengali to all Bengali text elements */
-  h1, h2, h3, h4, h5, h6, p, span, div, button, label, input, textarea, select,
-  a, li, td, th, caption, legend, figcaption {
+  /* Apply Noto Serif Bengali to all text elements by default */
+  * {
     font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif;
   }
 
-  /* Specific font rules for common UI elements */
-  .rounded-lg, .inline-flex, [role="button"], [data-radix-collection-item] {
-    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif;
+  /* Ensure Bengali font applies to all UI components */
+  [class*="bg-"], [class*="text-"], [class*="border-"],
+  [class*="rounded"], [class*="p-"], [class*="m-"],
+  [data-radix-collection-item], [data-radix-dropdown-menu-item],
+  [data-radix-select-item], [role="button"], [role="menuitem"],
+  .card, .button, .badge, .label, .input, .textarea, .select {
+    font-family: 'Noto Serif Bengali', 'Inter', system-ui, -apple-system, sans-serif !important;
   }
 
   /* Ensure proper rendering for Bengali characters */
