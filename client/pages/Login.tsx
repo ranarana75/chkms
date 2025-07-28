@@ -86,10 +86,11 @@ export default function LoginPage() {
           <CardHeader className="space-y-1 text-center">
             <CardTitle className="text-2xl font-bold text-gray-900">লগইন করুন</CardTitle>
             <CardDescription>
-              আপনার অ্যাকাউন্টে প্রবেশ করুন
+              আপনার অ্যাকাউন্���ে প্রবেশ করুন
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <form onSubmit={handleLogin}>
             {/* User Type Selection */}
             <div className="space-y-2">
               <Label htmlFor="userType">ব্যবহারকারীর ধরন</Label>
@@ -117,6 +118,8 @@ export default function LoginPage() {
               <Input
                 id="username"
                 type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 placeholder={
                   userType === 'student' ? 'যেমন: STD001' :
                   userType === 'teacher' ? 'যেমন: TCH001' :
@@ -134,7 +137,9 @@ export default function LoginPage() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="আপনার পাসওয়ার্ড লিখুন"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="আপনার পাসওয়���র্ড লিখুন"
                   className="border-gray-300 focus:border-islamic-green focus:ring-islamic-green pr-10"
                 />
                 <button
@@ -158,12 +163,21 @@ export default function LoginPage() {
               </Link>
             </div>
 
+            {/* Error Message */}
+            {error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
+
             {/* Login Button */}
-            <Button 
+            <Button
+              onClick={handleLogin}
+              type="submit"
               className="w-full bg-islamic-green hover:bg-islamic-green-dark text-white py-2.5"
-              disabled={!userType}
+              disabled={!userType || isLoading}
             >
-              লগইন করুন
+              {isLoading ? 'লগইন করা হচ্ছে...' : 'লগইন করুন'}
             </Button>
 
             {/* Demo Links */}
@@ -196,6 +210,7 @@ export default function LoginPage() {
                 </Button>
               </div>
             </div>
+            </form>
           </CardContent>
         </Card>
 
