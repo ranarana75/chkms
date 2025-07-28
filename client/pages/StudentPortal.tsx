@@ -49,12 +49,12 @@ export default function StudentPortal() {
   const currentStudent = students.find((s: any) => s.studentId === "STD001");
 
   const studentData = {
-    name: currentStudent?.name || "মোহাম্মদ আবদুল্লাহ",
-    id: currentStudent?.studentId || "STD001",
-    class: currentStudent?.class || "আলিম প্রথম বর্ষ",
-    section: currentStudent?.section || "ক",
-    roll: currentStudent?.roll || "০৫",
-    photo: currentStudent?.photo || "/placeholder.svg",
+    name: (currentStudent as any)?.name || "মোহাম্মদ আবদুল্লাহ",
+    id: (currentStudent as any)?.studentId || "STD001",
+    class: (currentStudent as any)?.class || "আলিম প্রথম বর্ষ",
+    section: (currentStudent as any)?.section || "ক",
+    roll: (currentStudent as any)?.roll || "০৫",
+    photo: (currentStudent as any)?.photo || "/placeholder.svg",
   };
 
   const handleRefresh = async () => {
