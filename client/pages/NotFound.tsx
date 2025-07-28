@@ -23,14 +23,14 @@ export default function NotFound() {
             <CardHeader className="space-y-4">
               <div className="flex justify-center">
                 <div className="p-6 bg-islamic-green/10 rounded-full">
-                  <Mosque className="h-16 w-16 text-islamic-green" />
+                  <School className="h-16 w-16 text-islamic-green" />
                 </div>
               </div>
               <CardTitle className="text-4xl font-bold text-gray-900 dark:text-white">
                 ৪০৤
               </CardTitle>
               <CardDescription className="text-xl text-gray-600 dark:text-gray-300">
-                পৃষ্ঠাটি খুঁজে পাওয়া যায়নি
+                প���ষ্ঠাটি খুঁজে পাওয়া যায়নি
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
