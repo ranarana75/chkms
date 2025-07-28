@@ -11,6 +11,16 @@ import { School, ArrowLeft, Eye, EyeOff } from "lucide-react";
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [userType, setUserType] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-islamic-green via-islamic-blue to-islamic-green-dark flex items-center justify-center p-4">
@@ -37,7 +47,7 @@ export default function LoginPage() {
           <CardHeader className="space-y-1 text-center">
             <CardTitle className="text-2xl font-bold text-gray-900">লগইন করুন</CardTitle>
             <CardDescription>
-              আপনার অ্যাকাউন্টে প্রবেশ করুন
+              আপন���র অ্যাকাউন্টে প্রবেশ করুন
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -61,7 +71,7 @@ export default function LoginPage() {
             <div className="space-y-2">
               <Label htmlFor="username">
                 {userType === 'student' ? 'শিক্ষার্থী আইডি' : 
-                 userType === 'teacher' ? 'শিক্ষক আইডি' :
+                 userType === 'teacher' ? 'শ��ক্ষক আইডি' :
                  userType === 'admin' ? 'প্রশাসক আইডি' :
                  'ব্যবহারকারী আইডি'}
               </Label>
