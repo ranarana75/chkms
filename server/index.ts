@@ -8,6 +8,8 @@ import { getTeacherDashboard, getTeacherProfile, getTeacherClasses, markAttendan
 import { getFinancialOverview, getFinancialTransactions, createTransaction, getStudentFeeStatus, processFeePayment, getExpenseCategories, generateFinancialReport, getDashboardStats } from "./routes/finance";
 import { getLibraryDashboard, getBooks, getBookDetails, issueBook, returnBook, getIssuedBooks, addNewBook, getOverdueBooks, getLibraryReports } from "./routes/library";
 import { getPrayerTimes, getHifzProgress, addHifzProgress, getAkhlaqPoints, addAkhlaqPoints, getIslamicEvents, getIslamicCalendar, getTajweedLessons } from "./routes/islamic";
+import { getHostelDashboard, getHostelReports } from "./routes/hostel";
+import { getTransportDashboard, getTransportUsers, addTransportUser, removeTransportUser, getTransportReports } from "./routes/transport";
 import examinationRoutes from "./routes/examination";
 
 export function createServer() {
