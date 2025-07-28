@@ -32,7 +32,7 @@ export default function Index() {
     {
       icon: <Users className="h-8 w-8 text-islamic-green" />,
       title: "শিক্ষার্থী ব্যবস্থাপনা",
-      description: "সম্পূর্ণ ছাত্র তথ্য, উপস্থিতি এব�� পারফরম্যান্স ট্র্যাকিং",
+      description: "সম্পূর্ণ ছাত্র তথ্য, উপস্থিতি এবং পারফরম্যান্স ট্র্যাকিং",
       color: "bg-green-50 dark:bg-green-950",
       link: "/student",
     },
@@ -266,7 +266,7 @@ export default function Index() {
               <CardHeader>
                 <School className="h-12 w-12 text-islamic-green mx-auto mb-4" />
                 <CardTitle className="text-islamic-green font-bengali-title">
-                  নামাজের সময়সূচি
+                  নামাজের সম��়সূচি
                 </CardTitle>
               </CardHeader>
               <CardContent>
