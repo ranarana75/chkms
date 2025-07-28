@@ -51,7 +51,7 @@ export default function StudentPortal() {
   const studentData = {
     name: currentStudent?.name || "মোহাম্মদ আবদুল্লাহ",
     id: currentStudent?.studentId || "STD001",
-    class: currentStudent?.class || "আল��ম প্রথম বর্ষ",
+    class: currentStudent?.class || "আলিম প্রথম বর্ষ",
     section: currentStudent?.section || "ক",
     roll: currentStudent?.roll || "০৫",
     photo: currentStudent?.photo || "/placeholder.svg",
@@ -63,18 +63,44 @@ export default function StudentPortal() {
     setTimeout(() => setIsRefreshing(false), 1000);
   };
 
-  const attendance = {
+  // Dynamic attendance calculation
+  const [attendance, setAttendance] = useState({
     present: 85,
     total: 90,
     percentage: 94.4,
-  };
+  });
 
-  const recentMarks = [
-    { subject: "আরবি সাহিত্য", marks: 85, total: 100 },
-    { subject: "ইসলামিক স্টাডিজ", marks: 92, total: 100 },
-    { subject: "বাংলা", marks: 78, total: 100 },
-    { subject: "গণিত", marks: 88, total: 100 },
-  ];
+  // Dynamic marks with real-time updates
+  const [recentMarks, setRecentMarks] = useState([
+    { subject: "আরবি সাহিত্য", marks: 85, total: 100, trend: "+৩" },
+    { subject: "ইসলামিক স্টাডিজ", marks: 92, total: 100, trend: "+৫" },
+    { subject: "বাংলা", marks: 78, total: 100, trend: "-২" },
+    { subject: "গণিত", marks: 88, total: 100, trend: "+৭" },
+  ]);
+
+  // Simulate real-time data updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Randomly update attendance
+      const present = Math.floor(Math.random() * 5) + 83;
+      const total = Math.floor(Math.random() * 3) + 88;
+      setAttendance({
+        present,
+        total,
+        percentage: Math.round((present / total) * 100 * 10) / 10
+      });
+
+      // Occasionally update marks
+      if (Math.random() > 0.7) {
+        setRecentMarks(prev => prev.map(mark => ({
+          ...mark,
+          marks: Math.max(70, Math.min(100, mark.marks + (Math.random() > 0.5 ? 1 : -1))),
+        })));
+      }
+    }, 30000); // Update every 30 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const hifzProgress = {
     completed: 15,
