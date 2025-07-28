@@ -51,7 +51,7 @@ export default function TeacherAttendance() {
         { id: "STD002", name: "আবুল কাসেম", roll: "০২", photo: "/placeholder.svg" },
         { id: "STD003", name: "মোহাম্মদ ইব্রাহিম", roll: "০৩", photo: "/placeholder.svg" },
         { id: "STD004", name: "আবদুর রহমান", roll: "০৪", photo: "/placeholder.svg" },
-        { id: "STD005", name: "মোহাম্মদ হাসান", roll: "০৫", photo: "/placeholder.svg" },
+        { id: "STD005", name: "মোহাম্মদ হাসান", roll: "��৫", photo: "/placeholder.svg" },
         { id: "STD006", name: "আবু বকর", roll: "০৬", photo: "/placeholder.svg" },
         { id: "STD007", name: "উমর ফারুক", roll: "০৭", photo: "/placeholder.svg" },
         { id: "STD008", name: "আলী ইবনে তালিব", roll: "০৮", photo: "/placeholder.svg" }
@@ -137,9 +137,9 @@ export default function TeacherAttendance() {
     student.roll.includes(searchTerm)
   );
 
-  const presentCount = Object.values(attendance).filter(a => a.status === 'present').length;
-  const absentCount = Object.values(attendance).filter(a => a.status === 'absent').length;
-  const lateCount = Object.values(attendance).filter(a => a.status === 'late').length;
+  const presentCount = Object.values(attendance).filter((a: any) => a.status === 'present').length;
+  const absentCount = Object.values(attendance).filter((a: any) => a.status === 'absent').length;
+  const lateCount = Object.values(attendance).filter((a: any) => a.status === 'late').length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
@@ -162,7 +162,7 @@ export default function TeacherAttendance() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">উপস্থিতি নিন</h1>
-          <p className="text-gray-600">ক্লাস ও তারিখ নির্বাচন করে ছাত্রদের উপস্থিতি চিহ্নিত করুন</p>
+          <p className="text-gray-600">ক্লাস ও তারিখ নির্বাচ��� করে ছাত্রদের উপস্থিতি চিহ্নিত করুন</p>
         </div>
 
         {/* Class Selection */}
