@@ -1,641 +1,1032 @@
-import React, { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/dialog";
-import Navigation from "../components/Navigation";
-import {
-  Bus,
-  MapPin,
-  Users,
-  Route,
-  Plus,
-  Eye,
-  Edit,
-  UserPlus,
-  Wrench,
-  Navigation as NavigationIcon,
-  Clock,
-} from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useLocalData } from '@/hooks/useLocalData';
+import { useNotifications } from '@/hooks/useNotifications';
+import { Bus, Users, MapPin, Clock, Plus, Edit, Trash2, Route, AlertCircle } from 'lucide-react';
+import Navigation from '@/components/Navigation';
 
 interface Vehicle {
   id: string;
   vehicleNumber: string;
-  type: "bus" | "minibus" | "microbus";
-  capacity: number;
-  currentPassengers: number;
   driverName: string;
   driverPhone: string;
-  route: string;
-  monthlyFee: number;
-  status: "active" | "maintenance" | "inactive";
+  capacity: number;
+  routeId: string;
+  status: 'active' | 'maintenance' | 'inactive';
   lastMaintenance: string;
+  nextMaintenance: string;
+  createdAt: string;
 }
 
 interface TransportRoute {
   id: string;
   routeName: string;
-  startPoint: string;
-  endPoint: string;
+  startLocation: string;
+  endLocation: string;
   stops: string[];
-  distance: number;
-  duration: number;
-  vehicles: number;
-  passengers: number;
+  departureTime: string;
+  arrivalTime: string;
+  fare: number;
+  vehicleId?: string;
+  status: 'active' | 'inactive';
+  createdAt: string;
 }
 
 interface TransportUser {
   id: string;
   studentId: string;
   studentName: string;
-  class: string;
-  vehicleId: string;
-  vehicleNumber: string;
-  route: string;
-  pickupPoint: string;
-  monthlyFee: number;
-  status: "active" | "inactive";
-  emergencyContact: string;
+  routeId: string;
+  pickupStop: string;
+  dropoffStop: string;
+  feeStatus: 'paid' | 'pending' | 'overdue';
+  parentPhone: string;
+  enrollmentDate: string;
+  status: 'active' | 'inactive';
 }
 
 interface TransportStats {
   totalVehicles: number;
-  activeVehicles: number;
-  totalPassengers: number;
-  monthlyRevenue: number;
   totalRoutes: number;
-  maintenanceVehicles: number;
+  totalStudents: number;
+  activeVehicles: number;
+  maintenance: number;
+  totalRevenue: number;
+  pendingFees: number;
 }
 
-const TransportDashboard: React.FC = () => {
-  const [transportStats, setTransportStats] = useState<TransportStats | null>(
-    null,
-  );
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [routes, setRoutes] = useState<TransportRoute[]>([]);
-  const [passengers, setPassengers] = useState<TransportUser[]>([]);
-  const [isAddVehicleOpen, setIsAddVehicleOpen] = useState(false);
-  const [isEnrollPassengerOpen, setIsEnrollPassengerOpen] = useState(false);
+export default function TransportDashboard() {
+  const [vehicles, setVehicles] = useLocalData<Vehicle[]>('vehicles', []);
+  const [routes, setRoutes] = useLocalData<TransportRoute[]>('transportRoutes', []);
+  const [transportUsers, setTransportUsers] = useLocalData<TransportUser[]>('transportUsers', []);
+  const [stats, setStats] = useState<TransportStats>({
+    totalVehicles: 0,
+    totalRoutes: 0,
+    totalStudents: 0,
+    activeVehicles: 0,
+    maintenance: 0,
+    totalRevenue: 0,
+    pendingFees: 0
+  });
 
+  const { addNotification } = useNotifications();
+  const [isVehicleDialogOpen, setIsVehicleDialogOpen] = useState(false);
+  const [isRouteDialogOpen, setIsRouteDialogOpen] = useState(false);
+  const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
+  const [editingVehicle, setEditingVehicle] = useState<Vehicle | null>(null);
+  const [editingRoute, setEditingRoute] = useState<TransportRoute | null>(null);
+  const [editingUser, setEditingUser] = useState<TransportUser | null>(null);
+
+  // Initialize with sample data if empty
   useEffect(() => {
-    fetchTransportData();
-  }, []);
+    if (vehicles.length === 0 && routes.length === 0) {
+      const sampleRoutes: TransportRoute[] = [
+        {
+          id: '1',
+          routeName: 'মূল রুট ১',
+          startLocation: 'ঢাকা',
+          endLocation: 'মাদ্রাসা ক্যাম্পাস',
+          stops: ['মিরপুর ১০', 'কাজীপাড়া', 'শেওড়াপাড়া', 'মাদ্রাসা গেট'],
+          departureTime: '07:00',
+          arrivalTime: '08:30',
+          fare: 500,
+          status: 'active',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: '2',
+          routeName: 'উত্তরা রুট',
+          startLocation: 'উত্তরা',
+          endLocation: 'মাদ্রাসা ক্যাম্পাস',
+          stops: ['উত্তরা সেক্টর ৭', 'হাজী ক্যাম্প', 'বিমানবন্দর', 'মাদ্রাসা গেট'],
+          departureTime: '06:45',
+          arrivalTime: '08:15',
+          fare: 600,
+          status: 'active',
+          createdAt: new Date().toISOString()
+        }
+      ];
 
-  const fetchTransportData = async () => {
-    try {
-      const response = await fetch("/api/transport/dashboard");
-      const data = await response.json();
-      setTransportStats(data.stats);
-      setVehicles(data.vehicles || []);
-      setRoutes(data.routes || []);
-      setPassengers(data.passengers || []);
-    } catch (error) {
-      console.error("Error fetching transport data:", error);
-      // Mock data for demo
-      setTransportStats({
-        totalVehicles: 8,
-        activeVehicles: 7,
-        totalPassengers: 142,
-        monthlyRevenue: 355000,
-        totalRoutes: 5,
-        maintenanceVehicles: 1,
-      });
+      const sampleVehicles: Vehicle[] = [
+        {
+          id: '1',
+          vehicleNumber: 'ঢাকা-মে-১১-৯৮৭৬',
+          driverName: 'আব্দুল করিম',
+          driverPhone: '০১৭৮৮৮৮৮৮৮৮',
+          capacity: 45,
+          routeId: '1',
+          status: 'active',
+          lastMaintenance: '2024-01-15',
+          nextMaintenance: '2024-04-15',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: '2',
+          vehicleNumber: 'ঢাকা-খ-১২-৫৪৩২',
+          driverName: 'মোহাম্মদ রহিম',
+          driverPhone: '০১৯৯৯৯৯৯৯৯৯',
+          capacity: 35,
+          routeId: '2',
+          status: 'maintenance',
+          lastMaintenance: '2024-02-01',
+          nextMaintenance: '2024-05-01',
+          createdAt: new Date().toISOString()
+        }
+      ];
 
-      setVehicles([
+      const sampleUsers: TransportUser[] = [
         {
-          id: "1",
-          vehicleNumber: "ঢাকা-মেট্রো-গ-১২৩৪৫৬",
-          type: "bus",
-          capacity: 40,
-          currentPassengers: 35,
-          driverName: "মোহাম্মদ করিম",
-          driverPhone: "01712345678",
-          route: "চুনতি-রামগতি-লক্ষ্মীপুর",
-          monthlyFee: 2500,
-          status: "active",
-          lastMaintenance: "2024-11-15",
+          id: '1',
+          studentId: 'STD001',
+          studentName: 'মোহাম্মদ আলী',
+          routeId: '1',
+          pickupStop: 'মিরপুর ১০',
+          dropoffStop: 'মাদ্রাসা গেট',
+          feeStatus: 'paid',
+          parentPhone: '০১৭১১১১১১১১',
+          enrollmentDate: '2024-01-01',
+          status: 'active'
         },
         {
-          id: "2",
-          vehicleNumber: "ঢাকা-মেট্রো-খ-৭৮৯০১২",
-          type: "minibus",
-          capacity: 25,
-          currentPassengers: 20,
-          driverName: "আব্দুল রহমান",
-          driverPhone: "01812345678",
-          route: "চুনতি-কমলনগর",
-          monthlyFee: 2000,
-          status: "active",
-          lastMaintenance: "2024-12-01",
-        },
-      ]);
+          id: '2',
+          studentId: 'STD002',
+          studentName: 'ফাতিমা খাতুন',
+          routeId: '2',
+          pickupStop: 'উত্তরা সেক্টর ৭',
+          dropoffStop: 'মাদ্রাসা গেট',
+          feeStatus: 'pending',
+          parentPhone: '০১৮২২২২২২২২',
+          enrollmentDate: '2024-01-15',
+          status: 'active'
+        }
+      ];
 
-      setRoutes([
-        {
-          id: "1",
-          routeName: "চুনতি-রামগতি-লক্ষ্মীপুর",
-          startPoint: "চুনতি হাকিমিয়া মাদ্রাসা",
-          endPoint: "ল��্ষ্মীপুর সদর",
-          stops: ["চুনতি বাজার", "রামগতি", "কামালনগর", "লক্ষ্মীপুর"],
-          distance: 25,
-          duration: 45,
-          vehicles: 2,
-          passengers: 55,
-        },
-        {
-          id: "2",
-          routeName: "চুনতি-কমলনগর",
-          startPoint: "চুনতি হাকিমিয়া মাদ্রাসা",
-          endPoint: "কমলনগর",
-          stops: ["চুনতি", "কমলনগর"],
-          distance: 15,
-          duration: 30,
-          vehicles: 1,
-          passengers: 20,
-        },
-      ]);
+      setRoutes(sampleRoutes);
+      setVehicles(sampleVehicles);
+      setTransportUsers(sampleUsers);
+    }
+  }, [vehicles.length, routes.length, setVehicles, setRoutes, setTransportUsers]);
 
-      setPassengers([
-        {
-          id: "1",
-          studentId: "std-001",
-          studentName: "মোহাম্মদ আব্দুল্লাহ",
-          class: "class-8",
-          vehicleId: "1",
-          vehicleNumber: "ঢাকা-মেট্রো-গ-১২৩৪৫৬",
-          route: "চুনতি-রামগতি-লক্ষ্মীপুর",
-          pickupPoint: "রামগতি",
-          monthlyFee: 2500,
-          status: "active",
-          emergencyContact: "01712345678",
-        },
-      ]);
+  // Calculate stats
+  useEffect(() => {
+    const totalVehicles = vehicles.length;
+    const totalRoutes = routes.length;
+    const totalStudents = transportUsers.filter(user => user.status === 'active').length;
+    const activeVehicles = vehicles.filter(v => v.status === 'active').length;
+    const maintenance = vehicles.filter(v => v.status === 'maintenance').length;
+    
+    const totalRevenue = transportUsers
+      .filter(user => user.feeStatus === 'paid')
+      .reduce((sum, user) => {
+        const route = routes.find(r => r.id === user.routeId);
+        return sum + (route?.fare || 0);
+      }, 0);
+
+    const pendingFees = transportUsers
+      .filter(user => user.feeStatus === 'pending' || user.feeStatus === 'overdue')
+      .reduce((sum, user) => {
+        const route = routes.find(r => r.id === user.routeId);
+        return sum + (route?.fare || 0);
+      }, 0);
+
+    setStats({
+      totalVehicles,
+      totalRoutes,
+      totalStudents,
+      activeVehicles,
+      maintenance,
+      totalRevenue,
+      pendingFees
+    });
+  }, [vehicles, routes, transportUsers]);
+
+  const handleAddVehicle = (vehicleData: Omit<Vehicle, 'id' | 'createdAt'>) => {
+    const newVehicle: Vehicle = {
+      ...vehicleData,
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString()
+    };
+    setVehicles([...vehicles, newVehicle]);
+    addNotification('যানবাহন সফলভাবে যোগ করা হয়েছে', 'success');
+    setIsVehicleDialogOpen(false);
+  };
+
+  const handleAddRoute = (routeData: Omit<TransportRoute, 'id' | 'createdAt'>) => {
+    const newRoute: TransportRoute = {
+      ...routeData,
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString()
+    };
+    setRoutes([...routes, newRoute]);
+    addNotification('রুট সফলভাবে যোগ করা হয়েছে', 'success');
+    setIsRouteDialogOpen(false);
+  };
+
+  const handleAddUser = (userData: Omit<TransportUser, 'id'>) => {
+    const newUser: TransportUser = {
+      ...userData,
+      id: Date.now().toString()
+    };
+    setTransportUsers([...transportUsers, newUser]);
+    addNotification('শিক্ষার্থী সফলভাবে নিবন্ধিত হয়েছে', 'success');
+    setIsUserDialogOpen(false);
+  };
+
+  const handleEditVehicle = (vehicleData: Omit<Vehicle, 'id' | 'createdAt'>) => {
+    if (editingVehicle) {
+      const updatedVehicles = vehicles.map(v => 
+        v.id === editingVehicle.id 
+          ? { ...v, ...vehicleData }
+          : v
+      );
+      setVehicles(updatedVehicles);
+      addNotification('যানবাহনের তথ্য আপডেট হয়েছে', 'success');
+      setEditingVehicle(null);
+      setIsVehicleDialogOpen(false);
     }
   };
 
-  const getVehicleTypeText = (type: string) => {
-    switch (type) {
-      case "bus":
-        return "বাস";
-      case "minibus":
-        return "মিনিবাস";
-      case "microbus":
-        return "মাইক্রোবাস";
-      default:
-        return type;
-    }
+  const handleDeleteVehicle = (vehicleId: string) => {
+    const updatedVehicles = vehicles.filter(v => v.id !== vehicleId);
+    setVehicles(updatedVehicles);
+    addNotification('যানবাহন মুছে ফেলা হয়েছে', 'success');
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "active":
-        return "bg-green-100 text-green-800";
-      case "maintenance":
-        return "bg-yellow-100 text-yellow-800";
-      case "inactive":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
+  const handleDeleteRoute = (routeId: string) => {
+    const updatedRoutes = routes.filter(r => r.id !== routeId);
+    setRoutes(updatedRoutes);
+    addNotification('রুট মুছে ফেলা হয়েছে', 'success');
   };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case "active":
-        return "সক্রিয়";
-      case "maintenance":
-        return "রক্ষণাবেক্ষণ";
-      case "inactive":
-        return "নিষ্ক্রিয়";
-      default:
-        return status;
-    }
-  };
-
-  if (!transportStats) {
-    return (
-      <div className="flex justify-center items-center h-64">লোড হচ্ছে...</div>
+  const updateFeeStatus = (userId: string, newStatus: 'paid' | 'pending' | 'overdue') => {
+    const updatedUsers = transportUsers.map(user =>
+      user.id === userId ? { ...user, feeStatus: newStatus } : user
     );
-  }
+    setTransportUsers(updatedUsers);
+    addNotification('ফি স্ট্যাটাস আপডেট হয়েছে', 'success');
+  };
+
+  const getStatusBadge = (status: string, type: 'vehicle' | 'route' | 'fee') => {
+    const variants: { [key: string]: "default" | "secondary" | "destructive" | "outline" } = {
+      active: "default",
+      inactive: "secondary",
+      maintenance: "destructive",
+      paid: "default",
+      pending: "outline",
+      overdue: "destructive"
+    };
+    
+    const labels: { [key: string]: string } = {
+      active: 'সক্রিয়',
+      inactive: 'নিষ্ক্রিয়',
+      maintenance: 'রক্ষণাবেক্ষণ',
+      paid: 'পরিশোধিত',
+      pending: 'বাকি',
+      overdue: 'বিলম্বিত'
+    };
+
+    return (
+      <Badge variant={variants[status] || "secondary"}>
+        {labels[status] || status}
+      </Badge>
+    );
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100" style={{ fontFamily: '"Noto Serif Bengali", serif' }}>
       <Navigation />
-      <div className="container mx-auto p-6 space-y-6">
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              ট্রান্সপোর্ট ব্যবস্থাপনা
-            </h1>
-            <p className="text-gray-600 mt-1">যানবাহন ও রুট ব্যবস্থাপনা</p>
-          </div>
-          <div className="flex space-x-2">
-            <Dialog open={isAddVehicleOpen} onOpenChange={setIsAddVehicleOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                  <Plus className="w-4 h-4 mr-2" />
-                  যানবাহন যোগ
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-md">
-                <DialogHeader>
-                  <DialogTitle>নতুন যানবাহন যোগ করুন</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div>
-                    <Label>যানবাহনের নম্বর</Label>
-                    <Input placeholder="ঢাকা-মেট্রো-গ-১২৩৪৫৬" />
-                  </div>
-                  <div>
-                    <Label>ধরন</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="যানবাহনের ধরন নির্বাচন করুন" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="bus">বাস</SelectItem>
-                        <SelectItem value="minibus">মিনিবাস</SelectItem>
-                        <SelectItem value="microbus">মাইক্রোবাস</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label>চালকের নাম</Label>
-                    <Input placeholder="মোহাম্মদ করিম" />
-                  </div>
-                  <div>
-                    <Label>চালকের ফোন</Label>
-                    <Input placeholder="01712345678" />
-                  </div>
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                    যানবাহন যোগ করুন
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-            <Dialog
-              open={isEnrollPassengerOpen}
-              onOpenChange={setIsEnrollPassengerOpen}
-            >
-              <DialogTrigger asChild>
-                <Button className="bg-green-600 hover:bg-green-700">
-                  <UserPlus className="w-4 h-4 mr-2" />
-                  যাত্রী ভর্তি
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-md">
-                <DialogHeader>
-                  <DialogTitle>নতুন যাত্রী ভর্তি করুন</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div>
-                    <Label>শিক্ষার্থী আইডি</Label>
-                    <Input placeholder="std-001" />
-                  </div>
-                  <div>
-                    <Label>রুট নির্বাচন</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="রুট নির্বাচন করুন" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {routes.map((route) => (
-                          <SelectItem key={route.id} value={route.id}>
-                            {route.routeName}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label>পিকআপ পয়েন্ট</Label>
-                    <Input placeholder="রামগতি" />
-                  </div>
-                  <Button className="w-full bg-green-600 hover:bg-green-700">
-                    যাত্রী ভর্তি করুন
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
+      
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-emerald-800 mb-2">পরিবহন ড্যাশবোর্ড</h1>
+          <p className="text-emerald-600">যানবাহন ও রুট ব্যবস্থাপনা</p>
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <Bus className="w-8 h-8 text-blue-600" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    মোট যানবাহন
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {transportStats.totalVehicles}
-                  </p>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <Card className="bg-blue-50 border-blue-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-700">মোট যানবাহন</CardTitle>
+              <Bus className="h-4 w-4 text-blue-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-800">{stats.totalVehicles}</div>
+              <p className="text-xs text-blue-600">সক্রিয়: {stats.activeVehicles}</p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <NavigationIcon className="w-8 h-8 text-green-600" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    সক্রিয় যানবাহন
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {transportStats.activeVehicles}
-                  </p>
-                </div>
-              </div>
+          <Card className="bg-green-50 border-green-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-green-700">মোট রুট</CardTitle>
+              <Route className="h-4 w-4 text-green-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-800">{stats.totalRoutes}</div>
+              <p className="text-xs text-green-600">পরিচালিত রুট</p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <Users className="w-8 h-8 text-purple-600" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    মোট যাত্রী
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {transportStats.totalPassengers}
-                  </p>
-                </div>
-              </div>
+          <Card className="bg-purple-50 border-purple-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-purple-700">মোট শিক্ষার্থী</CardTitle>
+              <Users className="h-4 w-4 text-purple-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-purple-800">{stats.totalStudents}</div>
+              <p className="text-xs text-purple-600">নিবন্ধিত</p>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <Route className="w-8 h-8 text-orange-600" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">মোট রুট</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {transportStats.totalRoutes}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <Wrench className="w-8 h-8 text-red-600" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    রক্ষণাবেক্ষণে
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {transportStats.maintenanceVehicles}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <Clock className="w-8 h-8 text-emerald-600" />
-                <div>
-                  <p className="text-sm font-medium text-gray-600">মাসিক আয়</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    ৳{transportStats.monthlyRevenue.toLocaleString()}
-                  </p>
-                </div>
-              </div>
+          <Card className="bg-orange-50 border-orange-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-orange-700">রক্ষণাবেক্ষণ</CardTitle>
+              <AlertCircle className="h-4 w-4 text-orange-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-orange-800">{stats.maintenance}</div>
+              <p className="text-xs text-orange-600">যানবাহন</p>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Vehicle Status */}
-          <Card>
+        {/* Revenue Summary */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <Card className="bg-emerald-50 border-emerald-200">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Bus className="w-5 h-5 text-blue-600" />
-                <span>যানবাহনের অবস্থা</span>
-              </CardTitle>
+              <CardTitle className="text-emerald-700">মোট আয়</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {vehicles.map((vehicle) => (
-                  <div key={vehicle.id} className="border rounded-lg p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-semibold text-gray-900">
-                          {vehicle.vehicleNumber}
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          {getVehicleTypeText(vehicle.type)} -{" "}
-                          {vehicle.driverName}
-                        </p>
-                      </div>
-                      <Badge className={getStatusColor(vehicle.status)}>
-                        {getStatusText(vehicle.status)}
-                      </Badge>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-3">
-                      <div>
-                        <span className="font-medium">ধারণক্ষমতা:</span>{" "}
-                        {vehicle.capacity}
-                      </div>
-                      <div>
-                        <span className="font-medium">বর্তমান যাত্রী:</span>{" "}
-                        {vehicle.currentPassengers}
-                      </div>
-                      <div>
-                        <span className="font-medium">রুট:</span>{" "}
-                        {vehicle.route}
-                      </div>
-                      <div>
-                        <span className="font-medium">মাসিক ফি:</span> ৳
-                        {vehicle.monthlyFee}
-                      </div>
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Eye className="w-4 h-4 mr-1" />
-                        বিস্তারিত
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Edit className="w-4 h-4 mr-1" />
-                        সম্পাদনা
-                      </Button>
-                      {vehicle.status === "active" && (
-                        <Button
-                          size="sm"
-                          className="bg-yellow-600 hover:bg-yellow-700 text-white"
-                        >
-                          <Wrench className="w-4 h-4 mr-1" />
-                          রক্ষণাবেক্ষণ
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <div className="text-3xl font-bold text-emerald-800">৳{stats.totalRevenue.toLocaleString()}</div>
+              <p className="text-sm text-emerald-600">এই মাসে</p>
             </CardContent>
           </Card>
 
-          {/* Routes */}
-          <Card>
+          <Card className="bg-red-50 border-red-200">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <MapPin className="w-5 h-5 text-orange-600" />
-                <span>পরিবহন রুট</span>
-              </CardTitle>
+              <CardTitle className="text-red-700">বকেয়া ফি</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {routes.map((route) => (
-                  <div key={route.id} className="border rounded-lg p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-semibold text-gray-900">
-                          {route.routeName}
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          {route.startPoint} → {route.endPoint}
-                        </p>
-                      </div>
-                      <Badge variant="outline">{route.passengers} যাত্রী</Badge>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-3">
-                      <div>
-                        <span className="font-medium">দূরত্ব:</span>{" "}
-                        {route.distance} কিমি
-                      </div>
-                      <div>
-                        <span className="font-medium">সময়:</span>{" "}
-                        {route.duration} মিনিট
-                      </div>
-                      <div>
-                        <span className="font-medium">যানবাহন:</span>{" "}
-                        {route.vehicles}টি
-                      </div>
-                      <div>
-                        <span className="font-medium">স্টপ:</span>{" "}
-                        {route.stops.length}টি
-                      </div>
-                    </div>
-                    <div className="text-sm text-gray-600 mb-3">
-                      <span className="font-medium">স্টপসমূহ:</span>{" "}
-                      {route.stops.join(" → ")}
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Eye className="w-4 h-4 mr-1" />
-                        বিস্তারিত
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Edit className="w-4 h-4 mr-1" />
-                        সম্পাদনা
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <div className="text-3xl font-bold text-red-800">৳{stats.pendingFees.toLocaleString()}</div>
+              <p className="text-sm text-red-600">পরিশোধের অপেক্ষায়</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Passengers Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>বর্তমান যাত্রীরা</CardTitle>
-            <CardDescription>
-              পরিবহন সেবা ব্যবহারকারী শিক্ষার্থীদের তালিকা
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-2">শিক্ষার্থীর নাম</th>
-                    <th className="text-left p-2">আইডি</th>
-                    <th className="text-left p-2">শ্রেণী</th>
-                    <th className="text-left p-2">যানবাহন</th>
-                    <th className="text-left p-2">রুট</th>
-                    <th className="text-left p-2">পিকআপ পয়েন্ট</th>
-                    <th className="text-left p-2">মাসিক ফি</th>
-                    <th className="text-left p-2">অবস্থা</th>
-                    <th className="text-left p-2">কার্যক্রম</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {passengers.map((passenger) => (
-                    <tr
-                      key={passenger.id}
-                      className="border-b hover:bg-gray-50"
-                    >
-                      <td className="p-2 font-medium">
-                        {passenger.studentName}
-                      </td>
-                      <td className="p-2">{passenger.studentId}</td>
-                      <td className="p-2">{passenger.class}</td>
-                      <td className="p-2">{passenger.vehicleNumber}</td>
-                      <td className="p-2">{passenger.route}</td>
-                      <td className="p-2">{passenger.pickupPoint}</td>
-                      <td className="p-2">৳{passenger.monthlyFee}</td>
-                      <td className="p-2">
-                        <Badge className={getStatusColor(passenger.status)}>
-                          {passenger.status === "active"
-                            ? "সক্রিয়"
-                            : "নিষ্ক্রিয়"}
-                        </Badge>
-                      </td>
-                      <td className="p-2">
-                        <div className="flex space-x-2">
-                          <Button size="sm" variant="outline">
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button size="sm" variant="outline">
+        {/* Main Content */}
+        <Tabs defaultValue="vehicles" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="vehicles">যানবাহন</TabsTrigger>
+            <TabsTrigger value="routes">রুট</TabsTrigger>
+            <TabsTrigger value="students">শিক্ষার্থী</TabsTrigger>
+          </TabsList>
+
+          {/* Vehicles Tab */}
+          <TabsContent value="vehicles" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold text-emerald-800">যানবাহন তালিকা</h2>
+              <Dialog open={isVehicleDialogOpen} onOpenChange={setIsVehicleDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-emerald-600 hover:bg-emerald-700">
+                    <Plus className="w-4 h-4 mr-2" />
+                    নতুন যানবাহন
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{editingVehicle ? 'যানবাহন সম্পাদনা' : 'নতুন যানবাহন যোগ'}</DialogTitle>
+                    <DialogDescription>
+                      যানবাহনের তথ্য পূরণ করুন
+                    </DialogDescription>
+                  </DialogHeader>
+                  <VehicleForm 
+                    vehicle={editingVehicle}
+                    routes={routes}
+                    onSubmit={editingVehicle ? handleEditVehicle : handleAddVehicle}
+                  />
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            <div className="grid gap-4">
+              {vehicles.map((vehicle) => {
+                const route = routes.find(r => r.id === vehicle.routeId);
+                return (
+                  <Card key={vehicle.id}>
+                    <CardContent className="pt-6">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-lg font-semibold">{vehicle.vehicleNumber}</h3>
+                            {getStatusBadge(vehicle.status, 'vehicle')}
+                          </div>
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <p className="text-gray-600">চালক: {vehicle.driverName}</p>
+                              <p className="text-gray-600">ফোন: {vehicle.driverPhone}</p>
+                            </div>
+                            <div>
+                              <p className="text-gray-600">ধারণক্ষমতা: {vehicle.capacity} জন</p>
+                              <p className="text-gray-600">রুট: {route?.routeName || 'নির্ধারিত নয়'}</p>
+                            </div>
+                          </div>
+                          <div className="mt-2 text-sm text-gray-500">
+                            <p>শেষ রক্ষণাবেক্ষণ: {new Date(vehicle.lastMaintenance).toLocaleDateString('bn-BD')}</p>
+                            <p>পরবর্তী রক্ষণাবেক্ষণ: {new Date(vehicle.nextMaintenance).toLocaleDateString('bn-BD')}</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setEditingVehicle(vehicle);
+                              setIsVehicleDialogOpen(true);
+                            }}
+                          >
                             <Edit className="w-4 h-4" />
                           </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDeleteVehicle(vehicle.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
                         </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
-          </CardContent>
-        </Card>
+          </TabsContent>
+
+          {/* Routes Tab */}
+          <TabsContent value="routes" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold text-emerald-800">রুট তালিকা</h2>
+              <Dialog open={isRouteDialogOpen} onOpenChange={setIsRouteDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-emerald-600 hover:bg-emerald-700">
+                    <Plus className="w-4 h-4 mr-2" />
+                    নতুন রুট
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>নতুন রুট যোগ</DialogTitle>
+                    <DialogDescription>
+                      রুটের বিস্তারিত তথ্য পূরণ করুন
+                    </DialogDescription>
+                  </DialogHeader>
+                  <RouteForm onSubmit={handleAddRoute} />
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            <div className="grid gap-4">
+              {routes.map((route) => {
+                const assignedVehicle = vehicles.find(v => v.routeId === route.id);
+                const studentsCount = transportUsers.filter(u => u.routeId === route.id && u.status === 'active').length;
+                
+                return (
+                  <Card key={route.id}>
+                    <CardContent className="pt-6">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-3">
+                            <h3 className="text-lg font-semibold">{route.routeName}</h3>
+                            {getStatusBadge(route.status, 'route')}
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <p className="text-sm text-gray-600 mb-1">
+                                <MapPin className="w-4 h-4 inline mr-1" />
+                                {route.startLocation} → {route.endLocation}
+                              </p>
+                              <p className="text-sm text-gray-600 mb-1">
+                                <Clock className="w-4 h-4 inline mr-1" />
+                                {route.departureTime} - {route.arrivalTime}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                <Users className="w-4 h-4 inline mr-1" />
+                                {studentsCount} জন শিক্ষার্থী
+                              </p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-gray-600 mb-1">ভাড়া: ৳{route.fare}</p>
+                              <p className="text-sm text-gray-600 mb-1">
+                                যানবাহন: {assignedVehicle?.vehicleNumber || 'নির্ধারিত নয়'}
+                              </p>
+                              <div className="text-sm text-gray-600">
+                                <p className="font-medium mb-1">স্টপেজ:</p>
+                                <div className="flex flex-wrap gap-1">
+                                  {route.stops.map((stop, index) => (
+                                    <Badge key={index} variant="outline" className="text-xs">
+                                      {stop}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDeleteRoute(route.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </TabsContent>
+
+          {/* Students Tab */}
+          <TabsContent value="students" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold text-emerald-800">শিক্ষার্থী তালিকা</h2>
+              <Dialog open={isUserDialogOpen} onOpenChange={setIsUserDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-emerald-600 hover:bg-emerald-700">
+                    <Plus className="w-4 h-4 mr-2" />
+                    নতুন নিবন্ধন
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>শিক্ষার্থী নিবন্ধন</DialogTitle>
+                    <DialogDescription>
+                      পরিবহন সেবার জন্য শিক্ষার্থী নিবন্ধন করুন
+                    </DialogDescription>
+                  </DialogHeader>
+                  <TransportUserForm routes={routes} onSubmit={handleAddUser} />
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            <div className="grid gap-4">
+              {transportUsers.map((user) => {
+                const route = routes.find(r => r.id === user.routeId);
+                return (
+                  <Card key={user.id}>
+                    <CardContent className="pt-6">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-lg font-semibold">{user.studentName}</h3>
+                            <Badge variant="outline">ID: {user.studentId}</Badge>
+                            {getStatusBadge(user.feeStatus, 'fee')}
+                          </div>
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <p className="text-gray-600">রুট: {route?.routeName}</p>
+                              <p className="text-gray-600">উঠার স্থান: {user.pickupStop}</p>
+                              <p className="text-gray-600">নামার স্থান: {user.dropoffStop}</p>
+                            </div>
+                            <div>
+                              <p className="text-gray-600">অভিভাবকের ফোন: {user.parentPhone}</p>
+                              <p className="text-gray-600">ভর্তির তা��িখ: {new Date(user.enrollmentDate).toLocaleDateString('bn-BD')}</p>
+                              <p className="text-gray-600">মাসিক ভাড়া: ৳{route?.fare || 0}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Select
+                            value={user.feeStatus}
+                            onValueChange={(value: 'paid' | 'pending' | 'overdue') => updateFeeStatus(user.id, value)}
+                          >
+                            <SelectTrigger className="w-32">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="paid">পরিশোধিত</SelectItem>
+                              <SelectItem value="pending">বাকি</SelectItem>
+                              <SelectItem value="overdue">বিলম্বিত</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
-};
+}
 
-export default TransportDashboard;
+function VehicleForm({ 
+  vehicle, 
+  routes, 
+  onSubmit 
+}: { 
+  vehicle?: Vehicle | null; 
+  routes: TransportRoute[];
+  onSubmit: (data: Omit<Vehicle, 'id' | 'createdAt'>) => void;
+}) {
+  const [formData, setFormData] = useState({
+    vehicleNumber: vehicle?.vehicleNumber || '',
+    driverName: vehicle?.driverName || '',
+    driverPhone: vehicle?.driverPhone || '',
+    capacity: vehicle?.capacity || 30,
+    routeId: vehicle?.routeId || '',
+    status: vehicle?.status || 'active' as const,
+    lastMaintenance: vehicle?.lastMaintenance || new Date().toISOString().split('T')[0],
+    nextMaintenance: vehicle?.nextMaintenance || new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="vehicleNumber">গাড়ির নম্বর</Label>
+          <Input
+            id="vehicleNumber"
+            value={formData.vehicleNumber}
+            onChange={(e) => setFormData({...formData, vehicleNumber: e.target.value})}
+            placeholder="ঢাকা-মে-১১-৯৮৭৬"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="capacity">ধারণক্ষমতা</Label>
+          <Input
+            id="capacity"
+            type="number"
+            value={formData.capacity}
+            onChange={(e) => setFormData({...formData, capacity: parseInt(e.target.value)})}
+            required
+          />
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="driverName">চালকের নাম</Label>
+          <Input
+            id="driverName"
+            value={formData.driverName}
+            onChange={(e) => setFormData({...formData, driverName: e.target.value})}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="driverPhone">চালকের ফোন</Label>
+          <Input
+            id="driverPhone"
+            value={formData.driverPhone}
+            onChange={(e) => setFormData({...formData, driverPhone: e.target.value})}
+            placeholder="০১৭xxxxxxxx"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="routeId">রুট</Label>
+          <Select value={formData.routeId} onValueChange={(value) => setFormData({...formData, routeId: value})}>
+            <SelectTrigger>
+              <SelectValue placeholder="রুট নির্বাচন করুন" />
+            </SelectTrigger>
+            <SelectContent>
+              {routes.map((route) => (
+                <SelectItem key={route.id} value={route.id}>
+                  {route.routeName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="status">অবস্থা</Label>
+          <Select value={formData.status} onValueChange={(value: 'active' | 'maintenance' | 'inactive') => setFormData({...formData, status: value})}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="active">সক্রিয়</SelectItem>
+              <SelectItem value="maintenance">রক্ষণাবেক্ষণ</SelectItem>
+              <SelectItem value="inactive">নিষ্ক্রিয়</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="lastMaintenance">শেষ রক্ষণাবেক্ষণ</Label>
+          <Input
+            id="lastMaintenance"
+            type="date"
+            value={formData.lastMaintenance}
+            onChange={(e) => setFormData({...formData, lastMaintenance: e.target.value})}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="nextMaintenance">পরবর্তী রক্ষণাবেক্ষণ</Label>
+          <Input
+            id="nextMaintenance"
+            type="date"
+            value={formData.nextMaintenance}
+            onChange={(e) => setFormData({...formData, nextMaintenance: e.target.value})}
+            required
+          />
+        </div>
+      </div>
+
+      <DialogFooter>
+        <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
+          {vehicle ? 'আপডেট করুন' : 'যোগ করুন'}
+        </Button>
+      </DialogFooter>
+    </form>
+  );
+}
+
+function RouteForm({ onSubmit }: { onSubmit: (data: Omit<TransportRoute, 'id' | 'createdAt'>) => void }) {
+  const [formData, setFormData] = useState({
+    routeName: '',
+    startLocation: '',
+    endLocation: '',
+    stops: [] as string[],
+    departureTime: '',
+    arrivalTime: '',
+    fare: 0,
+    status: 'active' as const
+  });
+
+  const [newStop, setNewStop] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  const addStop = () => {
+    if (newStop.trim()) {
+      setFormData({...formData, stops: [...formData.stops, newStop.trim()]});
+      setNewStop('');
+    }
+  };
+
+  const removeStop = (index: number) => {
+    setFormData({...formData, stops: formData.stops.filter((_, i) => i !== index)});
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="routeName">রুটের নাম</Label>
+          <Input
+            id="routeName"
+            value={formData.routeName}
+            onChange={(e) => setFormData({...formData, routeName: e.target.value})}
+            placeholder="মূল রুট ১"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="fare">ভাড়া (৳)</Label>
+          <Input
+            id="fare"
+            type="number"
+            value={formData.fare}
+            onChange={(e) => setFormData({...formData, fare: parseInt(e.target.value)})}
+            required
+          />
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="startLocation">শুরুর স্থান</Label>
+          <Input
+            id="startLocation"
+            value={formData.startLocation}
+            onChange={(e) => setFormData({...formData, startLocation: e.target.value})}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="endLocation">শেষের স্থান</Label>
+          <Input
+            id="endLocation"
+            value={formData.endLocation}
+            onChange={(e) => setFormData({...formData, endLocation: e.target.value})}
+            required
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="departureTime">ছাড়ার সময়</Label>
+          <Input
+            id="departureTime"
+            type="time"
+            value={formData.departureTime}
+            onChange={(e) => setFormData({...formData, departureTime: e.target.value})}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="arrivalTime">পৌঁছানোর সময়</Label>
+          <Input
+            id="arrivalTime"
+            type="time"
+            value={formData.arrivalTime}
+            onChange={(e) => setFormData({...formData, arrivalTime: e.target.value})}
+            required
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label>স্টপেজ সমূহ</Label>
+        <div className="flex gap-2">
+          <Input
+            value={newStop}
+            onChange={(e) => setNewStop(e.target.value)}
+            placeholder="স্টপেজের নাম"
+            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addStop())}
+          />
+          <Button type="button" onClick={addStop} variant="outline">
+            যোগ করুন
+          </Button>
+        </div>
+        <div className="flex flex-wrap gap-2 mt-2">
+          {formData.stops.map((stop, index) => (
+            <Badge key={index} variant="outline" className="cursor-pointer" onClick={() => removeStop(index)}>
+              {stop} ×
+            </Badge>
+          ))}
+        </div>
+      </div>
+
+      <DialogFooter>
+        <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
+          রুট যোগ করুন
+        </Button>
+      </DialogFooter>
+    </form>
+  );
+}
+
+function TransportUserForm({ 
+  routes, 
+  onSubmit 
+}: { 
+  routes: TransportRoute[];
+  onSubmit: (data: Omit<TransportUser, 'id'>) => void;
+}) {
+  const [formData, setFormData] = useState({
+    studentId: '',
+    studentName: '',
+    routeId: '',
+    pickupStop: '',
+    dropoffStop: '',
+    feeStatus: 'pending' as const,
+    parentPhone: '',
+    enrollmentDate: new Date().toISOString().split('T')[0],
+    status: 'active' as const
+  });
+
+  const selectedRoute = routes.find(r => r.id === formData.routeId);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="studentId">শিক্ষার্থী আইডি</Label>
+          <Input
+            id="studentId"
+            value={formData.studentId}
+            onChange={(e) => setFormData({...formData, studentId: e.target.value})}
+            placeholder="STD001"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="studentName">শিক্ষার্থীর নাম</Label>
+          <Input
+            id="studentName"
+            value={formData.studentName}
+            onChange={(e) => setFormData({...formData, studentName: e.target.value})}
+            required
+          />
+        </div>
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="routeId">রুট</Label>
+        <Select value={formData.routeId} onValueChange={(value) => setFormData({...formData, routeId: value, pickupStop: '', dropoffStop: ''})}>
+          <SelectTrigger>
+            <SelectValue placeholder="রুট নির্বাচন করুন" />
+          </SelectTrigger>
+          <SelectContent>
+            {routes.map((route) => (
+              <SelectItem key={route.id} value={route.id}>
+                {route.routeName} - ৳{route.fare}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {selectedRoute && (
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="pickupStop">উঠার স্থান</Label>
+            <Select value={formData.pickupStop} onValueChange={(value) => setFormData({...formData, pickupStop: value})}>
+              <SelectTrigger>
+                <SelectValue placeholder="স্টপেজ নির্বাচন করুন" />
+              </SelectTrigger>
+              <SelectContent>
+                {selectedRoute.stops.map((stop, index) => (
+                  <SelectItem key={index} value={stop}>
+                    {stop}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="dropoffStop">নামার স্থান</Label>
+            <Select value={formData.dropoffStop} onValueChange={(value) => setFormData({...formData, dropoffStop: value})}>
+              <SelectTrigger>
+                <SelectValue placeholder="স্টপেজ নির্বাচন করুন" />
+              </SelectTrigger>
+              <SelectContent>
+                {selectedRoute.stops.map((stop, index) => (
+                  <SelectItem key={index} value={stop}>
+                    {stop}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="parentPhone">অভিভাবকের ফোন</Label>
+          <Input
+            id="parentPhone"
+            value={formData.parentPhone}
+            onChange={(e) => setFormData({...formData, parentPhone: e.target.value})}
+            placeholder="০১৭xxxxxxxx"
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="enrollmentDate">ভর্তির তারিখ</Label>
+          <Input
+            id="enrollmentDate"
+            type="date"
+            value={formData.enrollmentDate}
+            onChange={(e) => setFormData({...formData, enrollmentDate: e.target.value})}
+            required
+          />
+        </div>
+      </div>
+
+      <DialogFooter>
+        <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
+          নিবন্ধন করুন
+        </Button>
+      </DialogFooter>
+    </form>
+  );
+}
