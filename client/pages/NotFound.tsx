@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Home, Mosque, Search } from "lucide-react";
+import { ArrowLeft, Home, School, Search } from "lucide-react";
 
 export default function NotFound() {
   return (
