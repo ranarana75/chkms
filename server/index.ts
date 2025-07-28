@@ -6,6 +6,7 @@ import { handleLogin, handleLogout, handleVerifyToken } from "./routes/auth";
 import { getStudentDashboard, getStudentProfile, getStudentAttendance, getStudentMarks, getStudentFees } from "./routes/student";
 import { getTeacherDashboard, getTeacherProfile, getTeacherClasses, markAttendance, enterMarks, getStudentsByClass, createAssignment } from "./routes/teacher";
 import { getFinancialOverview, getFinancialTransactions, createTransaction, getStudentFeeStatus, processFeePayment, getExpenseCategories, generateFinancialReport, getDashboardStats } from "./routes/finance";
+import { getLibraryDashboard, getBooks, getBookDetails, issueBook, returnBook, getIssuedBooks, addNewBook, getOverdueBooks, getLibraryReports } from "./routes/library";
 
 export function createServer() {
   const app = express();
