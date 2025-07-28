@@ -99,7 +99,7 @@ export default function LoginPage() {
                   <SelectValue placeholder="ব্যবহারকারীর ধরন নির্বাচন করুন" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="student">শিক��ষার্থী</SelectItem>
+                  <SelectItem value="student">শিক্ষার্থী</SelectItem>
                   <SelectItem value="teacher">শিক্ষক</SelectItem>
                   <SelectItem value="admin">প্রশাসক</SelectItem>
                   <SelectItem value="parent">অভিভাবক</SelectItem>
@@ -174,7 +174,7 @@ export default function LoginPage() {
             <Button
               onClick={handleLogin}
               type="submit"
-              className="w-full bg-islamic-green hover:bg-islamic-green-dark text-white py-2.5"
+              className="w-full bg-islamic-green hover:bg-islamic-green-dark text-white py-2.5 font-bengali"
               disabled={!userType || isLoading}
             >
               {isLoading ? 'লগইন করা হচ্ছে...' : 'লগইন করুন'}
