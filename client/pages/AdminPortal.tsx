@@ -17,7 +17,7 @@ import {
   UserPlus,
   FileText,
   Calendar,
-  Mosque,
+  School,
   AlertTriangle,
   CheckCircle,
   Clock,
@@ -34,7 +34,7 @@ export default function AdminPortal() {
 
   const dashboardStats = [
     { 
-      title: "মোট শিক���ষার্থী", 
+      title: "মোট শিক্ষার্থী", 
       value: "1,247", 
       change: "+12", 
       changeType: "increase",
@@ -85,7 +85,7 @@ export default function AdminPortal() {
   ];
 
   const alerts = [
-    { type: "warning", message: "সার���ভার রক্ষণাবেক্ষণ আগামীকাল রাত ১২টায়", priority: "মধ্যম" },
+    { type: "warning", message: "সার্ভার রক্ষণাবেক্ষণ আগামীকাল রাত ১২টায়", priority: "মধ্যম" },
     { type: "success", message: "মাসিক ব্যাকআপ সফলভাবে সম্পন্ন হয়েছে", priority: "নিম্ন" },
     { type: "error", message: "লাইব্রেরি সিস্টেমে সাময়িক সমস্যা", priority: "উচ্চ" }
   ];
@@ -153,7 +153,7 @@ export default function AdminPortal() {
               </Avatar>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  আস��ালামু আলাইকুম, {adminData.name}
+                  আসসালামু আলাইকুম, {adminData.name}
                 </h1>
                 <p className="text-gray-600 dark:text-gray-300">
                   {adminData.role} • আইডি: {adminData.id}
@@ -253,7 +253,7 @@ export default function AdminPortal() {
                           variant={dept.performance >= 90 ? "default" : "secondary"}
                           className={dept.performance >= 90 ? "bg-islamic-green hover:bg-islamic-green-dark" : ""}
                         >
-                          {dept.performance}% পারফরম��যান্স
+                          {dept.performance}% পারফরম্যান্স
                         </Badge>
                       </div>
                     </div>
@@ -411,7 +411,7 @@ export default function AdminPortal() {
                     <span className="font-medium">৩:৩০</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>মাগরিব</span>
+                    <span>���াগরিব</span>
                     <span className="font-medium">৫:১০</span>
                   </div>
                   <div className="flex justify-between">
