@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { 
-  ArrowLeft, 
-  DollarSign, 
+import Navigation from "@/components/Navigation";
+import {
+  ArrowLeft,
+  DollarSign,
   TrendingUp,
   TrendingDown,
   CreditCard,
@@ -85,7 +86,7 @@ export default function FinanceDashboard() {
             type: "income",
             description: "ট্রান্সপোর্ট ফি",
             amount: 2000,
-            date: "২০২৪-১২-১১",
+            date: "২���২৪-১২-১১",
             method: "নগদ",
             status: "completed"
           }
