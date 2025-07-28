@@ -39,7 +39,7 @@ export default function Index() {
     {
       icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
       title: "শিক্ষক পোর্টাল",
-      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যা���বোর্ড",
+      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যাশবোর্ড",
       color: "bg-blue-50 dark:bg-blue-950",
       link: "/teacher",
     },
@@ -67,7 +67,7 @@ export default function Index() {
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
       title: "হোস্টেল ব্যবস্থাপ��া",
-      description: "রুম অ্যালোকেশন, মেস ���্যবস্থ���পনা এবং হোস্টেল সেবা",
+      description: "রুম অ্যালোকেশন, মেস ���্যবস্থ����পনা এবং হোস্টেল সেবা",
       color: "bg-orange-50 dark:bg-orange-950",
       link: "/hostel",
     },
@@ -99,7 +99,7 @@ export default function Index() {
       icon: <GraduationCap className="h-5 w-5" />,
     },
     { label: "বিভাগ", value: "12", icon: <Building2 className="h-5 w-5" /> },
-    { label: "সফলত���র হার", value: "95%", icon: <Star className="h-5 w-5" /> },
+    { label: "সফলত���র হা���", value: "95%", icon: <Star className="h-5 w-5" /> },
   ];
 
   return (
@@ -266,7 +266,7 @@ export default function Index() {
               <CardHeader>
                 <School className="h-12 w-12 text-islamic-green mx-auto mb-4" />
                 <CardTitle className="text-islamic-green font-bengali-title">
-                  নামাজের সম��়সূচি
+                  নামাজের সময়সূচি
                 </CardTitle>
               </CardHeader>
               <CardContent>
