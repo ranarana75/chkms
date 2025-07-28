@@ -99,7 +99,11 @@ export default function Index() {
       icon: <GraduationCap className="h-5 w-5" />,
     },
     { label: "বিভাগ", value: "12", icon: <Building2 className="h-5 w-5" /> },
-    { label: "সফলত���র হা����", value: "95%", icon: <Star className="h-5 w-5" /> },
+    {
+      label: "সফলত���র হা����",
+      value: "95%",
+      icon: <Star className="h-5 w-5" />,
+    },
   ];
 
   return (
