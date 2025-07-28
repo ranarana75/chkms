@@ -59,7 +59,7 @@ export default function Index() {
       label: "শিক্ষক",
       value: isLoading ? "..." : `${stats.totalTeachers}+`,
       icon: <GraduationCap className="h-5 w-5" />,
-      trend: "+২ নতুন যোগদান"
+      trend: "+২ নতুন য��গদান"
     },
     {
       label: "সক্রিয় নোটিশ",
@@ -112,8 +112,8 @@ export default function Index() {
     },
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
-      title: "হোস্টেল ব্যবস্থা���না",
-      description: "রুম অ্যালোকেশন, মেস ব্যবস্থাপনা এ���ং হোস্��েল সেবা",
+      title: "হোস্টেল ব্যবস্থাপনা",
+      description: "রুম ��্যালোকেশন, মেস ব্যবস্থাপনা এ���ং হোস্��েল সেবা",
       color: "bg-orange-50 dark:bg-orange-950",
       link: "/hostel",
     },
@@ -229,7 +229,7 @@ export default function Index() {
               >
                 <CardContent className="pt-6">
                   <div className="flex justify-center mb-2 text-islamic-green">
-                    {stat.icon}
+                    {isLoading ? <Activity className="h-5 w-5 animate-spin" /> : stat.icon}
                   </div>
                   <div className="text-2xl font-bold text-gray-900 dark:text-white">
                     {stat.value}
@@ -237,6 +237,12 @@ export default function Index() {
                   <div className="text-sm text-gray-600 dark:text-gray-400 font-bengali">
                     {stat.label}
                   </div>
+                  {stat.trend && !isLoading && (
+                    <div className="text-xs text-green-600 mt-1 flex items-center font-bengali">
+                      <TrendingUp className="h-3 w-3 mr-1" />
+                      {stat.trend}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
@@ -304,7 +310,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 dark:text-gray-300">
-                  স্থানীয় সময় অনুযায়��� স্বয়ংক্রি��় নামাজে��� ওয়াক্ত আপডেট
+                  স্থানীয় সময় অনুযায়��� স্বয়ংক্রি��় নামাজে��� ওয়াক��ত আপডেট
                 </p>
               </CardContent>
             </Card>
@@ -332,7 +338,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 dark:text-gray-300">
-                  নৈ��িক আচরণ ও ইসলামিক মূল্যবোধের মূল্যায়���
+                  নৈ��িক আচরণ ও ইসলামিক মূল্যবোধের মূল্যায়ন
                 </p>
               </CardContent>
             </Card>
