@@ -10,6 +10,7 @@ const notices: Notice[] = [
     title: 'ঈদুল ফিতর ছুটির নোটিশ',
     content: 'আগামী ঈদুল ফিতর উপলক্ষে মাদ্���াসা ৭ দিন বন্ধ থাকবে। ছুটির পর ক্লাস নিয়মিত হবে।',
     type: 'holiday',
+    priority: 'high',
     targetAudience: 'all',
     publishDate: new Date('2024-12-10'),
     expiryDate: new Date('2024-12-25'),
