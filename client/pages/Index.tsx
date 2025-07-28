@@ -60,14 +60,14 @@ export default function Index() {
     {
       icon: <BookOpen className="h-8 w-8 text-purple-600" />,
       title: "লাইব্রেরি সিস্টেম",
-      description: "ডিজিটাল বুক ক্যাটালগ এবং ইস্যু-র���টার্��� ব্যবস্থা",
+      description: "ডিজিটাল বুক ক্যাটালগ এবং ইস্যু-রিটার্ন ব্যবস্থা",
       color: "bg-purple-50 dark:bg-purple-950",
       link: "/library",
     },
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
       title: "হোস্টেল ব্যবস্থাপ��া",
-      description: "রুম অ্যালোকেশন, মেস ���্যবস্থ����পনা এবং হোস্টেল সেবা",
+      description: "রুম অ্যালোকেশন, মেস ���্যবস্থ����পন��� এবং হোস্টেল সেবা",
       color: "bg-orange-50 dark:bg-orange-950",
       link: "/hostel",
     },
