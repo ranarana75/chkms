@@ -130,6 +130,7 @@ export default function IslamicDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
+      <Navigation />
       {/* Header */}
       <header className="border-b border-green-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
@@ -349,7 +350,7 @@ export default function IslamicDashboard() {
                     </div>
                     <p className="text-sm text-gray-600 mb-1">{event.time}</p>
                     {event.speaker && (
-                      <p className="text-sm text-islamic-green">বক্তা: {event.speaker}</p>
+                      <p className="text-sm text-islamic-green">ব���্তা: {event.speaker}</p>
                     )}
                     {event.venue && (
                       <p className="text-sm text-gray-500">স্থান: {event.venue}</p>
