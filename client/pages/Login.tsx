@@ -22,11 +22,11 @@ export default function LoginPage() {
           </Link>
           <div className="flex items-center justify-center space-x-3 mb-4">
             <div className="p-3 bg-white rounded-lg">
-              <Mosque className="h-8 w-8 text-islamic-green" />
+              <School className="h-8 w-8 text-islamic-green" />
             </div>
             <div className="text-left">
               <h1 className="text-2xl font-bold text-white">CHKMS</h1>
-              <p className="text-sm text-islamic-gold">চুনতি হাকিমিয়া কামিল ম���দ্রাসা</p>
+              <p className="text-sm text-islamic-gold">চুনতি হাকিমিয়া কামিল মাদ্রাসা</p>
             </div>
           </div>
         </div>
@@ -134,7 +134,7 @@ export default function LoginPage() {
                   asChild
                   className="border-islamic-green text-islamic-green hover:bg-islamic-green hover:text-white"
                 >
-                  <Link to="/teacher">শিক্ষক ডেম���</Link>
+                  <Link to="/teacher">শিক্ষক ডেমো</Link>
                 </Button>
                 <Button 
                   variant="outline" 
