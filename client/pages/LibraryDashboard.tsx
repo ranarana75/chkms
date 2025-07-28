@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Textarea } from '../components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+import Navigation from '../components/Navigation';
 import { 
-  ArrowLeft, 
   BookOpen, 
   Users,
   Clock,
@@ -15,223 +17,547 @@ import {
   Download,
   AlertTriangle,
   CheckCircle,
-  School,
+  Eye,
+  Edit,
+  Trash2,
   Library,
   FileText
-} from "lucide-react";
+} from 'lucide-react';
 
-export default function LibraryDashboard() {
-  const [libraryData, setLibraryData] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [loading, setLoading] = useState(true);
+interface Book {
+  id: string;
+  title: string;
+  author: string;
+  isbn: string;
+  category: string;
+  language: 'bangla' | 'arabic' | 'english' | 'urdu';
+  totalCopies: number;
+  availableCopies: number;
+  issuedCopies: number;
+}
+
+interface LibraryIssue {
+  id: string;
+  bookId: string;
+  bookTitle: string;
+  studentId: string;
+  studentName: string;
+  issueDate: string;
+  dueDate: string;
+  returnDate?: string;
+  fine?: number;
+  status: 'issued' | 'returned' | 'overdue';
+}
+
+interface LibraryStats {
+  totalBooks: number;
+  totalStudents: number;
+  booksIssued: number;
+  overdueBooks: number;
+  totalFines: number;
+  popularBooks: number;
+}
+
+const LibraryDashboard: React.FC = () => {
+  const [libraryStats, setLibraryStats] = useState<LibraryStats | null>(null);
+  const [books, setBooks] = useState<Book[]>([]);
+  const [issues, setIssues] = useState<LibraryIssue[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [isAddBookOpen, setIsAddBookOpen] = useState(false);
+  const [isIssueBookOpen, setIsIssueBookOpen] = useState(false);
+  const [newBook, setNewBook] = useState({
+    title: '',
+    author: '',
+    isbn: '',
+    category: '',
+    language: '',
+    totalCopies: ''
+  });
+  const [issueBook, setIssueBook] = useState({
+    bookId: '',
+    studentId: '',
+    studentName: ''
+  });
 
   useEffect(() => {
-    loadLibraryData();
+    fetchLibraryData();
+    fetchBooks();
+    fetchIssues();
   }, []);
 
-  const loadLibraryData = () => {
-    setLoading(true);
-    // Mock data load
-    setTimeout(() => {
-      setLibraryData({
-        totalBooks: 2500,
-        availableBooks: 2150,
-        issuedBooks: 350,
-        overdueBooks: 25,
-        totalMembers: 1247,
-        categories: ["তাফসীর", "হাদিস", "ফিকহ", "আরবি সাহিত্য", "বাংলা", "ইংরেজি", "গণিত", "বিজ্ঞান"],
-        recentIssues: [
-          {
-            id: "ISU001",
-            studentName: "মোহাম্মদ আবদুল্লাহ",
-            bookTitle: "তাফসীরে ইবনে কাসীর",
-            issueDate: "২০২৪-১২-০১",
-            dueDate: "২০২৪-১২-১৫",
-            status: "issued"
-          },
-          {
-            id: "ISU002",
-            studentName: "আবুল কাসেম",
-            bookTitle: "সহীহ বুখারী",
-            issueDate: "২০২৪-১১-২৮",
-            dueDate: "২০২৪-১২-১২",
-            status: "returned"
-          },
-          {
-            id: "ISU003",
-            studentName: "মোহ��ম্মদ ইব্রাহিম",
-            bookTitle: "আরবি ব্যাকরণ",
-            issueDate: "২০২৪-১২-০৩",
-            dueDate: "২০২৪-১২-১৭",
-            status: "issued"
-          }
-        ],
-        popularBooks: [
-          {
-            id: "BK001",
-            title: "তাফসীরে ইবনে কাসীর",
-            author: "ইমাম ইবনে কাসীর",
-            category: "তাফসীর",
-            totalCopies: 10,
-            availableCopies: 7,
-            issueCount: 45
-          },
-          {
-            id: "BK002",
-            title: "সহীহ বুখারী",
-            author: "ইমাম বুখারী",
-            category: "হাদিস",
-            totalCopies: 15,
-            availableCopies: 12,
-            issueCount: 38
-          },
-          {
-            id: "BK003",
-            title: "আরবি ব্যাকরণ",
-            author: "ড. মুহাম্মদ আব্দুল্লাহ",
-            category: "আরবি সাহিত্য",
-            totalCopies: 20,
-            availableCopies: 18,
-            issueCount: 32
-          }
-        ],
-        overdueList: [
-          {
-            id: "ISU004",
-            studentName: "আব্দুর রহমান",
-            bookTitle: "ফিকহুস সুন্নাহ",
-            dueDate: "২০২৪-১১-৩০",
-            overdueDays: 15,
-            fine: 75
-          },
-          {
-            id: "ISU005",
-            studentName: "মোহাম্মদ হাসান",
-            bookTitle: "আল-আকীদাহ",
-            dueDate: "২০২৪-১২-০৫",
-            overdueDays: 10,
-            fine: 50
-          }
-        ]
+  const fetchLibraryData = async () => {
+    try {
+      const response = await fetch('/api/library/dashboard');
+      const data = await response.json();
+      setLibraryStats(data.stats);
+    } catch (error) {
+      console.error('Error fetching library data:', error);
+      // Mock data for demo
+      setLibraryStats({
+        totalBooks: 2850,
+        totalStudents: 1247,
+        booksIssued: 485,
+        overdueBooks: 23,
+        totalFines: 4500,
+        popularBooks: 156
       });
-      setLoading(false);
-    }, 1000);
+    }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-islamic-green"></div>
-      </div>
-    );
+  const fetchBooks = async () => {
+    try {
+      const response = await fetch('/api/library/books');
+      const data = await response.json();
+      setBooks(data);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+      // Mock data for demo
+      setBooks([
+        {
+          id: '1',
+          title: 'তাফসীরে ইবনে কাসীর',
+          author: 'ইমাম ইবনে কাসীর',
+          isbn: '978-984-123-456-7',
+          category: 'islamic',
+          language: 'bangla',
+          totalCopies: 10,
+          availableCopies: 7,
+          issuedCopies: 3
+        },
+        {
+          id: '2',
+          title: 'সহীহ বুখারী',
+          author: 'ইমাম বুখারী',
+          isbn: '978-984-123-457-8',
+          category: 'hadith',
+          language: 'arabic',
+          totalCopies: 15,
+          availableCopies: 12,
+          issuedCopies: 3
+        },
+        {
+          id: '3',
+          title: 'বাংলা ব্যাকরণ',
+          author: 'ড. মুহাম্মদ শহীদুল্লাহ',
+          isbn: '978-984-123-458-9',
+          category: 'academic',
+          language: 'bangla',
+          totalCopies: 20,
+          availableCopies: 15,
+          issuedCopies: 5
+        }
+      ]);
+    }
+  };
+
+  const fetchIssues = async () => {
+    try {
+      const response = await fetch('/api/library/issues');
+      const data = await response.json();
+      setIssues(data);
+    } catch (error) {
+      console.error('Error fetching issues:', error);
+      // Mock data for demo
+      setIssues([
+        {
+          id: '1',
+          bookId: '1',
+          bookTitle: 'তাফসীরে ইবনে কাসীর',
+          studentId: 'std-001',
+          studentName: 'মোহাম্মদ আব্দুল্লাহ',
+          issueDate: '2024-11-15',
+          dueDate: '2024-12-15',
+          status: 'issued'
+        },
+        {
+          id: '2',
+          bookId: '2',
+          bookTitle: 'সহীহ বুখারী',
+          studentId: 'std-002',
+          studentName: 'ফাতিমা খাতুন',
+          issueDate: '2024-11-10',
+          dueDate: '2024-12-10',
+          status: 'overdue',
+          fine: 50
+        },
+        {
+          id: '3',
+          bookId: '3',
+          bookTitle: 'বাংলা ব্যাকরণ',
+          studentId: 'std-003',
+          studentName: 'আবু বকর সিদ্দিক',
+          issueDate: '2024-11-20',
+          dueDate: '2024-12-20',
+          returnDate: '2024-12-05',
+          status: 'returned'
+        }
+      ]);
+    }
+  };
+
+  const handleAddBook = async () => {
+    try {
+      const response = await fetch('/api/library/books', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...newBook,
+          totalCopies: parseInt(newBook.totalCopies),
+          availableCopies: parseInt(newBook.totalCopies),
+          issuedCopies: 0
+        }),
+      });
+
+      if (response.ok) {
+        setIsAddBookOpen(false);
+        setNewBook({
+          title: '',
+          author: '',
+          isbn: '',
+          category: '',
+          language: '',
+          totalCopies: ''
+        });
+        fetchBooks();
+        fetchLibraryData();
+      }
+    } catch (error) {
+      console.error('Error adding book:', error);
+    }
+  };
+
+  const handleIssueBook = async () => {
+    try {
+      const response = await fetch('/api/library/issue', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...issueBook,
+          issueDate: new Date().toISOString().split('T')[0],
+          dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+        }),
+      });
+
+      if (response.ok) {
+        setIsIssueBookOpen(false);
+        setIssueBook({
+          bookId: '',
+          studentId: '',
+          studentName: ''
+        });
+        fetchIssues();
+        fetchBooks();
+        fetchLibraryData();
+      }
+    } catch (error) {
+      console.error('Error issuing book:', error);
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'issued':
+        return 'bg-blue-100 text-blue-800';
+      case 'returned':
+        return 'bg-green-100 text-green-800';
+      case 'overdue':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'issued':
+        return 'ইস্যুকৃত';
+      case 'returned':
+        return 'ফেরত';
+      case 'overdue':
+        return 'অতিরিক্ত সময়';
+      default:
+        return status;
+    }
+  };
+
+  const getCategoryText = (category: string) => {
+    switch (category) {
+      case 'islamic':
+        return 'ইসলামিক';
+      case 'hadith':
+        return 'হাদিস';
+      case 'academic':
+        return 'একাডেমিক';
+      case 'literature':
+        return 'সাহিত্য';
+      case 'science':
+        return 'বিজ্ঞান';
+      default:
+        return category;
+    }
+  };
+
+  const getLanguageText = (language: string) => {
+    switch (language) {
+      case 'bangla':
+        return 'বাংলা';
+      case 'arabic':
+        return 'আরবি';
+      case 'english':
+        return 'ইংরেজি';
+      case 'urdu':
+        return 'উর্দু';
+      default:
+        return language;
+    }
+  };
+
+  const filteredBooks = books.filter(book => {
+    const matchesSearch = book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         book.author.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || book.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  if (!libraryStats) {
+    return <div className="flex justify-center items-center h-64">লোড হচ্ছে...</div>;
   }
 
-  const { 
-    totalBooks, 
-    availableBooks, 
-    issuedBooks, 
-    overdueBooks, 
-    totalMembers,
-    categories,
-    recentIssues,
-    popularBooks,
-    overdueList
-  } = libraryData;
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
-      {/* Header */}
-      <header className="border-b border-green-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/admin" className="inline-flex items-center text-islamic-green hover:text-islamic-green-dark transition-colors">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              ড্যাশবোর্ডে ফিরে যান
-            </Link>
-            <div className="flex items-center space-x-2">
-              <School className="h-6 w-6 text-islamic-green" />
-              <span className="font-bold text-islamic-green">CHKMS</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      <div className="container mx-auto p-6 space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">লাইব্রেরি ব্যবস্থাপনা</h1>
-            <p className="text-gray-600">বই ইস্যু, ফেরত এবং লাইব্রেরি পরিচালনা</p>
+            <h1 className="text-3xl font-bold text-gray-900">লাইব্রেরি ব্যবস্থাপনা</h1>
+            <p className="text-gray-600 mt-1">বই ক্যাটালগ এবং ইস্যু-রিটার্ন ব্যবস্থাপনা</p>
           </div>
-          <div className="flex items-center space-x-4">
-            <Button className="bg-islamic-green hover:bg-islamic-green-dark">
-              <Plus className="h-4 w-4 mr-2" />
-              নতুন বই যোগ করুন
-            </Button>
+          <div className="flex space-x-2">
             <Button variant="outline">
-              <Download className="h-4 w-4 mr-2" />
-              রিপোর্ট ডাউনলোড
+              <Download className="w-4 h-4 mr-2" />
+              রিপোর্ট
             </Button>
+            <Dialog open={isIssueBookOpen} onOpenChange={setIsIssueBookOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  <Plus className="w-4 h-4 mr-2" />
+                  বই ইস্যু
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>বই ইস্যু করুন</DialogTitle>
+                  <DialogDescription>
+                    শিক্ষার্থীকে বই ইস্যু করার জন্য তথ্য প্রদান করুন
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="issueBookId">বই নির্বাচন</Label>
+                    <Select value={issueBook.bookId} onValueChange={(value) => setIssueBook({ ...issueBook, bookId: value })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="বই নির্বাচন করুন" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {books.filter(book => book.availableCopies > 0).map((book) => (
+                          <SelectItem key={book.id} value={book.id}>
+                            {book.title} - {book.author} (উপলব্ধ: {book.availableCopies})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="issueStudentId">শিক্ষার্থী আইডি</Label>
+                    <Input
+                      id="issueStudentId"
+                      value={issueBook.studentId}
+                      onChange={(e) => setIssueBook({ ...issueBook, studentId: e.target.value })}
+                      placeholder="std-001"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="issueStudentName">শিক্ষার্থীর নাম</Label>
+                    <Input
+                      id="issueStudentName"
+                      value={issueBook.studentName}
+                      onChange={(e) => setIssueBook({ ...issueBook, studentName: e.target.value })}
+                      placeholder="শিক্ষার্থীর নাম"
+                    />
+                  </div>
+                  <Button onClick={handleIssueBook} className="w-full bg-blue-600 hover:bg-blue-700">
+                    বই ইস্যু করুন
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+            <Dialog open={isAddBookOpen} onOpenChange={setIsAddBookOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-green-600 hover:bg-green-700">
+                  <Plus className="w-4 h-4 mr-2" />
+                  নতুন বই
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>নতুন বই যোগ করুন</DialogTitle>
+                  <DialogDescription>
+                    লাইব্রেরিতে নতুন বইয়ের তথ্য প্রদান করুন
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="bookTitle">বইয়ের নাম</Label>
+                    <Input
+                      id="bookTitle"
+                      value={newBook.title}
+                      onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
+                      placeholder="বইয়ের নাম"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="bookAuthor">লেখক</Label>
+                    <Input
+                      id="bookAuthor"
+                      value={newBook.author}
+                      onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
+                      placeholder="লেখকের নাম"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="bookIsbn">ISBN</Label>
+                    <Input
+                      id="bookIsbn"
+                      value={newBook.isbn}
+                      onChange={(e) => setNewBook({ ...newBook, isbn: e.target.value })}
+                      placeholder="978-984-123-456-7"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="bookCategory">বিভাগ</Label>
+                      <Select value={newBook.category} onValueChange={(value) => setNewBook({ ...newBook, category: value })}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="বিভাগ নির্বা��ন করুন" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="islamic">ইসলামিক</SelectItem>
+                          <SelectItem value="hadith">হাদিস</SelectItem>
+                          <SelectItem value="academic">একাডেমিক</SelectItem>
+                          <SelectItem value="literature">সাহিত্য</SelectItem>
+                          <SelectItem value="science">বিজ্ঞান</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="bookLanguage">ভাষা</Label>
+                      <Select value={newBook.language} onValueChange={(value) => setNewBook({ ...newBook, language: value })}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="ভাষা নির্বাচন করুন" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="bangla">বাংলা</SelectItem>
+                          <SelectItem value="arabic">আরবি</SelectItem>
+                          <SelectItem value="english">ইংরেজি</SelectItem>
+                          <SelectItem value="urdu">উর্দু</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="bookCopies">কপি সংখ্যা</Label>
+                    <Input
+                      id="bookCopies"
+                      type="number"
+                      value={newBook.totalCopies}
+                      onChange={(e) => setNewBook({ ...newBook, totalCopies: e.target.value })}
+                      placeholder="১০"
+                    />
+                  </div>
+                  <Button onClick={handleAddBook} className="w-full bg-green-600 hover:bg-green-700">
+                    বই যোগ করুন
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-          <Card className="border-blue-200 bg-blue-50">
-            <CardContent className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <BookOpen className="h-8 w-8 text-islamic-blue" />
+                <BookOpen className="w-8 h-8 text-blue-600" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-blue">{totalBooks.toLocaleString()}</p>
-                  <p className="text-sm text-gray-600">মোট বই</p>
+                  <p className="text-sm font-medium text-gray-600">মোট বই</p>
+                  <p className="text-2xl font-bold text-gray-900">{libraryStats.totalBooks}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-green-200 bg-green-50">
-            <CardContent className="p-6">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-8 w-8 text-islamic-green" />
+                <Users className="w-8 h-8 text-green-600" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-green">{availableBooks.toLocaleString()}</p>
-                  <p className="text-sm text-gray-600">উপলব্ধ বই</p>
+                  <p className="text-sm font-medium text-gray-600">নিবন্ধিত শিক্ষার্থী</p>
+                  <p className="text-2xl font-bold text-gray-900">{libraryStats.totalStudents}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-yellow-200 bg-yellow-50">
-            <CardContent className="p-6">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <Library className="h-8 w-8 text-islamic-gold" />
+                <FileText className="w-8 h-8 text-purple-600" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-gold">{issuedBooks}</p>
-                  <p className="text-sm text-gray-600">ইস্যুকৃত বই</p>
+                  <p className="text-sm font-medium text-gray-600">ইস্যুকৃত বই</p>
+                  <p className="text-2xl font-bold text-gray-900">{libraryStats.booksIssued}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-red-200 bg-red-50">
-            <CardContent className="p-6">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <AlertTriangle className="h-8 w-8 text-red-600" />
+                <AlertTriangle className="w-8 h-8 text-red-600" />
                 <div>
-                  <p className="text-2xl font-bold text-red-600">{overdueBooks}</p>
-                  <p className="text-sm text-gray-600">বিলম্বিত বই</p>
+                  <p className="text-sm font-medium text-gray-600">বিলম্বিত বই</p>
+                  <p className="text-2xl font-bold text-gray-900">{libraryStats.overdueBooks}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-purple-200 bg-purple-50">
-            <CardContent className="p-6">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <Users className="h-8 w-8 text-purple-600" />
+                <Clock className="w-8 h-8 text-orange-600" />
                 <div>
-                  <p className="text-2xl font-bold text-purple-600">{totalMembers.toLocaleString()}</p>
-                  <p className="text-sm text-gray-600">সদস্য সংখ্যা</p>
+                  <p className="text-sm font-medium text-gray-600">জরিমানা</p>
+                  <p className="text-2xl font-bold text-gray-900">৳{libraryStats.totalFines}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="w-8 h-8 text-emerald-600" />
+                <div>
+                  <p className="text-sm font-medium text-gray-600">জনপ্রিয় বই</p>
+                  <p className="text-2xl font-bold text-gray-900">{libraryStats.popularBooks}</p>
                 </div>
               </div>
             </CardContent>
@@ -239,197 +565,148 @@ export default function LibraryDashboard() {
         </div>
 
         {/* Search and Filter */}
-        <Card className="mb-8">
+        <Card>
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Search className="h-5 w-5 text-islamic-blue" />
-              <span>বই অনুসন্ধান</span>
-            </CardTitle>
+            <CardTitle>বই অনুসন্ধান</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="বইয়ের নাম, লেখক বা ISBN"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+            <div className="flex space-x-4">
+              <div className="flex-1">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    placeholder="বই বা লেখকের নাম অনুসন্ধান করুন..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
               </div>
               <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger>
-                  <SelectValue placeholder="ক্যাটেগরি নির্বাচন করুন" />
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="বিভাগ নির্বাচন করুন" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">সব ক্যাটেগরি</SelectItem>
-                  {categories.map(category => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="all">সব বিভাগ</SelectItem>
+                  <SelectItem value="islamic">ইসলামিক</SelectItem>
+                  <SelectItem value="hadith">হাদিস</SelectItem>
+                  <SelectItem value="academic">একাডেমিক</SelectItem>
+                  <SelectItem value="literature">সাহিত্য</SelectItem>
+                  <SelectItem value="science">বিজ্ঞান</SelectItem>
                 </SelectContent>
               </Select>
-              <Button className="bg-islamic-blue hover:bg-islamic-blue-dark">
-                <Search className="h-4 w-4 mr-2" />
-                অনুসন্ধান করুন
-              </Button>
             </div>
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Recent Issues */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center space-x-2">
-                    <Clock className="h-5 w-5 text-islamic-green" />
-                    <span>সাম্প্রতিক ইস্যু</span>
-                  </CardTitle>
-                  <Button variant="outline" size="sm">
-                    সব দেখুন
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentIssues.map((issue, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 rounded-lg border bg-gray-50">
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-full ${
-                          issue.status === 'issued' 
-                            ? 'bg-yellow-100 text-yellow-600' 
-                            : 'bg-green-100 text-green-600'
-                        }`}>
-                          {issue.status === 'issued' ? 
-                            <Clock className="h-4 w-4" /> : 
-                            <CheckCircle className="h-4 w-4" />
-                          }
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-900">{issue.bookTitle}</p>
-                          <p className="text-sm text-gray-600">{issue.studentName}</p>
-                          <p className="text-xs text-gray-500">
-                            ইস্যু: {issue.issueDate} • ফেরত: {issue.dueDate}
-                          </p>
-                        </div>
-                      </div>
-                      <Badge variant={issue.status === 'issued' ? 'default' : 'outline'}>
-                        {issue.status === 'issued' ? 'ইস্যুকৃত' : 'ফেরত'}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Popular Books */}
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <BookOpen className="h-5 w-5 text-islamic-gold" />
-                  <span>জনপ্রিয় বই</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {popularBooks.map((book, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
-                      <div>
-                        <h3 className="font-semibold text-gray-900">{book.title}</h3>
-                        <p className="text-sm text-gray-600">{book.author}</p>
-                        <div className="flex items-center space-x-2 mt-1">
-                          <Badge variant="outline" className="text-xs">{book.category}</Badge>
-                          <span className="text-xs text-gray-500">
-                            {book.issueCount} বার ইস্যু
-                          </span>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium">
-                          {book.availableCopies}/{book.totalCopies} উপলব্ধ
-                        </p>
-                        <div className="w-20 bg-gray-200 rounded-full h-2 mt-1">
-                          <div 
-                            className="bg-islamic-green h-2 rounded-full" 
-                            style={{ width: `${(book.availableCopies / book.totalCopies) * 100}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Overdue Books */}
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <AlertTriangle className="h-5 w-5 text-red-600" />
-                  <span>বিলম্বিত বই</span>
-                </CardTitle>
-                <CardDescription>
-                  যেসব বই নির্ধারিত সময়ে ফেরত দেওয়া হয়নি
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {overdueList.map((item, index) => (
-                    <div key={index} className="p-3 border rounded-lg bg-red-50">
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-medium text-gray-900">{item.bookTitle}</h4>
-                        <Badge variant="destructive" className="text-xs">
-                          {item.overdueDays} দিন
+        {/* Books Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>বইয়ের তালিকা</CardTitle>
+            <CardDescription>লাইব্রেরির সকল বইয়ের তালিকা এবং প্রাপ্যতা</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-2">বইয়ের নাম</th>
+                    <th className="text-left p-2">লেখক</th>
+                    <th className="text-left p-2">বিভাগ</th>
+                    <th className="text-left p-2">ভাষা</th>
+                    <th className="text-left p-2">মোট কপি</th>
+                    <th className="text-left p-2">উপলব্ধ</th>
+                    <th className="text-left p-2">ইস্যুকৃত</th>
+                    <th className="text-left p-2">কার্যক্রম</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredBooks.map((book) => (
+                    <tr key={book.id} className="border-b hover:bg-gray-50">
+                      <td className="p-2 font-medium">{book.title}</td>
+                      <td className="p-2">{book.author}</td>
+                      <td className="p-2">{getCategoryText(book.category)}</td>
+                      <td className="p-2">{getLanguageText(book.language)}</td>
+                      <td className="p-2">{book.totalCopies}</td>
+                      <td className="p-2">
+                        <Badge className={book.availableCopies > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                          {book.availableCopies}
                         </Badge>
-                      </div>
-                      <p className="text-sm text-gray-600 mb-1">{item.studentName}</p>
-                      <p className="text-xs text-gray-500">শেষ তারিখ: {item.dueDate}</p>
-                      <div className="flex justify-between items-center mt-2">
-                        <span className="text-sm font-medium text-red-600">
-                          জরিমানা: ৳{item.fine}
-                        </span>
-                        <Button size="sm" variant="outline" className="text-xs">
-                          রিমাইন্ডার
-                        </Button>
-                      </div>
-                    </div>
+                      </td>
+                      <td className="p-2">{book.issuedCopies}</td>
+                      <td className="p-2">
+                        <div className="flex space-x-2">
+                          <Button size="sm" variant="outline">
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          <Button size="sm" variant="outline">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
                   ))}
-                </div>
-              </CardContent>
-            </Card>
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
 
-            {/* Quick Actions */}
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle>দ্রুত অ্যাকশন</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button className="w-full bg-islamic-green hover:bg-islamic-green-dark justify-start">
-                  <Plus className="h-4 w-4 mr-2" />
-                  বই ইস্যু করুন
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <CheckCircle className="h-4 w-4 mr-2" />
-                  বই ফেরত নিন
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <BookOpen className="h-4 w-4 mr-2" />
-                  নতুন বই যোগ করুন
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <FileText className="h-4 w-4 mr-2" />
-                  লাইব্রেরি রিপোর্ট
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+        {/* Recent Issues */}
+        <Card>
+          <CardHeader>
+            <CardTitle>সাম্প্রতিক ইস্যু/রিটার্ন</CardTitle>
+            <CardDescription>গত ৩০ দিনের বই ইস্যু এবং রিটার্নের তালিকা</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-2">বইয়ের নাম</th>
+                    <th className="text-left p-2">শিক্ষার্থী</th>
+                    <th className="text-left p-2">ইস্যুর তারিখ</th>
+                    <th className="text-left p-2">ফেরতের তারিখ</th>
+                    <th className="text-left p-2">জরিমানা</th>
+                    <th className="text-left p-2">অবস্থা</th>
+                    <th className="text-left p-2">কার্যক্রম</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {issues.map((issue) => (
+                    <tr key={issue.id} className="border-b hover:bg-gray-50">
+                      <td className="p-2 font-medium">{issue.bookTitle}</td>
+                      <td className="p-2">{issue.studentName}</td>
+                      <td className="p-2">{new Date(issue.issueDate).toLocaleDateString('bn-BD')}</td>
+                      <td className="p-2">{new Date(issue.dueDate).toLocaleDateString('bn-BD')}</td>
+                      <td className="p-2">{issue.fine ? `৳${issue.fine}` : '-'}</td>
+                      <td className="p-2">
+                        <Badge className={getStatusColor(issue.status)}>
+                          {getStatusText(issue.status)}
+                        </Badge>
+                      </td>
+                      <td className="p-2">
+                        <div className="flex space-x-2">
+                          <Button size="sm" variant="outline">
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          {issue.status === 'issued' && (
+                            <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                              ফেরত
+                            </Button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
-}
+};
+
+export default LibraryDashboard;
