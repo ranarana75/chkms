@@ -80,6 +80,17 @@ export function createServer() {
   app.get("/api/islamic/calendar", getIslamicCalendar);
   app.get("/api/islamic/tajweed", getTajweedLessons);
 
+  // Hostel routes
+  app.get("/api/hostel/dashboard", getHostelDashboard);
+  app.get("/api/hostel/reports", getHostelReports);
+
+  // Transport routes
+  app.get("/api/transport/dashboard", getTransportDashboard);
+  app.get("/api/transport/users", getTransportUsers);
+  app.post("/api/transport/users", addTransportUser);
+  app.delete("/api/transport/users", removeTransportUser);
+  app.get("/api/transport/reports", getTransportReports);
+
   // Examination routes
   app.use("/api/examination", examinationRoutes);
 
