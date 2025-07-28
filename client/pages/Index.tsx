@@ -2,16 +2,16 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  BookOpen, 
-  Users, 
-  GraduationCap, 
-  Calculator, 
-  Building2, 
-  Bus, 
-  Heart, 
+import {
+  BookOpen,
+  Users,
+  GraduationCap,
+  Calculator,
+  Building2,
+  Bus,
+  Heart,
   Shield,
-  Mosque,
+  School,
   Clock,
   Star,
   ArrowRight,
@@ -25,13 +25,13 @@ export default function Index() {
     {
       icon: <Users className="h-8 w-8 text-islamic-green" />,
       title: "শিক্ষার্থী ব্যবস্থাপনা",
-      description: "সম্পূর্ণ ছাত্র তথ্য, উপস্থিতি এবং পারফরম্য��ন্স ট্র্যাকিং",
+      description: "সম্পূর্ণ ছাত্র তথ্য, উপস্থিতি এবং পারফরম্যান্স ট্র্যাকিং",
       color: "bg-green-50 dark:bg-green-950"
     },
     {
       icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
       title: "শিক্ষক পোর্টাল",
-      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যাশবোর্ড",
+      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্��াশবোর্ড",
       color: "bg-blue-50 dark:bg-blue-950"
     },
     {
@@ -55,7 +55,7 @@ export default function Index() {
     {
       icon: <Bus className="h-8 w-8 text-indigo-600" />,
       title: "ট্রান্সপোর্ট সিস্টেম",
-      description: "রুট পরিকল্পনা, GPS ট্র্যাকিং এবং নিরাপত্তা",
+      description: "রুট পরিক��্পনা, GPS ট্র্যাকিং এবং নিরাপত্তা",
       color: "bg-indigo-50 dark:bg-indigo-950"
     }
   ];
@@ -99,7 +99,7 @@ export default function Index() {
         <div className="container mx-auto text-center">
           <div className="flex justify-center mb-6">
             <Badge className="bg-islamic-gold/10 text-islamic-gold border-islamic-gold/20 px-6 py-2 text-lg">
-              আধুনিক মাদ্রাসা ব্যবস্থাপনা
+              আধুনিক মাদ্রাসা ব্যব��্থাপনা
             </Badge>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
