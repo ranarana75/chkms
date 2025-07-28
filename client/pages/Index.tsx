@@ -42,6 +42,12 @@ export default function Index() {
       color: "bg-yellow-50 dark:bg-yellow-950"
     },
     {
+      icon: <FileText className="h-8 w-8 text-red-600" />,
+      title: "পরীক্ষা ব্যবস্থাপনা",
+      description: "পরীক্ষার সময়সূচি, প্রশ্নপত্র এবং ফলাফল ব্যবস্থাপনা",
+      color: "bg-red-50 dark:bg-red-950"
+    },
+    {
       icon: <BookOpen className="h-8 w-8 text-purple-600" />,
       title: "লাইব্রেরি সিস্টেম",
       description: "ডিজিটাল বুক ক্যাটালগ এবং ইস্যু-রিটার্��� ব্যবস্থা",
@@ -100,7 +106,7 @@ export default function Index() {
         <div className="container mx-auto text-center">
           <div className="flex justify-center mb-6">
             <Badge className="bg-islamic-gold/10 text-islamic-gold border-islamic-gold/20 px-6 py-2 text-lg">
-              আধুনিক মাদ্রাসা ব্যবস্থা��না
+              আধুনিক মাদ্রাসা ব্যবস্থাপনা
             </Badge>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
