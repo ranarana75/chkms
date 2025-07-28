@@ -13,7 +13,7 @@ const router = express.Router();
 const examinations: Examination[] = [
   {
     id: '1',
-    name: 'বার্ষিক পরীক্ষা ২০২৪',
+    name: 'বার্ষিক পরীক্���া ২০২৪',
     type: 'annual',
     class: 'class-8',
     startDate: '2024-12-15',
@@ -61,7 +61,7 @@ const examSchedules: ExamSchedule[] = [
     startTime: '09:00',
     endTime: '12:00',
     duration: 180,
-    room: 'কক্���-১০১',
+    room: 'কক্ষ-১০১',
     invigilator: 'মাওলানা আব্দুল করিম',
     marks: 100
   },
@@ -110,8 +110,8 @@ const questions: Question[] = [
     subject: 'আরবি',
     questionText: 'আল-কুরআনের প্রথম সূরা কোনটি?',
     questionType: 'mcq',
-    options: ['সূরা আল-ফাতিহা', 'সূরা আল-বাকারা', 'স���রা আলে-ইমরান', 'সূরা আন-নিসা'],
-    correctAnswer: 'সূরা আল-ফাতিহা',
+    options: ['সূরা আল-ফাতিহা', 'সূরা আল-বাকারা', 'সূরা আলে-ইমরান', 'সূরা আন-নিসা'],
+    correctAnswer: 'সূ���া আল-ফাতিহা',
     marks: 5,
     difficulty: 'easy'
   },
@@ -417,7 +417,7 @@ router.get('/examinations/:id/statistics', (req, res) => {
   const { id } = req.params;
   const filteredResults = examResults.filter(result => result.examinationId === id);
   
-  if (examResults.length === 0) {
+  if (filteredResults.length === 0) {
     return res.json({
       totalStudents: 0,
       passedStudents: 0,
