@@ -4,6 +4,7 @@ import cors from "cors";
 import { handleDemo } from "./routes/demo";
 import { handleLogin, handleLogout, handleVerifyToken } from "./routes/auth";
 import { getStudentDashboard, getStudentProfile, getStudentAttendance, getStudentMarks, getStudentFees } from "./routes/student";
+import { getTeacherDashboard, getTeacherProfile, getTeacherClasses, markAttendance, enterMarks, getStudentsByClass, createAssignment } from "./routes/teacher";
 
 export function createServer() {
   const app = express();
