@@ -8,8 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useLocalData } from '@/hooks/useLocalData';
-import { useNotifications } from '@/hooks/useNotifications';
+import { useLocalData, useNotifications } from '@/hooks/useLocalData';
 import { Bus, Users, MapPin, Clock, Plus, Edit, Trash2, Route, AlertCircle } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 
@@ -518,7 +517,7 @@ export default function TransportDashboard() {
                               </p>
                               <p className="text-sm text-gray-600">
                                 <Users className="w-4 h-4 inline mr-1" />
-                                {studentsCount} জন শিক্ষার্থী
+                                {studentsCount} জন শিক্ষার��থী
                               </p>
                             </div>
                             <div>
@@ -600,7 +599,7 @@ export default function TransportDashboard() {
                             </div>
                             <div>
                               <p className="text-gray-600">অভিভাবকের ফোন: {user.parentPhone}</p>
-                              <p className="text-gray-600">ভর্তির তা��িখ: {new Date(user.enrollmentDate).toLocaleDateString('bn-BD')}</p>
+                              <p className="text-gray-600">ভর্তির তারিখ: {new Date(user.enrollmentDate).toLocaleDateString('bn-BD')}</p>
                               <p className="text-gray-600">মাসিক ভাড়া: ৳{route?.fare || 0}</p>
                             </div>
                           </div>
@@ -928,7 +927,7 @@ function TransportUserForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="studentId">শিক্ষার্থী আইডি</Label>
+          <Label htmlFor="studentId">শিক্ষার্থী আ���ডি</Label>
           <Input
             id="studentId"
             value={formData.studentId}
