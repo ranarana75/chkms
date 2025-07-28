@@ -99,6 +99,13 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --islamic-green: 138 43% 35%;
+    --islamic-green-dark: 138 43% 25%;
+    --islamic-gold: 43 74% 60%;
+    --islamic-gold-light: 43 74% 75%;
+    --islamic-blue: 205 89% 40%;
+    --islamic-blue-dark: 205 89% 30%;
   }
 }
 
