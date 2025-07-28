@@ -73,7 +73,7 @@ export default function StudentPortal() {
             <div className="flex items-center space-x-4">
               <Link to="/" className="flex items-center space-x-2">
                 <div className="p-2 bg-islamic-green rounded-lg">
-                  <Mosque className="h-6 w-6 text-white" />
+                  <School className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h1 className="text-lg font-bold text-islamic-green-dark">CHKMS</h1>
@@ -314,7 +314,7 @@ export default function StudentPortal() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Mosque className="h-5 w-5 text-islamic-green" />
+                  <School className="h-5 w-5 text-islamic-green" />
                   <span>নামাজের সময়</span>
                 </CardTitle>
               </CardHeader>
