@@ -1,30 +1,29 @@
-import "./global.css";
-
-import { Toaster } from "@/components/ui/toaster";
-import { createRoot } from "react-dom/client";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import LoginPage from "./pages/Login";
+import StudentPortal from "./pages/StudentPortal";
+import TeacherPortal from "./pages/TeacherPortal";
+import AdminPortal from "./pages/AdminPortal";
+import PlaceholderPage from "./pages/PlaceholderPage";
 
-const queryClient = new QueryClient();
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/student" element={<StudentPortal />} />
+        <Route path="/teacher" element={<TeacherPortal />} />
+        <Route path="/admin" element={<AdminPortal />} />
+        <Route path="/finance" element={<PlaceholderPage title="আর্থিক ব্যবস্থাপনা" description="ফাইনান্স মডিউল শীঘ্রই আসছে" />} />
+        <Route path="/library" element={<PlaceholderPage title="লাইব্রেরি সিস্টেম" description="লাইব্রেরি মডিউল শীঘ্রই আসছে" />} />
+        <Route path="/hostel" element={<PlaceholderPage title="হোস্টেল ব্যবস্থাপনা" description="হোস্টেল মডিউল শীঘ্রই আসছে" />} />
+        <Route path="/transport" element={<PlaceholderPage title="ট্রান্সপোর্ট সিস্টেম" description="ট্রান্সপোর্ট মডিউল শীঘ্রই আসছে" />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
-
-createRoot(document.getElementById("root")!).render(<App />);
+export default App;
