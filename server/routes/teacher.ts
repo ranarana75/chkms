@@ -12,7 +12,7 @@ const mockTeacherData = {
       photo: "/placeholder.svg"
     },
     todayClasses: [
-      { subject: "আরবি সাহিত্য", class: "আলিম প্রথম", time: "৯:০০ - ১০:০০", room: "১০১", status: "completed" as const },
+      { subject: "আরবি সাহিত্য", class: "আ���িম প্রথম", time: "৯:০০ - ১০:০০", room: "১০১", status: "completed" as const },
       { subject: "তাফসীর", class: "আলিম দ্বিতীয়", time: "১১:০০ - ১২:০০", room: "২০৫", status: "ongoing" as const },
       { subject: "আরবি সাহিত্য", class: "আলিম প্রথম", time: "২:০০ - ৩:০০", room: "১০১", status: "upcoming" as const }
     ],
@@ -21,9 +21,9 @@ const mockTeacherData = {
       { class: "আলিম দ্বিতীয়", students: 28, attendance: 90, avgMarks: 82 }
     ],
     pendingTasks: [
-      { task: "আলিম দ্বিতীয় বর্ষের মাসিক পরীক্ষার প্রশ্নপত্র তৈরি", priority: "high", deadline: "১৮ ডিসেম্বর" },
-      { task: "উপস্থিতি রিপোর্ট জমা দিন", priority: "medium", deadline: "২০ ডিসেম্বর" },
-      { task: "ছাত্রদের পারফরম্যান্স রিভিউ", priority: "low", deadline: "২৫ ডিসেম্বর" }
+      { task: "আলিম দ্বিতীয় বর্ষের মাসিক পরীক্ষার প্রশ্নপত্র তৈরি", priority: "high" as const, deadline: "১৮ ডিসেম্বর" },
+      { task: "উপস্থিতি রিপোর্ট জমা দিন", priority: "medium" as const, deadline: "২০ ডিসেম্বর" },
+      { task: "ছাত্রদের পারফরম্যান্স রিভিউ", priority: "low" as const, deadline: "২৫ ডিসেম্বর" }
     ],
     recentActivities: [
       { type: "marks", description: "আলিম প্রথম বর্ষের আরবি সাহিত্যের মার্কস এন্ট্রি", time: "২ ঘন্টা আগে" },
@@ -57,7 +57,7 @@ export const getTeacherProfile: RequestHandler = (req, res) => {
     profile: {
       name: "উস্তাদ আবদুর রহমান",
       id: "TCH001",
-      designation: "সহকারী অধ্যাপক",
+      designation: "সহকারী অ���্যাপক",
       department: "ইসলামিক স্টাডিজ",
       joiningDate: "২০২০-০১-১৫",
       qualification: "মাস্টার্স ইন ইসলামিক স্টাডিজ",
@@ -88,7 +88,7 @@ export const getTeacherClasses: RequestHandler = (req, res) => {
       status: "completed",
       students: 35,
       present: 32,
-      topic: "আরবি কবিতা��� ছন্দ"
+      topic: "আরবি কবিতার ছন্দ"
     },
     { 
       id: "CLS002",
@@ -134,7 +134,7 @@ export const markAttendance: RequestHandler = (req, res) => {
   // Mock attendance marking
   res.json({
     success: true,
-    message: "উপস্থিতি সফলভাবে সংরক্ষিত হয়েছে",
+    message: "উপস্থিতি সফলভাবে সংরক্ষিত হয��েছে",
     classId,
     markedStudents: students.length,
     timestamp: new Date().toISOString()
@@ -175,7 +175,7 @@ export const getStudentsByClass: RequestHandler = (req, res) => {
       photo: "/placeholder.svg",
       attendance: 94.4,
       lastExamMarks: 85,
-      phone: "০১��১২৩৪৫৬৭৮"
+      phone: "০১৭১২৩৪৫৬৭৮"
     },
     { 
       id: "STD002", 
