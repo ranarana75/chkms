@@ -35,7 +35,7 @@ import {
 } from "lucide-react";
 
 export default function StudentPortal() {
-  const { data: students, loading: studentsLoading, refresh } = useLocalData(studentsDB);
+  const { data: students, loading: studentsLoading, refresh } = useLocalData(studentsDB as any);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -256,7 +256,7 @@ export default function StudentPortal() {
                 <div>
                   <p className="text-2xl font-bold text-islamic-blue">৮৫.৫</p>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
-                    গ��় নম্বর
+                    গড় নম্বর
                   </p>
                 </div>
               </div>
@@ -288,7 +288,7 @@ export default function StudentPortal() {
                     ৳{feeStatus.due}
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
-                    বকে���়া ফি
+                    বকেয়া ফি
                   </p>
                 </div>
               </div>
