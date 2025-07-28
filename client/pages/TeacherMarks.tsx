@@ -130,10 +130,10 @@ export default function TeacherMarks() {
     student.roll.includes(searchTerm)
   );
 
-  const enteredMarksCount = Object.values(marks).filter((m: any) => m.obtainedMarks !== '').length;
-  const averageMarks = enteredMarksCount > 0 ? Object.values(marks)
-    .filter((m: any) => m.obtainedMarks !== '')
-    .reduce((sum: number, m: any) => sum + parseFloat(m.obtainedMarks), 0) / enteredMarksCount : 0;
+  const marksArray = Object.values(marks).filter((m: any) => m.obtainedMarks !== '');
+  const enteredMarksCount = marksArray.length;
+  const averageMarks = enteredMarksCount > 0 ?
+    marksArray.reduce((sum: number, m: any) => sum + parseFloat(m.obtainedMarks), 0) / enteredMarksCount : 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
@@ -274,7 +274,7 @@ export default function TeacherMarks() {
                     <FileText className="h-6 w-6 text-islamic-green" />
                     <div>
                       <p className="text-lg font-bold text-islamic-green">{enteredMarksCount}</p>
-                      <p className="text-sm text-gray-600">��ন্ট্রি সম্পন্ন</p>
+                      <p className="text-sm text-gray-600">এন্ট্রি সম্পন্ন</p>
                     </div>
                   </div>
                 </CardContent>
