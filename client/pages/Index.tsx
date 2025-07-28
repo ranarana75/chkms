@@ -67,7 +67,7 @@ export default function Index() {
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
       title: "হোস্টেল ব্যবস্থাপ��া",
-      description: "রুম অ্যালোকেশন, মেস ব্যবস্থাপনা এবং হোস্টেল সেবা",
+      description: "রুম অ্যালোকেশন, মেস ���্যবস্থাপনা এবং হোস্টেল সেবা",
       color: "bg-orange-50 dark:bg-orange-950",
       link: "/hostel",
     },
@@ -99,7 +99,7 @@ export default function Index() {
       icon: <GraduationCap className="h-5 w-5" />,
     },
     { label: "বিভাগ", value: "12", icon: <Building2 className="h-5 w-5" /> },
-    { label: "সফলতার হার", value: "95%", icon: <Star className="h-5 w-5" /> },
+    { label: "সফলত���র হার", value: "95%", icon: <Star className="h-5 w-5" /> },
   ];
 
   return (
@@ -155,7 +155,7 @@ export default function Index() {
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
           <div className="flex justify-center mb-6">
-            <Badge className="bg-islamic-gold/10 text-islamic-gold border-islamic-gold/20 px-6 py-2 text-lg">
+            <Badge className="bg-islamic-gold/10 text-islamic-gold border-islamic-gold/20 px-6 py-2 text-lg font-bengali">
               আধুনিক মাদ্রাসা ব্যবস্থাপন��
             </Badge>
           </div>
@@ -294,7 +294,7 @@ export default function Index() {
               <CardHeader>
                 <Star className="h-12 w-12 text-islamic-blue mx-auto mb-4" />
                 <CardTitle className="text-islamic-blue">
-                  আখলাক পয়েন্ট
+                  আখলাক পয়ে���্ট
                 </CardTitle>
               </CardHeader>
               <CardContent>
