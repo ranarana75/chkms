@@ -39,7 +39,7 @@ export default function Index() {
     {
       icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
       title: "শিক্ষক পোর্টাল",
-      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যা���বোর্ড",
+      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্��ক ড্যা���বোর্ড",
       color: "bg-blue-50 dark:bg-blue-950",
       link: "/teacher",
     },
@@ -124,7 +124,7 @@ export default function Index() {
             <nav className="hidden md:flex items-center space-x-6">
               <Link
                 to="#about"
-                className="text-gray-600 hover:text-islamic-green transition-colors"
+                className="text-gray-600 hover:text-islamic-green transition-colors font-bengali"
               >
                 সম্পর্কে
               </Link>
@@ -294,7 +294,7 @@ export default function Index() {
               <CardHeader>
                 <Star className="h-12 w-12 text-islamic-blue mx-auto mb-4" />
                 <CardTitle className="text-islamic-blue">
-                  আখলাক পয়েন্ট
+                  আখলা��� পয়েন্ট
                 </CardTitle>
               </CardHeader>
               <CardContent>
