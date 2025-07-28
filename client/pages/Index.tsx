@@ -46,7 +46,7 @@ export default function Index() {
     {
       icon: <Calculator className="h-8 w-8 text-islamic-gold" />,
       title: "আর্থিক ব্যবস্থাপনা",
-      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর্ট",
+      description: "ফি কালেকশন, বকেয়া ট্র��যাকিং এবং আর্থিক রিপোর্ট",
       color: "bg-yellow-50 dark:bg-yellow-950",
       link: "/finance",
     },
@@ -172,7 +172,7 @@ export default function Index() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button
               size="lg"
-              className="bg-islamic-green hover:bg-islamic-green-dark text-white px-8"
+              className="bg-islamic-green hover:bg-islamic-green-dark text-white px-8 font-bengali"
             >
               <Users className="mr-2 h-5 w-5" />
               শিক্ষার্থী পোর্টাল
@@ -271,7 +271,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600 dark:text-gray-300">
-                  স্থানীয় সময় অনুযায়��� স্বয়ংক্রি��় নামাজের ওয়াক্ত আপডেট
+                  স্থানীয় সময় অনু���ায়��� স্বয়ংক্রি��় নামাজের ওয়াক্ত আপডেট
                 </p>
               </CardContent>
             </Card>
