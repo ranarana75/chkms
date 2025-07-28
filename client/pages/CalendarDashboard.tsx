@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useLocalData, useNotifications } from '@/hooks/useLocalData';
+import { useLocalStorage, useNotifications } from '@/hooks/useLocalData';
 import { Calendar, Clock, Users, Plus, Edit, Trash2, MapPin, Bell, ChevronLeft, ChevronRight } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 
@@ -172,7 +172,7 @@ export default function CalendarDashboard() {
           room: 'কক্ষ ৩০১',
           startTime: '10:00',
           endTime: '11:00',
-          semester: 'প্রথম সেমিস্���ার',
+          semester: 'প্রথম সেমিস্টার',
           isActive: true
         }
       ];
@@ -659,7 +659,7 @@ export default function CalendarDashboard() {
                             </p>
                           </div>
                           <div>
-                            <p className="text-gray-600 mb-1">আয়োজক: {event.organizer}</p>
+                            <p className="text-gray-600 mb-1">আয়��জক: {event.organizer}</p>
                             <p className="text-gray-600 mb-1">রিমাইন্ডার: {event.reminderMinutes} মিনিট আগে</p>
                             {event.recurring !== 'none' && (
                               <Badge variant="outline">নিয়মিত: {event.recurring}</Badge>
@@ -722,7 +722,7 @@ export default function CalendarDashboard() {
                 return (
                   <Card key={day}>
                     <CardHeader>
-                      <CardTitle className="text-lg">{day}বার - {daySchedules.length} টি ক্লা��</CardTitle>
+                      <CardTitle className="text-lg">{day}বার - {daySchedules.length} টি ক্লাস</CardTitle>
                     </CardHeader>
                     <CardContent>
                       {daySchedules.length > 0 ? (
@@ -886,7 +886,7 @@ function EventForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="location">���্থান</Label>
+          <Label htmlFor="location">স্থান</Label>
           <Input
             id="location"
             value={formData.location}
