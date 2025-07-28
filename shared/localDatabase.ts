@@ -180,18 +180,19 @@ export function initializeSampleData() {
   // Check if data already exists
   if (studentsDB.count() > 0) return;
 
-  // Sample students
-  const sampleStudents: Student[] = [
+  // Sample student data with additional fields for display
+  const sampleStudents: any[] = [
     {
       id: '1',
       userId: 'user1',
       studentId: 'STD001',
+      name: 'মোহাম্মদ আবদুল্লাহ',
       admissionDate: new Date('2023-01-15'),
       class: 'আলিম প্রথম বর্ষ',
       section: 'ক',
       roll: '০৫',
       fatherName: 'মোহাম্মদ আব্দুল করিম',
-      motherName: 'ফাতেমা খাতুন',
+      motherName: 'ফা���েমা খাতুন',
       dateOfBirth: new Date('2005-03-10'),
       bloodGroup: 'B+',
       emergencyContact: '+8801712345678',
@@ -202,6 +203,7 @@ export function initializeSampleData() {
       id: '2',
       userId: 'user2',
       studentId: 'STD002',
+      name: 'আহমদ হাসান',
       admissionDate: new Date('2023-01-15'),
       class: 'আলিম দ্বিতীয় বর্ষ',
       section: 'খ',
