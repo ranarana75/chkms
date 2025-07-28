@@ -1,62 +1,270 @@
-import { DemoResponse } from "@shared/api";
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  BookOpen, 
+  Users, 
+  GraduationCap, 
+  Calculator, 
+  Building2, 
+  Bus, 
+  Heart, 
+  Shield,
+  Mosque,
+  Clock,
+  Star,
+  ArrowRight,
+  Phone,
+  Mail,
+  MapPin
+} from "lucide-react";
 
 export default function Index() {
-  const [exampleFromServer, setExampleFromServer] = useState("");
-  // Fetch users on component mount
-  useEffect(() => {
-    fetchDemo();
-  }, []);
-
-  // Example of how to fetch data from the server (if needed)
-  const fetchDemo = async () => {
-    try {
-      const response = await fetch("/api/demo");
-      const data = (await response.json()) as DemoResponse;
-      setExampleFromServer(data.message);
-    } catch (error) {
-      console.error("Error fetching hello:", error);
+  const features = [
+    {
+      icon: <Users className="h-8 w-8 text-islamic-green" />,
+      title: "শিক্ষার্থী ব্যবস্থাপনা",
+      description: "সম্পূর্ণ ছাত্র তথ্য, উপস্থিতি এবং পারফরম্য��ন্স ট্র্যাকিং",
+      color: "bg-green-50 dark:bg-green-950"
+    },
+    {
+      icon: <GraduationCap className="h-8 w-8 text-islamic-blue" />,
+      title: "শিক্ষক পোর্টাল",
+      description: "ক্লাস রুটিন, মার্কস এন্ট্রি এবং শিক্ষক ড্যাশবোর্ড",
+      color: "bg-blue-50 dark:bg-blue-950"
+    },
+    {
+      icon: <Calculator className="h-8 w-8 text-islamic-gold" />,
+      title: "আর্থিক ব্যবস্থাপনা",
+      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর্ট",
+      color: "bg-yellow-50 dark:bg-yellow-950"
+    },
+    {
+      icon: <BookOpen className="h-8 w-8 text-purple-600" />,
+      title: "লাইব্রেরি সিস্টেম",
+      description: "ডিজিটাল বুক ক্যাটালগ এবং ইস্যু-রিটার্ন ব্যবস্থা",
+      color: "bg-purple-50 dark:bg-purple-950"
+    },
+    {
+      icon: <Building2 className="h-8 w-8 text-orange-600" />,
+      title: "হোস্টেল ব্যবস্থাপনা",
+      description: "রুম অ্যালোকেশন, মেস ব্যবস্থাপনা এবং হোস্টেল সেবা",
+      color: "bg-orange-50 dark:bg-orange-950"
+    },
+    {
+      icon: <Bus className="h-8 w-8 text-indigo-600" />,
+      title: "ট্রান্সপোর্ট সিস্টেম",
+      description: "রুট পরিকল্পনা, GPS ট্র্যাকিং এবং নিরাপত্তা",
+      color: "bg-indigo-50 dark:bg-indigo-950"
     }
-  };
+  ];
+
+  const stats = [
+    { label: "মোট শিক্ষার্থী", value: "1,200+", icon: <Users className="h-5 w-5" /> },
+    { label: "শিক্ষক", value: "85+", icon: <GraduationCap className="h-5 w-5" /> },
+    { label: "বিভাগ", value: "12", icon: <Building2 className="h-5 w-5" /> },
+    { label: "সফলতার হার", value: "95%", icon: <Star className="h-5 w-5" /> }
+  ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-      <div className="text-center">
-        {/* TODO: FUSION_GENERATION_APP_PLACEHOLDER replace everything here with the actual app! */}
-        <h1 className="text-2xl font-semibold text-slate-800 flex items-center justify-center gap-3">
-          <svg
-            className="animate-spin h-8 w-8 text-slate-400"
-            viewBox="0 0 50 50"
-          >
-            <circle
-              className="opacity-30"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-            />
-            <circle
-              className="text-slate-600"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-              strokeDasharray="100"
-              strokeDashoffset="75"
-            />
-          </svg>
-          Generating your app...
-        </h1>
-        <p className="mt-4 text-slate-600 max-w-md">
-          Watch the chat on the left for updates that might need your attention
-          to finish generating
-        </p>
-        <p className="mt-4 hidden max-w-md">{exampleFromServer}</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Header */}
+      <header className="border-b border-green-100 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-islamic-green rounded-lg">
+                <Mosque className="h-8 w-8 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-islamic-green-dark dark:text-islamic-green">CHKMS</h1>
+                <p className="text-sm text-muted-foreground">চুনতি হাকিমিয়া কামিল মাদ্রাসা</p>
+              </div>
+            </div>
+            <nav className="hidden md:flex items-center space-x-6">
+              <Link to="#about" className="text-gray-600 hover:text-islamic-green transition-colors">সম্পর্কে</Link>
+              <Link to="#features" className="text-gray-600 hover:text-islamic-green transition-colors">বৈশিষ্ট্য</Link>
+              <Link to="#contact" className="text-gray-600 hover:text-islamic-green transition-colors">যোগাযোগ</Link>
+              <Button asChild className="bg-islamic-green hover:bg-islamic-green-dark">
+                <Link to="/login">লগইন</Link>
+              </Button>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            <Badge className="bg-islamic-gold/10 text-islamic-gold border-islamic-gold/20 px-6 py-2 text-lg">
+              আধুনিক মাদ্রাসা ব্যবস্থাপনা
+            </Badge>
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+            চুনতি হাকিমিয়া কামিল মাদ্রাসা
+            <span className="block text-islamic-green">ম্যানেজমেন্ট সিস্টেম</span>
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+            ইসলামিক শিক্ষার ঐতিহ্য রক্ষা করে আধুনিক প্রযুক্তির সমন্বয়ে একটি সম্পূর্ণ ডিজিটাল শিক্ষা ব্যবস্থাপনা
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Button size="lg" className="bg-islamic-green hover:bg-islamic-green-dark text-white px-8">
+              <Users className="mr-2 h-5 w-5" />
+              শিক্ষার্থী পোর্টাল
+            </Button>
+            <Button size="lg" variant="outline" className="border-islamic-blue text-islamic-blue hover:bg-islamic-blue hover:text-white px-8">
+              <GraduationCap className="mr-2 h-5 w-5" />
+              শিক্ষক পোর্টাল
+            </Button>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+            {stats.map((stat, index) => (
+              <Card key={index} className="text-center border-green-100 dark:border-gray-800">
+                <CardContent className="pt-6">
+                  <div className="flex justify-center mb-2 text-islamic-green">
+                    {stat.icon}
+                  </div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-20 px-4 bg-white/50 dark:bg-gray-800/50">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              সিস্টেমের বৈশিষ্ট্যসমূহ
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              আধুনিক প্রযুক্তি ব্যবহার করে মাদ্রাসার সকল কার্যক্রম ডিজিটাইজেশন
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className={`${feature.color} border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2`}>
+                <CardHeader className="text-center">
+                  <div className="flex justify-center mb-4">
+                    {feature.icon}
+                  </div>
+                  <CardTitle className="text-xl text-gray-900 dark:text-white">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-center text-gray-600 dark:text-gray-300">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Islamic Features Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              ইসলামিক বিশেষ সুবিধা
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="text-center border-islamic-green/20 bg-green-50 dark:bg-green-950">
+              <CardHeader>
+                <Mosque className="h-12 w-12 text-islamic-green mx-auto mb-4" />
+                <CardTitle className="text-islamic-green">নামাজের সময়সূচি</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 dark:text-gray-300">স্থানীয় সময় অনুযায়ী স্বয়ংক্রিয় নামাজের ওয়াক্ত আপডেট</p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center border-islamic-gold/20 bg-yellow-50 dark:bg-yellow-950">
+              <CardHeader>
+                <BookOpen className="h-12 w-12 text-islamic-gold mx-auto mb-4" />
+                <CardTitle className="text-islamic-gold">হিফজ ট্র্যাকিং</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 dark:text-gray-300">কুরআন মুখস্থের অগ্রগতি ও তাজবীদ মূল্যায়ন</p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center border-islamic-blue/20 bg-blue-50 dark:bg-blue-950">
+              <CardHeader>
+                <Star className="h-12 w-12 text-islamic-blue mx-auto mb-4" />
+                <CardTitle className="text-islamic-blue">আখলাক পয়েন্ট</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 dark:text-gray-300">নৈতিক আচরণ ও ইসলামিক মূল্যবোধের মূল্যায়ন</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 px-4 bg-islamic-green text-white">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">যোগাযোগ করুন</h2>
+              <p className="text-lg mb-8 text-green-100">
+                আমাদের সাথে যোগাযোগ করুন এবং আধুনিক মাদ্রাসা ব্যবস্থাপনার অংশীদার হন
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <Phone className="h-5 w-5" />
+                  <span>+8801234567890</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Mail className="h-5 w-5" />
+                  <span>info@chkmadrasa.edu.bd</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <MapPin className="h-5 w-5" />
+                  <span>চুনতি, লক্ষ্মীপুর, বাংলাদেশ</span>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg p-8 text-gray-900">
+              <h3 className="text-xl font-bold mb-4">আজই শুরু করুন</h3>
+              <p className="mb-6">আপনার মাদ্রাসার জন্য আধুনিক ব্যবস্থাপনা সিস্টেম ব্যবহার করুন</p>
+              <Button className="w-full bg-islamic-green hover:bg-islamic-green-dark text-white">
+                ডেমো বুক করুন
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12 px-4">
+        <div className="container mx-auto text-center">
+          <div className="flex items-center justify-center space-x-3 mb-6">
+            <div className="p-2 bg-islamic-green rounded-lg">
+              <Mosque className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold">CHKMS</h3>
+              <p className="text-sm text-gray-400">চুনতি হাকিমিয়া কামিল মাদ্রাসা</p>
+            </div>
+          </div>
+          <p className="text-gray-400">
+            © 2024 চুনতি হাকিমিয়া কামিল মাদ্রাসা ম্যানেজমেন্ট সিস্টেম। সকল অধিকার সংরক্ষিত।
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
