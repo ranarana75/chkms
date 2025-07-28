@@ -11,7 +11,7 @@ const academicCalendar: AcademicCalendar = {
   endDate: '2024-12-31',
   terms: [
     {
-      name: 'প্রথম টার্ম',
+      name: 'প্র���ম টার্ম',
       startDate: '2024-01-01',
       endDate: '2024-06-30',
       status: 'completed'
@@ -91,14 +91,14 @@ const calendarEvents: CalendarEvent[] = [
     startTime: '08:00',
     endTime: '17:00',
     type: 'sports',
-    category: 'competition',
+    category: 'entertainment',
     location: 'মাদ্রাসা খেলার মাঠ',
     organizer: 'শারীরিক শিক্ষা বিভাগ',
     targetAudience: 'students',
     status: 'scheduled',
     isPublic: true,
     attendees: [],
-    resources: ['মাইক', 'পুরস্কার', 'খেলার সামগ্রী'],
+    resources: ['মাইক', 'পুরস্কার', 'খেলার ��ামগ্রী'],
     createdBy: 'admin-001',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
