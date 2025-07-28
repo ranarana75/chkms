@@ -13,6 +13,7 @@ import { getTransportDashboard, getTransportUsers, addTransportUser, removeTrans
 import examinationRoutes from "./routes/examination";
 import admissionRoutes from "./routes/admission";
 import noticeRoutes from "./routes/notice";
+import calendarRoutes from "./routes/calendar";
 
 export function createServer() {
   const app = express();
@@ -101,6 +102,9 @@ export function createServer() {
 
   // Notice routes
   app.use("/api/notice", noticeRoutes);
+
+  // Calendar routes
+  app.use("/api/calendar", calendarRoutes);
 
   return app;
 }

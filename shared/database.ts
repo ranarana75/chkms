@@ -381,3 +381,56 @@ export interface Announcement {
   isPinned: boolean;
   autoExpire: boolean;
 }
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  startTime: string;
+  endTime: string;
+  type: 'meeting' | 'competition' | 'workshop' | 'cultural' | 'sports' | 'exam';
+  category: 'academic' | 'administrative' | 'islamic' | 'entertainment' | 'professional';
+  location: string;
+  organizer: string;
+  targetAudience: 'all' | 'students' | 'teachers' | 'parents';
+  status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
+  isPublic: boolean;
+  attendees: {
+    userId: string;
+    userName: string;
+    registeredAt: string;
+  }[];
+  resources?: string[];
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AcademicCalendar {
+  id: string;
+  academicYear: string;
+  startDate: string;
+  endDate: string;
+  terms: {
+    name: string;
+    startDate: string;
+    endDate: string;
+    status: 'active' | 'completed' | 'upcoming';
+  }[];
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Holiday {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  type: 'religious' | 'national' | 'academic';
+  description?: string;
+  isRecurring: boolean;
+  isActive: boolean;
+}
