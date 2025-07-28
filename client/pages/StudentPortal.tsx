@@ -30,6 +30,8 @@ import {
   TrendingUp,
   CheckCircle,
   AlertCircle,
+  RefreshCw,
+  Activity,
 } from "lucide-react";
 
 export default function StudentPortal() {
