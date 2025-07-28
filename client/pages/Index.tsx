@@ -46,7 +46,7 @@ export default function Index() {
     {
       icon: <Calculator className="h-8 w-8 text-islamic-gold" />,
       title: "আ��্থিক ব্যবস্থাপনা",
-      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর্ট",
+      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর���থিক রিপোর্ট",
       color: "bg-yellow-50 dark:bg-yellow-950",
       link: "/finance",
     },
@@ -66,8 +66,8 @@ export default function Index() {
     },
     {
       icon: <Building2 className="h-8 w-8 text-orange-600" />,
-      title: "হোস্টেল ব্যবস্থাপ��া",
-      description: "রুম অ্যালোকেশন, মেস ���্যবস্থ����পন��� এবং হোস্টেল সেবা",
+      title: "হোস্টেল ব্যবস্থাপনা",
+      description: "রুম অ্যালোকেশন, মেস ���্যবস্থ����পনা এবং হোস্টেল সেবা",
       color: "bg-orange-50 dark:bg-orange-950",
       link: "/hostel",
     },
@@ -183,7 +183,7 @@ export default function Index() {
               className="border-islamic-blue text-islamic-blue hover:bg-islamic-blue hover:text-white px-8 font-bengali"
             >
               <GraduationCap className="mr-2 h-5 w-5" />
-              শিক্ষক পোর্টাল
+              শি��্ষক পোর্টাল
             </Button>
           </div>
 
