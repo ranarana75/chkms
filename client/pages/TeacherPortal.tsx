@@ -13,7 +13,7 @@ import {
   ClipboardList,
   GraduationCap,
   FileText,
-  Mosque,
+  School,
   Plus,
   Edit,
   Eye
@@ -24,7 +24,7 @@ export default function TeacherPortal() {
     name: "উস্তাদ আবদুর রহমান",
     id: "TCH001",
     subjects: ["আরবি সাহিত্য", "তাফসীর"],
-    classes: ["আলিম প্��থম", "আলিম দ্বিতীয়"],
+    classes: ["আলিম প্রথম", "আলিম দ্বিতীয়"],
     photo: "/placeholder.svg"
   };
 
@@ -41,7 +41,7 @@ export default function TeacherPortal() {
   ];
 
   const pendingTasks = [
-    { task: "আলিম দ্বিতী���় বর্ষের মাসিক পরীক্ষার প্রশ্নপত্র তৈরি", priority: "উচ্চ", deadline: "১৮ ডিসেম্বর" },
+    { task: "আলিম দ্বিতীয় বর্ষের মাসিক পরীক্ষার প্রশ্নপত্র তৈরি", priority: "উচ্চ", deadline: "১৮ ডিসেম্বর" },
     { task: "উপস্থিতি রিপোর্ট জমা দিন", priority: "মধ্যম", deadline: "২০ ডিসেম্বর" },
     { task: "ছাত্রদের পারফরম্যান্স রিভিউ", priority: "নিম্ন", deadline: "২৫ ডিসেম্বর" }
   ];
