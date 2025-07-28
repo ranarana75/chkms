@@ -228,14 +228,22 @@ export default function StudentPortal() {
           <Card className="border-green-200 bg-green-50 dark:bg-green-950">
             <CardContent className="p-6">
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-8 w-8 text-islamic-green" />
+                {studentsLoading || isRefreshing ?
+                  <Activity className="h-8 w-8 text-islamic-green animate-spin" /> :
+                  <CheckCircle className="h-8 w-8 text-islamic-green" />
+                }
                 <div>
                   <p className="text-2xl font-bold text-islamic-green">
-                    {attendance.percentage}%
+                    {studentsLoading ? "..." : `${attendance.percentage}%`}
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
+                  <p className="text-sm text-gray-600 dark:text-gray-300 font-bengali">
                     উপস্থিতি
                   </p>
+                  {!studentsLoading && (
+                    <p className="text-xs text-green-600 font-bengali">
+                      {attendance.present}/{attendance.total} দিন
+                    </p>
+                  )}
                 </div>
               </div>
             </CardContent>
