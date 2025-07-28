@@ -11,6 +11,7 @@ import { getPrayerTimes, getHifzProgress, addHifzProgress, getAkhlaqPoints, addA
 import { getHostelDashboard, getHostelReports } from "./routes/hostel";
 import { getTransportDashboard, getTransportUsers, addTransportUser, removeTransportUser, getTransportReports } from "./routes/transport";
 import examinationRoutes from "./routes/examination";
+import admissionRoutes from "./routes/admission";
 
 export function createServer() {
   const app = express();
@@ -93,6 +94,9 @@ export function createServer() {
 
   // Examination routes
   app.use("/api/examination", examinationRoutes);
+
+  // Admission routes
+  app.use("/api/admission", admissionRoutes);
 
   return app;
 }
