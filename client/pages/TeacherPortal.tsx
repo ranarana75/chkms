@@ -60,7 +60,7 @@ export default function TeacherPortal() {
             <div className="flex items-center space-x-4">
               <Link to="/" className="flex items-center space-x-2">
                 <div className="p-2 bg-islamic-green rounded-lg">
-                  <Mosque className="h-6 w-6 text-white" />
+                  <School className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h1 className="text-lg font-bold text-islamic-green-dark">CHKMS</h1>
@@ -73,7 +73,7 @@ export default function TeacherPortal() {
               <Link to="#dashboard" className="text-gray-600 hover:text-islamic-green transition-colors">ড্যাশবোর্ড</Link>
               <Link to="#classes" className="text-gray-600 hover:text-islamic-green transition-colors">ক্লাস</Link>
               <Link to="#students" className="text-gray-600 hover:text-islamic-green transition-colors">শিক্ষার্থী</Link>
-              <Link to="#marks" className="text-gray-600 hover:text-islamic-green transition-colors">মার্কস</Link>
+              <Link to="#marks" className="text-gray-600 hover:text-islamic-green transition-colors">ম���র্কস</Link>
             </nav>
 
             <div className="flex items-center space-x-4">
@@ -300,7 +300,7 @@ export default function TeacherPortal() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Mosque className="h-5 w-5 text-islamic-green" />
+                  <School className="h-5 w-5 text-islamic-green" />
                   <span>নামাজের সময়</span>
                 </CardTitle>
               </CardHeader>
