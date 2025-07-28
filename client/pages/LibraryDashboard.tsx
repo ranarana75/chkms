@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useLocalData, useNotifications } from '@/hooks/useLocalData';
+import { useLocalStorage, useNotifications } from '@/hooks/useLocalData';
 import { BookOpen, Users, Clock, Plus, Edit, Trash2, Search, Download } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 
@@ -117,7 +117,7 @@ export default function LibraryDashboard() {
         {
           id: '1',
           bookId: '1',
-          bookTitle: 'সহীহ বুখারী',
+          bookTitle: 'সহ��হ বুখারী',
           studentId: 'STD001',
           studentName: 'মোহাম্মদ আব্দুল্লাহ',
           issueDate: '2024-01-15',
@@ -376,7 +376,7 @@ export default function LibraryDashboard() {
                           <h3 className="text-lg font-semibold">{book.title}</h3>
                           <Badge variant="outline">{book.category}</Badge>
                           <Badge variant={book.availableCopies > 0 ? "default" : "destructive"}>
-                            {book.availableCopies > 0 ? 'উপলব্ধ' : 'নেই'}
+                            {book.availableCopies > 0 ? '��পলব্ধ' : 'নেই'}
                           </Badge>
                         </div>
                         <div className="grid grid-cols-2 gap-4 text-sm">
@@ -414,7 +414,7 @@ export default function LibraryDashboard() {
                   <DialogHeader>
                     <DialogTitle>বই ইস্যু</DialogTitle>
                     <DialogDescription>
-                      ইস্যুর তথ্য পূরণ কর��ন
+                      ইস্যুর তথ্য পূরণ করুন
                     </DialogDescription>
                   </DialogHeader>
                   <IssueForm books={books} onSubmit={handleAddIssue} />
