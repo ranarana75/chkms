@@ -131,10 +131,9 @@ export default function TeacherMarks() {
   );
 
   const marksArray = Object.values(marks).filter((m: any) => m.obtainedMarks !== '');
-  const enteredMarksCount = marksArray.length;
-  const totalSum = enteredMarksCount > 0 ?
-    marksArray.reduce((sum: number, m: any) => sum + parseFloat(m.obtainedMarks), 0) : 0;
-  const averageMarks = enteredMarksCount > 0 ? totalSum / Number(enteredMarksCount) : 0;
+  const enteredMarksCount: number = marksArray.length;
+  const totalSum: number = marksArray.reduce((sum: number, m: any) => sum + parseFloat(m.obtainedMarks), 0);
+  const averageMarks: number = enteredMarksCount > 0 ? totalSum / enteredMarksCount : 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
@@ -314,7 +313,7 @@ export default function TeacherMarks() {
                   <Badge variant="outline">{filteredStudents.length} জন ছাত্র</Badge>
                 </CardTitle>
                 <CardDescription>
-                  প্রতিটি ছাত্রের প্রাপ্��� নম্বর এন্ট্রি করুন
+                  প্রতিটি ছাত্রের প্রাপ্ত নম্বর এন্ট্রি করুন
                 </CardDescription>
               </CardHeader>
               <CardContent>
