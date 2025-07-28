@@ -61,7 +61,7 @@ const examSchedules: ExamSchedule[] = [
     startTime: '09:00',
     endTime: '12:00',
     duration: 180,
-    room: 'কক্ষ-১০১',
+    room: 'কক্���-১০১',
     invigilator: 'মাওলানা আব্দুল করিম',
     marks: 100
   },
@@ -110,7 +110,7 @@ const questions: Question[] = [
     subject: 'আরবি',
     questionText: 'আল-কুরআনের প্রথম সূরা কোনটি?',
     questionType: 'mcq',
-    options: ['সূরা আল-ফাতিহা', 'সূরা আল-বাকারা', 'সূরা আলে-ইমরান', 'সূরা আন-নিসা'],
+    options: ['সূরা আল-ফাতিহা', 'সূরা আল-বাকারা', 'স���রা আলে-ইমরান', 'সূরা আন-নিসা'],
     correctAnswer: 'সূরা আল-ফাতিহা',
     marks: 5,
     difficulty: 'easy'
@@ -415,7 +415,7 @@ router.get('/examinations/:id/report-cards', (req, res) => {
 // Get exam statistics
 router.get('/examinations/:id/statistics', (req, res) => {
   const { id } = req.params;
-  const examResults = examResults.filter(result => result.examinationId === id);
+  const filteredResults = examResults.filter(result => result.examinationId === id);
   
   if (examResults.length === 0) {
     return res.json({
