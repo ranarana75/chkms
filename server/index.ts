@@ -55,5 +55,16 @@ export function createServer() {
   app.get("/api/finance/report", generateFinancialReport);
   app.get("/api/finance/dashboard", getDashboardStats);
 
+  // Library routes
+  app.get("/api/library/dashboard", getLibraryDashboard);
+  app.get("/api/library/books", getBooks);
+  app.get("/api/library/books/:bookId", getBookDetails);
+  app.post("/api/library/issue", issueBook);
+  app.post("/api/library/return", returnBook);
+  app.get("/api/library/issues", getIssuedBooks);
+  app.post("/api/library/books", addNewBook);
+  app.get("/api/library/overdue", getOverdueBooks);
+  app.get("/api/library/reports", getLibraryReports);
+
   return app;
 }
