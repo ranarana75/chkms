@@ -102,8 +102,8 @@ interface AdmissionRequirement {
 }
 
 export default function AdmissionDashboard() {
-  const [applications, setApplications] = useLocalData<AdmissionApplication[]>('admissionApplications', []);
-  const [requirements, setRequirements] = useLocalData<AdmissionRequirement[]>('admissionRequirements', []);
+  const [applications, setApplications] = useLocalStorage<AdmissionApplication[]>('admissionApplications', []);
+  const [requirements, setRequirements] = useLocalStorage<AdmissionRequirement[]>('admissionRequirements', []);
   const [stats, setStats] = useState<AdmissionStats>({
     totalApplications: 0,
     pendingApplications: 0,
@@ -145,7 +145,7 @@ export default function AdmissionDashboard() {
           nationality: 'বাংলাদেশী',
           religion: 'ইসলাম',
           bloodGroup: 'B+',
-          presentAddress: 'বাড়ি নং ২৫, রোড নং ��, ধানমন্ডি, ঢাকা',
+          presentAddress: 'বাড়ি নং ২৫, রোড নং ৩, ধানমন্ডি, ঢাকা',
           permanentAddress: 'গ্রাম: কামারপাড়া, উপজেলা: কালিয়াকৈর, জেলা: গাজীপুর',
           phoneNumber: '০১৭১১১১১১১১',
           email: 'abdullah@example.com',
@@ -220,7 +220,7 @@ export default function AdmissionDashboard() {
           className: 'দশম শ্রেণী',
           minimumAge: 15,
           maximumAge: 18,
-          requiredDocuments: ['জন্ম সনদ', 'পাসপোর্ট সাইজ ছবি', 'SSC সনদ', 'অভিভাবকের পরিচয়পত্র'],
+          requiredDocuments: ['জন্ম সনদ', 'পাসপোর্ট সাইজ ছবি', 'SSC সনদ', 'অভিভাবকের পর���চয়পত্র'],
           admissionFee: 5000,
           monthlyFee: 2000,
           totalSeats: 100,
@@ -342,7 +342,7 @@ export default function AdmissionDashboard() {
     const labels: { [key: string]: string } = {
       pending: 'অপেক্ষায়',
       interview_scheduled: 'ইন্টারভিউ নির্ধারিত',
-      interview_completed: 'ইন্টারভিউ সম্পন্ন',
+      interview_completed: 'ইন্টারভিউ সম���পন্ন',
       approved: 'অনুমোদিত',
       rejected: 'প্রত্যাখ্যাত',
       enrolled: 'ভর্তি সম্পন্ন'
@@ -611,7 +611,7 @@ export default function AdmissionDashboard() {
                 <DialogTrigger asChild>
                   <Button className="bg-emerald-600 hover:bg-emerald-700">
                     <Plus className="w-4 h-4 mr-2" />
-                    নতুন শর্তাবলী
+                    ন��ুন শর্তাবলী
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl">
