@@ -1,344 +1,764 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useLocalStorage, useNotifications } from '@/hooks/useLocalData';
 import { 
-  ArrowLeft, 
+  CreditCard, 
+  DollarSign, 
+  User, 
+  Calendar, 
   Search,
-  CreditCard,
-  DollarSign,
-  User,
-  Calendar,
-  Check,
-  AlertCircle,
+  Plus,
   Receipt,
-  School
-} from "lucide-react";
+  Download,
+  CheckCircle,
+  AlertCircle,
+  Clock,
+  Smartphone
+} from 'lucide-react';
+import Navigation from '@/components/Navigation';
+
+interface Student {
+  id: string;
+  studentId: string;
+  name: string;
+  class: string;
+  section: string;
+  fatherName: string;
+  phoneNumber: string;
+  admissionDate: string;
+  isActive: boolean;
+}
+
+interface FeeStructure {
+  id: string;
+  class: string;
+  tuitionFee: number;
+  libraryFee: number;
+  transportFee: number;
+  hostelFee: number;
+  examFee: number;
+  miscellaneousFee: number;
+  totalMonthlyFee: number;
+}
+
+interface FeePayment {
+  id: string;
+  studentId: string;
+  studentName: string;
+  paymentDate: string;
+  month: string;
+  year: string;
+  tuitionFee: number;
+  libraryFee: number;
+  transportFee: number;
+  hostelFee: number;
+  examFee: number;
+  miscellaneousFee: number;
+  totalAmount: number;
+  paymentMethod: 'cash' | 'bkash' | 'nagad' | 'rocket' | 'bank';
+  transactionId?: string;
+  discount?: number;
+  lateFee?: number;
+  status: 'paid' | 'partial' | 'pending' | 'overdue';
+  receivedBy: string;
+  remarks?: string;
+  receiptNumber: string;
+  createdAt: string;
+}
+
+interface FeeRecord {
+  studentId: string;
+  studentName: string;
+  class: string;
+  monthlyFee: number;
+  paidMonths: string[];
+  pendingMonths: string[];
+  totalPaid: number;
+  totalPending: number;
+  lastPaymentDate?: string;
+  status: 'current' | 'due' | 'overdue';
+}
 
 export default function FeePayment() {
-  const [selectedStudent, setSelectedStudent] = useState("");
-  const [studentData, setStudentData] = useState(null);
-  const [paymentMethod, setPaymentMethod] = useState("");
-  const [amount, setAmount] = useState("");
-  const [transactionId, setTransactionId] = useState("");
-  const [remarks, setRemarks] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [students, setStudents] = useLocalStorage<Student[]>('students', []);
+  const [feeStructures, setFeeStructures] = useLocalStorage<FeeStructure[]>('feeStructures', []);
+  const [payments, setPayments] = useLocalStorage<FeePayment[]>('feePayments', []);
+  const [feeRecords, setFeeRecords] = useLocalStorage<FeeRecord[]>('feeRecords', []);
 
-  const students = [
-    { id: "STD001", name: "মোহাম্মদ আবদুল্লাহ", class: "আলিম প্রথম", roll: "০১" },
-    { id: "STD002", name: "আবুল কাসেম", class: "আলিম প্রথম", roll: "০২" },
-    { id: "STD003", name: "মোহাম্মদ ইব্রাহিম", class: "আলিম দ্বিতীয়", roll: "০৩" }
-  ];
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [paymentForm, setPaymentForm] = useState({
+    month: new Date().toISOString().slice(0, 7), // YYYY-MM format
+    tuitionFee: 0,
+    libraryFee: 0,
+    transportFee: 0,
+    hostelFee: 0,
+    examFee: 0,
+    miscellaneousFee: 0,
+    discount: 0,
+    lateFee: 0,
+    paymentMethod: 'cash' as const,
+    transactionId: '',
+    remarks: ''
+  });
 
-  const paymentMethods = [
-    { value: "cash", label: "নগদ", icon: <DollarSign className="h-4 w-4" /> },
-    { value: "bkash", label: "বিকাশ", icon: <CreditCard className="h-4 w-4" /> },
-    { value: "nagad", label: "নগদ (মোবাইল)", icon: <CreditCard className="h-4 w-4" /> },
-    { value: "bank", label: "ব্যাংক ট্রান্সফার", icon: <CreditCard className="h-4 w-4" /> }
-  ];
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
+  const [receiptData, setReceiptData] = useState<FeePayment | null>(null);
+  const [isReceiptDialogOpen, setIsReceiptDialogOpen] = useState(false);
 
+  const { addNotification } = useNotifications();
+
+  // Initialize sample data
+  useEffect(() => {
+    if (students.length === 0) {
+      const sampleStudents: Student[] = [
+        {
+          id: '1',
+          studentId: 'STD001',
+          name: 'মোহাম্মদ আব্দুল্লাহ রহমান',
+          class: 'নবম শ্রেণী',
+          section: 'ক',
+          fatherName: 'মোহাম্মদ আব্দুর রহমান',
+          phoneNumber: '01711111111',
+          admissionDate: '2023-01-15',
+          isActive: true
+        },
+        {
+          id: '2',
+          studentId: 'STD002',
+          name: 'আয়েশা সিদ্দিকা',
+          class: 'দশম শ্রেণী',
+          section: 'খ',
+          fatherName: 'মোহাম্মদ সিদ্দিক আহমেদ',
+          phoneNumber: '01822222222',
+          admissionDate: '2022-01-10',
+          isActive: true
+        },
+        {
+          id: '3',
+          studentId: 'STD003',
+          name: 'ফাতিমা খাতুন',
+          class: 'আলিম ১ম বর্ষ',
+          section: 'ক',
+          fatherName: 'মোহাম্মদ কামাল উদ্দিন',
+          phoneNumber: '01933333333',
+          admissionDate: '2021-01-05',
+          isActive: true
+        }
+      ];
+      setStudents(sampleStudents);
+
+      const sampleFeeStructures: FeeStructure[] = [
+        {
+          id: '1',
+          class: 'নবম শ্রেণী',
+          tuitionFee: 1500,
+          libraryFee: 200,
+          transportFee: 500,
+          hostelFee: 0,
+          examFee: 300,
+          miscellaneousFee: 100,
+          totalMonthlyFee: 2600
+        },
+        {
+          id: '2',
+          class: 'দশম শ্রেণী',
+          tuitionFee: 1600,
+          libraryFee: 200,
+          transportFee: 500,
+          hostelFee: 0,
+          examFee: 400,
+          miscellaneousFee: 100,
+          totalMonthlyFee: 2800
+        },
+        {
+          id: '3',
+          class: 'আলিম ১ম বর্ষ',
+          tuitionFee: 2000,
+          libraryFee: 300,
+          transportFee: 600,
+          hostelFee: 0,
+          examFee: 500,
+          miscellaneousFee: 150,
+          totalMonthlyFee: 3550
+        }
+      ];
+      setFeeStructures(sampleFeeStructures);
+
+      // Generate fee records
+      const sampleFeeRecords: FeeRecord[] = sampleStudents.map(student => {
+        const feeStructure = sampleFeeStructures.find(fs => fs.class === student.class);
+        const monthlyFee = feeStructure?.totalMonthlyFee || 2000;
+        
+        return {
+          studentId: student.id,
+          studentName: student.name,
+          class: student.class,
+          monthlyFee,
+          paidMonths: ['2024-01', '2024-02'],
+          pendingMonths: ['2024-03', '2024-04'],
+          totalPaid: monthlyFee * 2,
+          totalPending: monthlyFee * 2,
+          lastPaymentDate: '2024-02-15',
+          status: 'due' as const
+        };
+      });
+      setFeeRecords(sampleFeeRecords);
+    }
+  }, [students.length, setStudents, setFeeStructures, setFeeRecords]);
+
+  // Update payment form when student is selected
   useEffect(() => {
     if (selectedStudent) {
-      loadStudentFeeData();
+      const feeStructure = feeStructures.find(fs => fs.class === selectedStudent.class);
+      if (feeStructure) {
+        setPaymentForm(prev => ({
+          ...prev,
+          tuitionFee: feeStructure.tuitionFee,
+          libraryFee: feeStructure.libraryFee,
+          transportFee: feeStructure.transportFee,
+          hostelFee: feeStructure.hostelFee,
+          examFee: feeStructure.examFee,
+          miscellaneousFee: feeStructure.miscellaneousFee
+        }));
+      }
     }
-  }, [selectedStudent]);
+  }, [selectedStudent, feeStructures]);
 
-  const loadStudentFeeData = () => {
-    setLoading(true);
-    // Mock data load
-    setTimeout(() => {
-      setStudentData({
-        id: selectedStudent,
-        name: "মোহাম্মদ আবদুল্লাহ",
-        class: "আলিম প্রথম বর্ষ",
-        roll: "০১",
-        fees: [
-          {
-            type: "টিউশন ফি",
-            amount: 5000,
-            dueDate: "২০২৪-১২-৩১",
-            status: "pending",
-            description: "ডিসেম্বর ২০২৪ মাসের টিউশন ফি"
-          },
-          {
-            type: "পরীক্ষার ফি", 
-            amount: 1500,
-            dueDate: "২০২৪-১২-২০",
-            status: "pending",
-            description: "মাসিক পরীক্ষার ফি"
-          },
-          {
-            type: "লাইব্রেরি ফি",
-            amount: 500,
-            dueDate: "২০২৪-১২-৩১",
-            status: "paid",
-            paidDate: "২০২৪-১১-২৫",
-            description: "লাইব্রেরি ব্যবহারের ফি"
-          }
-        ],
-        totalDue: 6500,
-        totalPaid: 500,
-        totalPending: 6000
-      });
-      setLoading(false);
-    }, 1000);
+  const calculateTotal = () => {
+    const total = paymentForm.tuitionFee + 
+                  paymentForm.libraryFee + 
+                  paymentForm.transportFee + 
+                  paymentForm.hostelFee + 
+                  paymentForm.examFee + 
+                  paymentForm.miscellaneousFee + 
+                  paymentForm.lateFee - 
+                  paymentForm.discount;
+    return Math.max(0, total);
   };
 
   const handlePayment = () => {
-    if (!selectedStudent || !paymentMethod || !amount) {
-      alert("সকল তথ্য পূরণ করুন");
-      return;
-    }
+    if (!selectedStudent) return;
 
-    // Mock payment processing
-    alert(`৳${amount} ফি পেমেন্ট সফলভাবে সম্পন্ন হয়েছে!`);
+    const total = calculateTotal();
+    const receiptNumber = `RCP-${Date.now()}`;
     
+    const newPayment: FeePayment = {
+      id: Date.now().toString(),
+      studentId: selectedStudent.id,
+      studentName: selectedStudent.name,
+      paymentDate: new Date().toISOString().split('T')[0],
+      month: paymentForm.month.split('-')[1],
+      year: paymentForm.month.split('-')[0],
+      tuitionFee: paymentForm.tuitionFee,
+      libraryFee: paymentForm.libraryFee,
+      transportFee: paymentForm.transportFee,
+      hostelFee: paymentForm.hostelFee,
+      examFee: paymentForm.examFee,
+      miscellaneousFee: paymentForm.miscellaneousFee,
+      totalAmount: total,
+      paymentMethod: paymentForm.paymentMethod,
+      transactionId: paymentForm.transactionId,
+      discount: paymentForm.discount,
+      lateFee: paymentForm.lateFee,
+      status: 'paid',
+      receivedBy: 'ক্যাশিয়ার',
+      remarks: paymentForm.remarks,
+      receiptNumber,
+      createdAt: new Date().toISOString()
+    };
+
+    setPayments([...payments, newPayment]);
+
+    // Update fee records
+    const updatedFeeRecords = feeRecords.map(record => {
+      if (record.studentId === selectedStudent.id) {
+        const monthStr = paymentForm.month;
+        const updatedPaidMonths = [...record.paidMonths, monthStr];
+        const updatedPendingMonths = record.pendingMonths.filter(m => m !== monthStr);
+        
+        return {
+          ...record,
+          paidMonths: updatedPaidMonths,
+          pendingMonths: updatedPendingMonths,
+          totalPaid: record.totalPaid + total,
+          totalPending: Math.max(0, record.totalPending - total),
+          lastPaymentDate: newPayment.paymentDate,
+          status: updatedPendingMonths.length === 0 ? 'current' as const : 'due' as const
+        };
+      }
+      return record;
+    });
+    setFeeRecords(updatedFeeRecords);
+
+    setReceiptData(newPayment);
+    setIsReceiptDialogOpen(true);
+    setIsPaymentDialogOpen(false);
+    addNotification('ফি পরিশোধ সফলভাবে সম্পন্ন হয়েছে', 'success');
+
     // Reset form
-    setAmount("");
-    setTransactionId("");
-    setRemarks("");
-    loadStudentFeeData(); // Reload data
+    setSelectedStudent(null);
+    setPaymentForm({
+      month: new Date().toISOString().slice(0, 7),
+      tuitionFee: 0,
+      libraryFee: 0,
+      transportFee: 0,
+      hostelFee: 0,
+      examFee: 0,
+      miscellaneousFee: 0,
+      discount: 0,
+      lateFee: 0,
+      paymentMethod: 'cash',
+      transactionId: '',
+      remarks: ''
+    });
+  };
+
+  const printReceipt = () => {
+    addNotification('রসিদ প্রিন্ট করা হচ্ছে...', 'info');
+    setTimeout(() => {
+      addNotification('রসিদ সফলভাবে প্রিন্ট হয়েছে', 'success');
+    }, 1500);
   };
 
   const filteredStudents = students.filter(student =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.roll.includes(searchTerm)
+    student.studentId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    student.phoneNumber.includes(searchTerm)
   );
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
-      {/* Header */}
-      <header className="border-b border-green-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/admin" className="inline-flex items-center text-islamic-green hover:text-islamic-green-dark transition-colors">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              ড্যা��বোর্ডে ফিরে যান
-            </Link>
-            <div className="flex items-center space-x-2">
-              <School className="h-6 w-6 text-islamic-green" />
-              <span className="font-bold text-islamic-green">CHKMS</span>
-            </div>
-          </div>
-        </div>
-      </header>
+  const getStatusBadge = (status: string) => {
+    const variants: { [key: string]: "default" | "secondary" | "destructive" | "outline" } = {
+      current: "default",
+      due: "outline", 
+      overdue: "destructive",
+      paid: "default",
+      partial: "outline",
+      pending: "secondary"
+    };
+    
+    const labels: { [key: string]: string } = {
+      current: 'হালনাগাদ',
+      due: 'বকেয়া',
+      overdue: 'অতিবাহিত',
+      paid: 'পরিশ���ধিত',
+      partial: 'আংশিক',
+      pending: 'অপেক্ষায়'
+    };
 
+    return (
+      <Badge variant={variants[status] || "secondary"}>
+        {labels[status] || status}
+      </Badge>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100" style={{ fontFamily: '"Noto Serif Bengali", serif' }}>
+      <Navigation />
+      
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">ফি পেমেন্ট</h1>
-          <p className="text-gray-600">শিক্ষার্থীদের ফি পেমেন্ট রেকর্ড করুন</p>
+          <h1 className="text-4xl font-bold text-emerald-800 mb-2">ফি পরিশোধ</h1>
+          <p className="text-emerald-600">শিক্ষার্থীদের ফি পরিশোধ ও ব্যবস্থাপনা</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Student Selection */}
-          <div className="lg:col-span-1">
+        <Tabs defaultValue="payment" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="payment">ফি পরিশোধ</TabsTrigger>
+            <TabsTrigger value="records">ফি রেকর্ড</TabsTrigger>
+            <TabsTrigger value="structure">ফি কাঠামো</TabsTrigger>
+          </TabsList>
+
+          {/* Payment Tab */}
+          <TabsContent value="payment" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <User className="h-5 w-5 text-islamic-blue" />
-                  <span>শিক্ষার্থী নির্বাচন</span>
+                <CardTitle className="flex items-center gap-2">
+                  <Search className="h-5 w-5" />
+                  শিক্ষার্থী খুঁজুন
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <CardContent>
+                <div className="flex gap-4 mb-4">
                   <Input
-                    placeholder="নাম, আইডি বা রোল দিয়ে খুঁজুন"
+                    placeholder="নাম, আইডি বা ফোন নম্বর দিয়ে খুঁজুন..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
+                    className="flex-1"
                   />
                 </div>
 
-                <div className="space-y-2 max-h-64 overflow-y-auto">
+                <div className="grid gap-3 max-h-60 overflow-y-auto">
                   {filteredStudents.map((student) => (
                     <div
                       key={student.id}
-                      onClick={() => setSelectedStudent(student.id)}
-                      className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                        selectedStudent === student.id
-                          ? 'border-islamic-green bg-islamic-green/5'
-                          : 'border-gray-200 hover:border-islamic-green/50'
+                      className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                        selectedStudent?.id === student.id 
+                          ? 'border-emerald-500 bg-emerald-50' 
+                          : 'border-gray-200 hover:border-emerald-300 hover:bg-emerald-25'
                       }`}
+                      onClick={() => setSelectedStudent(student)}
                     >
-                      <div className="flex items-center justify-between">
+                      <div className="flex justify-between items-start">
                         <div>
-                          <p className="font-medium">{student.name}</p>
-                          <p className="text-sm text-gray-600">{student.class} • রোল: {student.roll}</p>
+                          <h3 className="font-semibold">{student.name}</h3>
+                          <p className="text-sm text-gray-600">
+                            আইডি: {student.studentId} | শ্রেণী: {student.class} ({student.section})
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            পিতা: {student.fatherName} | ফোন: {student.phoneNumber}
+                          </p>
                         </div>
-                        {selectedStudent === student.id && (
-                          <Check className="h-5 w-5 text-islamic-green" />
-                        )}
+                        <Badge variant={student.isActive ? "default" : "secondary"}>
+                          {student.isActive ? 'সক্রিয়' : 'নিষ্ক্রিয়'}
+                        </Badge>
                       </div>
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
-          </div>
 
-          {/* Payment Form */}
-          <div className="lg:col-span-2">
-            {selectedStudent ? (
-              <div className="space-y-6">
-                {/* Student Fee Status */}
-                {studentData && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center justify-between">
-                        <span>{studentData.name} এর ফি বিবরণ</span>
-                        <Badge variant="outline">{studentData.class}</Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        <div className="text-center p-4 bg-green-50 rounded-lg">
-                          <p className="text-2xl font-bold text-islamic-green">৳{studentData.totalPaid.toLocaleString()}</p>
-                          <p className="text-sm text-gray-600">��রিশোধিত</p>
-                        </div>
-                        <div className="text-center p-4 bg-red-50 rounded-lg">
-                          <p className="text-2xl font-bold text-red-600">৳{studentData.totalPending.toLocaleString()}</p>
-                          <p className="text-sm text-gray-600">বকেয়া</p>
-                        </div>
-                        <div className="text-center p-4 bg-blue-50 rounded-lg">
-                          <p className="text-2xl font-bold text-islamic-blue">৳{studentData.totalDue.toLocaleString()}</p>
-                          <p className="text-sm text-gray-600">মোট ফি</p>
-                        </div>
-                      </div>
-
-                      <div className="space-y-3">
-                        <h4 className="font-semibold">ফি বিভাগসমূহ:</h4>
-                        {studentData.fees.map((fee, index) => (
-                          <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                            <div>
-                              <p className="font-medium">{fee.type}</p>
-                              <p className="text-sm text-gray-600">{fee.description}</p>
-                              <p className="text-sm text-gray-600">শেষ তারিখ: {fee.dueDate}</p>
-                            </div>
-                            <div className="text-right">
-                              <p className="text-lg font-bold">৳{fee.amount.toLocaleString()}</p>
-                              <Badge variant={fee.status === 'paid' ? 'default' : 'destructive'}>
-                                {fee.status === 'paid' ? 'পরিশোধিত' : 'বকেয়া'}
-                              </Badge>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
-
-                {/* Payment Form */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center space-x-2">
-                      <CreditCard className="h-5 w-5 text-islamic-gold" />
-                      <span>পেমেন্ট তথ্য</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="amount">পেমেন্ট পরিমাণ (৳)</Label>
-                        <Input
-                          id="amount"
-                          type="number"
-                          placeholder="পেমেন্টের পরিমাণ লিখুন"
-                          value={amount}
-                          onChange={(e) => setAmount(e.target.value)}
-                        />
-                      </div>
-
-                      <div>
-                        <Label htmlFor="method">পেমেন্ট পদ্ধতি</Label>
-                        <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="পেমেন্ট পদ্ধতি নির্বাচন করুন" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {paymentMethods.map((method) => (
-                              <SelectItem key={method.value} value={method.value}>
-                                <div className="flex items-center space-x-2">
-                                  {method.icon}
-                                  <span>{method.label}</span>
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    {(paymentMethod === 'bkash' || paymentMethod === 'nagad' || paymentMethod === 'bank') && (
-                      <div>
-                        <Label htmlFor="transactionId">ট্রানজেকশন আইডি</Label>
-                        <Input
-                          id="transactionId"
-                          placeholder="ট্রানজেকশন আইডি লিখুন"
-                          value={transactionId}
-                          onChange={(e) => setTransactionId(e.target.value)}
-                        />
-                      </div>
-                    )}
-
-                    <div>
-                      <Label htmlFor="remarks">মন্তব্য (ঐচ্ছিক)</Label>
-                      <Textarea
-                        id="remarks"
-                        placeholder="অতিরিক্ত মন্তব্য লিখুন"
-                        value={remarks}
-                        onChange={(e) => setRemarks(e.target.value)}
-                        rows={3}
+            {selectedStudent && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>ফি পরিশোধ - {selectedStudent.name}</CardTitle>
+                  <CardDescription>
+                    আইডি: {selectedStudent.studentId} | শ্রেণী: {selectedStudent.class}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>মাস/বছর</Label>
+                      <Input
+                        type="month"
+                        value={paymentForm.month}
+                        onChange={(e) => setPaymentForm({...paymentForm, month: e.target.value})}
                       />
                     </div>
+                    <div className="space-y-2">
+                      <Label>পেমেন্ট পদ্ধতি</Label>
+                      <Select 
+                        value={paymentForm.paymentMethod} 
+                        onValueChange={(value: any) => setPaymentForm({...paymentForm, paymentMethod: value})}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="cash">নগদ</SelectItem>
+                          <SelectItem value="bkash">বিকাশ</SelectItem>
+                          <SelectItem value="nagad">নগদ (অ্যাপ)</SelectItem>
+                          <SelectItem value="rocket">রকেট</SelectItem>
+                          <SelectItem value="bank">ব্যাংক</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
 
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                      <div className="flex items-start space-x-2">
-                        <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
-                        <div>
-                          <p className="text-sm font-medium text-yellow-800">পেমেন্ট নিশ্চিতকরণ</p>
-                          <p className="text-sm text-yellow-700">
-                            পেমেন্টের সকল তথ্য যাচাই করে নিন। পেমেন্ট সম্পন্ন হওয়ার পর রসিদ স্বয়ংক্রিয়ভাবে তৈরি হবে।
-                          </p>
-                        </div>
+                  {paymentForm.paymentMethod !== 'cash' && (
+                    <div className="space-y-2">
+                      <Label>ট্রানজেকশন আইডি</Label>
+                      <Input
+                        placeholder="ট্রানজেকশন আইডি লিখুন"
+                        value={paymentForm.transactionId}
+                        onChange={(e) => setPaymentForm({...paymentForm, transactionId: e.target.value})}
+                      />
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-4">
+                      <h3 className="font-semibold">ফি বিবরণ</h3>
+                      
+                      <div className="space-y-2">
+                        <Label>টিউশন ফি</Label>
+                        <Input
+                          type="number"
+                          value={paymentForm.tuitionFee}
+                          onChange={(e) => setPaymentForm({...paymentForm, tuitionFee: parseInt(e.target.value) || 0})}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>লাইব্রেরি ফি</Label>
+                        <Input
+                          type="number"
+                          value={paymentForm.libraryFee}
+                          onChange={(e) => setPaymentForm({...paymentForm, libraryFee: parseInt(e.target.value) || 0})}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>পরিবহন ফি</Label>
+                        <Input
+                          type="number"
+                          value={paymentForm.transportFee}
+                          onChange={(e) => setPaymentForm({...paymentForm, transportFee: parseInt(e.target.value) || 0})}
+                        />
                       </div>
                     </div>
 
-                    <div className="flex space-x-4">
-                      <Button
-                        onClick={handlePayment}
-                        className="flex-1 bg-islamic-green hover:bg-islamic-green-dark"
-                        disabled={!amount || !paymentMethod}
-                      >
-                        <CreditCard className="h-4 w-4 mr-2" />
-                        পেমেন্ট সম্পন্ন করুন
-                      </Button>
-                      <Button variant="outline" className="flex-1">
-                        <Receipt className="h-4 w-4 mr-2" />
-                        রসিদ প্রিন্ট করু��
-                      </Button>
+                    <div className="space-y-4">
+                      <h3 className="font-semibold">অতিরিক্ত ফি</h3>
+
+                      <div className="space-y-2">
+                        <Label>পরীক্ষা ফি</Label>
+                        <Input
+                          type="number"
+                          value={paymentForm.examFee}
+                          onChange={(e) => setPaymentForm({...paymentForm, examFee: parseInt(e.target.value) || 0})}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>বিবিধ ফি</Label>
+                        <Input
+                          type="number"
+                          value={paymentForm.miscellaneousFee}
+                          onChange={(e) => setPaymentForm({...paymentForm, miscellaneousFee: parseInt(e.target.value) || 0})}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>জরিমানা</Label>
+                        <Input
+                          type="number"
+                          value={paymentForm.lateFee}
+                          onChange={(e) => setPaymentForm({...paymentForm, lateFee: parseInt(e.target.value) || 0})}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>ছাড়</Label>
+                        <Input
+                          type="number"
+                          value={paymentForm.discount}
+                          onChange={(e) => setPaymentForm({...paymentForm, discount: parseInt(e.target.value) || 0})}
+                        />
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-            ) : (
-              <Card>
-                <CardContent className="py-16 text-center">
-                  <User className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">শিক্ষার্থী নির্বাচন করুন</h3>
-                  <p className="text-gray-600">পেমেন্ট প্রক্রিয়া শুরু করতে বাম পাশ থেকে একজন শিক্ষার্থী নির্বাচন করুন</p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>মন্তব্য</Label>
+                    <Textarea
+                      placeholder="অতিরিক্ত মন্তব্য (ঐচ্ছিক)"
+                      value={paymentForm.remarks}
+                      onChange={(e) => setPaymentForm({...paymentForm, remarks: e.target.value})}
+                    />
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <div className="flex justify-between items-center text-lg font-semibold">
+                      <span>মোট পরিশোধযোগ্য:</span>
+                      <span className="text-emerald-600">৳{calculateTotal().toLocaleString()}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <Button 
+                      onClick={handlePayment}
+                      className="bg-emerald-600 hover:bg-emerald-700 flex-1"
+                      disabled={calculateTotal() <= 0}
+                    >
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      ফি পরিশোধ করুন
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      onClick={() => setSelectedStudent(null)}
+                    >
+                      বাতিল
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             )}
-          </div>
-        </div>
+          </TabsContent>
+
+          {/* Records Tab */}
+          <TabsContent value="records" className="space-y-6">
+            <div className="grid gap-4">
+              {feeRecords.map((record) => (
+                <Card key={record.studentId}>
+                  <CardContent className="pt-6">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <h3 className="text-lg font-semibold">{record.studentName}</h3>
+                          <Badge variant="outline">{record.class}</Badge>
+                          {getStatusBadge(record.status)}
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <p className="text-gray-600 mb-1">মাসিক ফি: ৳{record.monthlyFee.toLocaleString()}</p>
+                            <p className="text-gray-600 mb-1">পরিশোধিত: ৳{record.totalPaid.toLocaleString()}</p>
+                            <p className="text-gray-600">বকেয়া: ৳{record.totalPending.toLocaleString()}</p>
+                          </div>
+                          <div>
+                            <p className="text-gray-600 mb-1">পরিশোধিত মাস: {record.paidMonths.length}</p>
+                            <p className="text-gray-600 mb-1">বকেয়া মাস: {record.pendingMonths.length}</p>
+                            {record.lastPaymentDate && (
+                              <p className="text-gray-600">শেষ পরিশোধ: {new Date(record.lastPaymentDate).toLocaleDateString('bn-BD')}</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Fee Structure Tab */}
+          <TabsContent value="structure" className="space-y-6">
+            <div className="grid gap-4">
+              {feeStructures.map((structure) => (
+                <Card key={structure.id}>
+                  <CardHeader>
+                    <CardTitle>{structure.class}</CardTitle>
+                    <CardDescription>মাসিক ফি কাঠামো</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="flex justify-between mb-2">
+                          <span>টিউশন ফি:</span>
+                          <span>৳{structure.tuitionFee.toLocaleString()}</span>
+                        </p>
+                        <p className="flex justify-between mb-2">
+                          <span>লাইব্রেরি ফি:</span>
+                          <span>৳{structure.libraryFee.toLocaleString()}</span>
+                        </p>
+                        <p className="flex justify-between mb-2">
+                          <span>পরিবহন ফি:</span>
+                          <span>৳{structure.transportFee.toLocaleString()}</span>
+                        </p>
+                      </div>
+                      <div>
+                        <p className="flex justify-between mb-2">
+                          <span>পরীক্ষা ফি:</span>
+                          <span>৳{structure.examFee.toLocaleString()}</span>
+                        </p>
+                        <p className="flex justify-between mb-2">
+                          <span>বিবিধ ফি:</span>
+                          <span>৳{structure.miscellaneousFee.toLocaleString()}</span>
+                        </p>
+                        <p className="flex justify-between font-semibold text-emerald-600 border-t pt-2">
+                          <span>মোট মাসিক ফি:</span>
+                          <span>৳{structure.totalMonthlyFee.toLocaleString()}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        {/* Receipt Dialog */}
+        {receiptData && (
+          <Dialog open={isReceiptDialogOpen} onOpenChange={setIsReceiptDialogOpen}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle className="text-center">ফি পরিশোধের রসিদ</DialogTitle>
+              </DialogHeader>
+              
+              <div className="space-y-4 p-4 border rounded">
+                <div className="text-center border-b pb-4">
+                  <h3 className="font-bold">চুনতি হাকিমিয়া কামিল মাদ্রাসা</h3>
+                  <p className="text-sm text-gray-600">ফি পরিশোধের রসিদ</p>
+                  <p className="text-sm font-medium">রসিদ নং: {receiptData.receiptNumber}</p>
+                </div>
+
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span>তারিখ:</span>
+                    <span>{new Date(receiptData.paymentDate).toLocaleDateString('bn-BD')}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>শিক্ষার্থী:</span>
+                    <span>{receiptData.studentName}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>মাস/বছর:</span>
+                    <span>{receiptData.month}/{receiptData.year}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>পেমেন্ট পদ্ধতি:</span>
+                    <span>{receiptData.paymentMethod === 'cash' ? 'নগদ' : receiptData.paymentMethod}</span>
+                  </div>
+                  {receiptData.transactionId && (
+                    <div className="flex justify-between">
+                      <span>ট্রানজেকশন ID:</span>
+                      <span>{receiptData.transactionId}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="border-t pt-2 space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <span>টিউশন ফি:</span>
+                    <span>৳{receiptData.tuitionFee.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>লাইব্রেরি ফি:</span>
+                    <span>৳{receiptData.libraryFee.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>পরিবহন ফি:</span>
+                    <span>৳{receiptData.transportFee.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>পরীক্ষা ফি:</span>
+                    <span>৳{receiptData.examFee.toLocaleString()}</span>
+                  </div>
+                  {receiptData.lateFee > 0 && (
+                    <div className="flex justify-between">
+                      <span>জরিমানা:</span>
+                      <span>৳{receiptData.lateFee.toLocaleString()}</span>
+                    </div>
+                  )}
+                  {receiptData.discount > 0 && (
+                    <div className="flex justify-between text-red-600">
+                      <span>ছাড়:</span>
+                      <span>-৳{receiptData.discount.toLocaleString()}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between font-bold border-t pt-2">
+                    <span>মোট:</span>
+                    <span>৳{receiptData.totalAmount.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="text-center text-xs text-gray-500 border-t pt-2">
+                  <p>গ্রহণকারী: {receiptData.receivedBy}</p>
+                  <p>ধন্যবাদ!</p>
+                </div>
+              </div>
+
+              <DialogFooter>
+                <Button onClick={printReceipt} className="w-full">
+                  <Receipt className="w-4 h-4 mr-2" />
+                  প্রিন্ট করুন
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
     </div>
   );
