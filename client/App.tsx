@@ -10,6 +10,11 @@ import AdmissionDashboard from "./pages/AdmissionDashboard";
 import NoticeDashboard from "./pages/NoticeDashboard";
 import CalendarDashboard from "./pages/CalendarDashboard";
 import SystemDashboard from "./pages/SystemDashboard";
+import FinanceDashboard from "./pages/FinanceDashboard";
+import LibraryDashboard from "./pages/LibraryDashboard";
+import HostelDashboard from "./pages/HostelDashboard";
+import TransportDashboard from "./pages/TransportDashboard";
+import IslamicDashboard from "./pages/IslamicDashboard";
 import PlaceholderPage from "./pages/PlaceholderPage";
 
 function App() {
@@ -27,10 +32,11 @@ function App() {
         <Route path="/calendar" element={<CalendarDashboard />} />
         <Route path="/system" element={<SystemDashboard />} />
         <Route path="/reports" element={<SystemDashboard />} />
-        <Route path="/finance" element={<PlaceholderPage title="আর্থিক ব্যবস্থাপনা" description="ফাইনান্স মডিউল শীঘ্রই আসছে" />} />
-        <Route path="/library" element={<PlaceholderPage title="লাইব্রেরি সিস্টেম" description="লাইব্রেরি মডিউল শীঘ্রই আসছে" />} />
-        <Route path="/hostel" element={<PlaceholderPage title="হোস্টেল ব্যবস্থাপনা" description="হোস্টেল মডিউল শীঘ্রই আসছে" />} />
-        <Route path="/transport" element={<PlaceholderPage title="ট্রান্সপোর্ট সিস্টেম" description="ট্রান্সপোর্ট মডিউল শীঘ্রই আসছে" />} />
+        <Route path="/finance" element={<FinanceDashboard />} />
+        <Route path="/library" element={<LibraryDashboard />} />
+        <Route path="/hostel" element={<HostelDashboard />} />
+        <Route path="/transport" element={<TransportDashboard />} />
+        <Route path="/islamic" element={<IslamicDashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
