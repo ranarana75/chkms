@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import Navigation from '../components/Navigation';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
@@ -204,7 +205,7 @@ const NoticeDashboard: React.FC = () => {
       case 'students':
         return 'শিক্ষার্থী';
       case 'teachers':
-        return 'শিক্ষক';
+        return 'শিক্ষ��';
       case 'parents':
         return 'অভিভাবক';
       case 'all':
@@ -232,7 +233,9 @@ const NoticeDashboard: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
@@ -330,7 +333,7 @@ const NoticeDashboard: React.FC = () => {
                   </div>
                 </div>
                 <Button onClick={handleCreateNotice} className="w-full bg-blue-600 hover:bg-blue-700">
-                  নোটিশ প্রকা��� করুন
+                  নোটিশ প্রকাশ করুন
                 </Button>
               </div>
             </DialogContent>
@@ -477,7 +480,7 @@ const NoticeDashboard: React.FC = () => {
             <div className="flex items-center space-x-2">
               <Pin className="w-8 h-8 text-purple-600" />
               <div>
-                <p className="text-sm font-medium text-gray-600">পিন করা ঘোষণা</p>
+                <p className="text-sm font-medium text-gray-600">পিন করা ঘোষণ��</p>
                 <p className="text-2xl font-bold text-gray-900">{dashboardData.stats.pinnedAnnouncements}</p>
               </div>
             </div>
@@ -634,6 +637,7 @@ const NoticeDashboard: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };

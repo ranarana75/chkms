@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import Navigation from '../components/Navigation';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
@@ -229,7 +230,9 @@ const CalendarDashboard: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
@@ -321,9 +324,9 @@ const CalendarDashboard: React.FC = () => {
                       <SelectContent>
                         <SelectItem value="meeting">সভা</SelectItem>
                         <SelectItem value="competition">প্রতিযোগিতা</SelectItem>
-                        <SelectItem value="workshop">কর্মশাল��</SelectItem>
+                        <SelectItem value="workshop">কর্মশালা</SelectItem>
                         <SelectItem value="cultural">সাংস্কৃতিক</SelectItem>
-                        <SelectItem value="sports">ক্রীড়া</SelectItem>
+                        <SelectItem value="sports">ক্রী���়া</SelectItem>
                         <SelectItem value="exam">পরীক্ষা</SelectItem>
                       </SelectContent>
                     </Select>
@@ -715,6 +718,7 @@ const CalendarDashboard: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };

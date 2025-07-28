@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import Navigation from '../components/Navigation';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
@@ -163,7 +164,9 @@ const AdmissionDashboard: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      <div className="container mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
@@ -181,12 +184,12 @@ const AdmissionDashboard: React.FC = () => {
             <DialogHeader>
               <DialogTitle>নতুন ভর্তি সেশন তৈরি করুন</DialogTitle>
               <DialogDescription>
-                ��র্তি সেশনের বিস্তারিত তথ্য প্রদান করুন
+                ভর্তি সেশনের বিস্ত��রিত তথ্য প্রদান করুন
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="sessionName">সেশনের নাম</Label>
+                <Label htmlFor="sessionName">সেশ���ের নাম</Label>
                 <Input
                   id="sessionName"
                   value={newSession.name}
@@ -272,7 +275,7 @@ const AdmissionDashboard: React.FC = () => {
             <div className="flex items-center space-x-2">
               <Clock className="w-8 h-8 text-orange-600" />
               <div>
-                <p className="text-sm font-medium text-gray-600">অপেক্ষমান</p>
+                <p className="text-sm font-medium text-gray-600">অপেক্��মান</p>
                 <p className="text-2xl font-bold text-gray-900">{dashboardData.stats.pendingApplications}</p>
               </div>
             </div>
@@ -508,6 +511,7 @@ const AdmissionDashboard: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };
