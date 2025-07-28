@@ -85,7 +85,7 @@ export default function StudentPortal() {
             <nav className="hidden md:flex items-center space-x-6">
               <Link to="#dashboard" className="text-gray-600 hover:text-islamic-green transition-colors">ড্যাশবোর্ড</Link>
               <Link to="#marks" className="text-gray-600 hover:text-islamic-green transition-colors">ফলাফল</Link>
-              <Link to="#attendance" className="text-gray-600 hover:text-islamic-green transition-colors">উপস্থিতি</Link>
+              <Link to="#attendance" className="text-gray-600 hover:text-islamic-green transition-colors">উপ��্থিতি</Link>
               <Link to="#fees" className="text-gray-600 hover:text-islamic-green transition-colors">ফি</Link>
             </nav>
 
@@ -120,10 +120,10 @@ export default function StudentPortal() {
               </AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white font-bengali-heading">
                 আসসালামু আলাইকুম, {studentData.name}
               </h1>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 dark:text-gray-300 font-bengali-body">
                 {studentData.class} • রোল: {studentData.roll} • আইডি: {studentData.id}
               </p>
             </div>
