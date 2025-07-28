@@ -1,362 +1,411 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Textarea } from '../components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+import Navigation from '../components/Navigation';
 import { 
-  ArrowLeft, 
   Building2, 
   Users,
   Bed,
-  AlertTriangle,
-  DollarSign,
+  Utensils,
+  MessageSquare,
   Plus,
-  Settings,
-  FileText,
-  Calendar,
-  School
-} from "lucide-react";
+  Eye,
+  Edit,
+  UserPlus,
+  AlertTriangle,
+  CheckCircle
+} from 'lucide-react';
 
-export default function HostelDashboard() {
-  const [hostelData, setHostelData] = useState(null);
-  const [selectedFloor, setSelectedFloor] = useState("all");
-  const [loading, setLoading] = useState(true);
+interface Room {
+  id: string;
+  roomNumber: string;
+  floor: number;
+  type: 'single' | 'double' | 'triple' | 'dormitory';
+  capacity: number;
+  currentOccupancy: number;
+  monthlyFee: number;
+  facilities: string[];
+  isActive: boolean;
+}
+
+interface HostelResident {
+  id: string;
+  studentId: string;
+  studentName: string;
+  roomId: string;
+  roomNumber: string;
+  checkInDate: string;
+  monthlyFee: number;
+  status: 'active' | 'inactive';
+  emergencyContact: string;
+}
+
+interface HostelComplaint {
+  id: string;
+  studentId: string;
+  studentName: string;
+  roomNumber: string;
+  complaint: string;
+  category: 'maintenance' | 'cleanliness' | 'food' | 'security' | 'other';
+  priority: 'low' | 'medium' | 'high';
+  status: 'pending' | 'in_progress' | 'resolved';
+  date: string;
+}
+
+interface HostelStats {
+  totalRooms: number;
+  occupiedRooms: number;
+  totalStudents: number;
+  monthlyRevenue: number;
+  pendingComplaints: number;
+  messStudents: number;
+}
+
+const HostelDashboard: React.FC = () => {
+  const [hostelStats, setHostelStats] = useState<HostelStats | null>(null);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [residents, setResidents] = useState<HostelResident[]>([]);
+  const [complaints, setComplaints] = useState<HostelComplaint[]>([]);
+  const [isAllocateRoomOpen, setIsAllocateRoomOpen] = useState(false);
+  const [isComplaintOpen, setIsComplaintOpen] = useState(false);
 
   useEffect(() => {
-    loadHostelData();
+    fetchHostelData();
   }, []);
 
-  const loadHostelData = () => {
-    setLoading(true);
-    // Mock data load
-    setTimeout(() => {
-      setHostelData({
-        dashboard: {
-          totalRooms: 50,
-          occupiedRooms: 42,
-          availableRooms: 8,
-          totalResidents: 78,
-          occupancyRate: 78.0,
-          monthlyRevenue: 234000,
-          pendingComplaints: 5
-        },
-        rooms: [
-          {
-            id: "RM001",
-            roomNumber: "১০১",
-            floor: 1,
-            type: "double",
-            capacity: 2,
-            currentOccupancy: 2,
-            monthlyFee: 3000,
-            status: "occupied",
-            residents: [
-              { name: "মোহাম্মদ আবদুল্লাহ", checkInDate: "২০২৪-০১-১৫" },
-              { name: "আবুল কাসেম", checkInDate: "২০২৪-০১-২০" }
-            ]
-          },
-          {
-            id: "RM002", 
-            roomNumber: "১০২",
-            floor: 1,
-            type: "triple",
-            capacity: 3,
-            currentOccupancy: 2,
-            monthlyFee: 2500,
-            status: "available",
-            residents: [
-              { name: "মোহাম্মদ ইব্রাহিম", checkInDate: "২০২৪-০২-০১" },
-              { name: "আব্দুর র���মান", checkInDate: "২০২৪-০২-০৫" }
-            ]
-          },
-          {
-            id: "RM003",
-            roomNumber: "২০১", 
-            floor: 2,
-            type: "single",
-            capacity: 1,
-            currentOccupancy: 1,
-            monthlyFee: 4000,
-            status: "occupied",
-            residents: [
-              { name: "মোহাম্মদ হাসান", checkInDate: "২০২৪-০৩-১০" }
-            ]
-          }
-        ],
-        recentActivity: [
-          {
-            type: "check_in",
-            description: "নতুন শিক্ষার্থী চেক-ইন",
-            student: "মোহাম্মদ হাসান",
-            room: "১০৫",
-            time: "২ ঘন্টা আগে"
-          },
-          {
-            type: "complaint", 
-            description: "নতুন অভিযোগ জমা",
-            student: "আবু বকর",
-            room: "২০৩",
-            time: "৪ ঘন্টা আগে"
-          },
-          {
-            type: "payment",
-            description: "হোস্টেল ফি পেমেন্ট",
-            student: "উমর ফারুক",
-            room: "৩০১",
-            time: "১ দিন আগে"
-          }
-        ],
-        complaints: [
-          {
-            id: "CMP001",
-            studentName: "মোহাম্মদ আবদুল্লাহ",
-            roomNumber: "১০১",
-            category: "বিদ্যুৎ",
-            description: "রুমের ফ্যান কাজ করছে না",
-            priority: "high",
-            status: "pending",
-            submittedDate: "২০২৪-১২-১৪"
-          },
-          {
-            id: "CMP002", 
-            studentName: "মোহাম্মদ ইব্রাহিম",
-            roomNumber: "১০২",
-            category: "পানি",
-            description: "বাথরুমের কল থেকে পানি আসে না",
-            priority: "medium",
-            status: "in_progress",
-            submittedDate: "২০২৪-১২-১২"
-          }
-        ]
+  const fetchHostelData = async () => {
+    try {
+      const response = await fetch('/api/hostel/dashboard');
+      const data = await response.json();
+      setHostelStats(data.stats);
+      setRooms(data.rooms || []);
+      setResidents(data.residents || []);
+      setComplaints(data.complaints || []);
+    } catch (error) {
+      console.error('Error fetching hostel data:', error);
+      // Mock data for demo
+      setHostelStats({
+        totalRooms: 45,
+        occupiedRooms: 38,
+        totalStudents: 142,
+        monthlyRevenue: 355000,
+        pendingComplaints: 8,
+        messStudents: 135
       });
-      setLoading(false);
-    }, 1000);
+
+      setRooms([
+        {
+          id: '1',
+          roomNumber: '১০১',
+          floor: 1,
+          type: 'double',
+          capacity: 2,
+          currentOccupancy: 2,
+          monthlyFee: 2500,
+          facilities: ['ফ্যান', 'বিদ্যুৎ', 'পানি'],
+          isActive: true
+        },
+        {
+          id: '2',
+          roomNumber: '১০২',
+          floor: 1,
+          type: 'triple',
+          capacity: 3,
+          currentOccupancy: 1,
+          monthlyFee: 2000,
+          facilities: ['ফ্যান', 'বিদ্যুৎ', 'পানি', 'আলমারি'],
+          isActive: true
+        }
+      ]);
+
+      setResidents([
+        {
+          id: '1',
+          studentId: 'std-001',
+          studentName: 'মোহাম্মদ আব্দুল্লাহ',
+          roomId: '1',
+          roomNumber: '১০১',
+          checkInDate: '2024-01-15',
+          monthlyFee: 2500,
+          status: 'active',
+          emergencyContact: '01712345678'
+        }
+      ]);
+
+      setComplaints([
+        {
+          id: '1',
+          studentId: 'std-001',
+          studentName: 'মোহাম্মদ আব্দুল্লাহ',
+          roomNumber: '১০১',
+          complaint: 'রুমের ফ্যান নষ্ট',
+          category: 'maintenance',
+          priority: 'high',
+          status: 'pending',
+          date: '2024-12-10'
+        }
+      ]);
+    }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-islamic-green"></div>
-      </div>
-    );
+  const getRoomTypeText = (type: string) => {
+    switch (type) {
+      case 'single':
+        return 'একক';
+      case 'double':
+        return 'দ্বিক';
+      case 'triple':
+        return 'ত্রিক';
+      case 'dormitory':
+        return 'ডরমিটরি';
+      default:
+        return type;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active':
+        return 'bg-green-100 text-green-800';
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'resolved':
+        return 'bg-green-100 text-green-800';
+      case 'in_progress':
+        return 'bg-blue-100 text-blue-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return 'bg-red-100 text-red-800';
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'low':
+        return 'bg-green-100 text-green-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  if (!hostelStats) {
+    return <div className="flex justify-center items-center h-64">লোড হচ্ছে...</div>;
   }
 
-  const { dashboard, rooms, recentActivity, complaints } = hostelData;
-
-  const filteredRooms = selectedFloor === "all" 
-    ? rooms 
-    : rooms.filter(room => room.floor === Number(selectedFloor));
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
-      {/* Header */}
-      <header className="border-b border-green-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/admin" className="inline-flex items-center text-islamic-green hover:text-islamic-green-dark transition-colors">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              ড্যাশবোর্ডে ফিরে যান
-            </Link>
-            <div className="flex items-center space-x-2">
-              <School className="h-6 w-6 text-islamic-green" />
-              <span className="font-bold text-islamic-green">CHKMS</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      <div className="container mx-auto p-6 space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">হোস্টেল ব্যবস্থাপনা</h1>
-            <p className="text-gray-600">রুম বরাদ্দ, আবাসিক সেবা এবং অভিযোগ ব্যবস্থাপনা</p>
+            <h1 className="text-3xl font-bold text-gray-900">হোস্টেল ব্যবস্থাপনা</h1>
+            <p className="text-gray-600 mt-1">রুম অ্যালোকেশন এবং আবাসিক সেবা ব্যবস্থাপনা</p>
           </div>
-          <div className="flex items-center space-x-4">
-            <Button className="bg-islamic-green hover:bg-islamic-green-dark">
-              <Plus className="h-4 w-4 mr-2" />
-              নতুন বরাদ্দ
-            </Button>
-            <Button variant="outline">
-              <Settings className="h-4 w-4 mr-2" />
-              সেটিংস
-            </Button>
+          <div className="flex space-x-2">
+            <Dialog open={isAllocateRoomOpen} onOpenChange={setIsAllocateRoomOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  রুম বরাদ্দ
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>রুম বরাদ্দ করুন</DialogTitle>
+                  <DialogDescription>
+                    শিক্ষার্থীকে রুম বরাদ্দ করার জন্য তথ্য প্রদান করুন
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label>শিক্ষার্থী আইডি</Label>
+                    <Input placeholder="std-001" />
+                  </div>
+                  <div>
+                    <Label>রুম নির্বাচন</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="উপলব্ধ রুম নির্বাচন করুন" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {rooms.filter(room => room.currentOccupancy < room.capacity).map((room) => (
+                          <SelectItem key={room.id} value={room.id}>
+                            রুম {room.roomNumber} - {getRoomTypeText(room.type)} (৳{room.monthlyFee})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                    রুম বরাদ্দ করুন
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+            <Dialog open={isComplaintOpen} onOpenChange={setIsComplaintOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-orange-600 hover:bg-orange-700">
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  অভিযোগ দায়ের
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>নতুন অভিযোগ দায়ের করুন</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label>অভিযোগের বিবরণ</Label>
+                    <Textarea placeholder="অভিযোগের বিস্তারিত লিখুন..." />
+                  </div>
+                  <div>
+                    <Label>বিভাগ</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="অভিযোগের ধরন নির্বাচন করুন" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="maintenance">রক্ষণাবেক্ষণ</SelectItem>
+                        <SelectItem value="cleanliness">পরিচ্ছন্নতা</SelectItem>
+                        <SelectItem value="food">খাবার</SelectItem>
+                        <SelectItem value="security">নিরাপত্তা</SelectItem>
+                        <SelectItem value="other">অন্যান্য</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <Button className="w-full bg-orange-600 hover:bg-orange-700">
+                    অভিযোগ জমা দিন
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="border-blue-200 bg-blue-50">
-            <CardContent className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <Building2 className="h-8 w-8 text-islamic-blue" />
+                <Building2 className="w-8 h-8 text-blue-600" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-blue">{dashboard.totalRooms}</p>
-                  <p className="text-sm text-gray-600">মোট রুম</p>
+                  <p className="text-sm font-medium text-gray-600">মোট রুম</p>
+                  <p className="text-2xl font-bold text-gray-900">{hostelStats.totalRooms}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-green-200 bg-green-50">
-            <CardContent className="p-6">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <Users className="h-8 w-8 text-islamic-green" />
+                <Bed className="w-8 h-8 text-green-600" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-green">{dashboard.totalResidents}</p>
-                  <p className="text-sm text-gray-600">মোট আবাসিক</p>
+                  <p className="text-sm font-medium text-gray-600">দখলকৃত রুম</p>
+                  <p className="text-2xl font-bold text-gray-900">{hostelStats.occupiedRooms}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-yellow-200 bg-yellow-50">
-            <CardContent className="p-6">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <Bed className="h-8 w-8 text-islamic-gold" />
+                <Users className="w-8 h-8 text-purple-600" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-gold">{dashboard.availableRooms}</p>
-                  <p className="text-sm text-gray-600">উপলব্ধ রুম</p>
+                  <p className="text-sm font-medium text-gray-600">মোট ছাত্র</p>
+                  <p className="text-2xl font-bold text-gray-900">{hostelStats.totalStudents}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-red-200 bg-red-50">
-            <CardContent className="p-6">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <AlertTriangle className="h-8 w-8 text-red-600" />
+                <Utensils className="w-8 h-8 text-orange-600" />
                 <div>
-                  <p className="text-2xl font-bold text-red-600">{dashboard.pendingComplaints}</p>
-                  <p className="text-sm text-gray-600">অমীমাংসিত অভিযোগ</p>
+                  <p className="text-sm font-medium text-gray-600">মেস সদস্য</p>
+                  <p className="text-2xl font-bold text-gray-900">{hostelStats.messStudents}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-        </div>
 
-        {/* Revenue and Occupancy */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <Card className="border-green-200 bg-green-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-2">
+                <AlertTriangle className="w-8 h-8 text-red-600" />
+                <div>
+                  <p className="text-sm font-medium text-gray-600">অমীমাংসিত অভিযোগ</p>
+                  <p className="text-2xl font-bold text-gray-900">{hostelStats.pendingComplaints}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="w-8 h-8 text-emerald-600" />
                 <div>
                   <p className="text-sm font-medium text-gray-600">মাসিক আয়</p>
-                  <p className="text-3xl font-bold text-islamic-green">৳{dashboard.monthlyRevenue.toLocaleString()}</p>
-                  <p className="text-sm text-green-600 mt-1">+১২% গত মাসের তুলনায়</p>
+                  <p className="text-2xl font-bold text-gray-900">৳{hostelStats.monthlyRevenue.toLocaleString()}</p>
                 </div>
-                <DollarSign className="h-12 w-12 text-islamic-green/20" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-blue-200 bg-blue-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">দখলের হার</p>
-                  <p className="text-3xl font-bold text-islamic-blue">{dashboard.occupancyRate}%</p>
-                  <p className="text-sm text-blue-600 mt-1">{dashboard.occupiedRooms}/{dashboard.totalRooms} রুম দখলে</p>
-                </div>
-                <Building2 className="h-12 w-12 text-islamic-blue/20" />
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Room Filter */}
-        <Card className="mb-8">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>রুম ব্যবস্থাপনা</CardTitle>
-              <Select value={selectedFloor} onValueChange={setSelectedFloor}>
-                <SelectTrigger className="w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">সব তলা</SelectItem>
-                  <SelectItem value="1">১ম তলা</SelectItem>
-                  <SelectItem value="2">২য় তলা</SelectItem>
-                  <SelectItem value="3">৩য় তলা</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredRooms.map((room) => (
-                <div key={room.id} className={`p-4 border rounded-lg ${
-                  room.status === 'occupied' ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'
-                }`}>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-lg">রুম {room.roomNumber}</h3>
-                    <Badge variant={room.status === 'occupied' ? 'destructive' : 'default'}>
-                      {room.status === 'occupied' ? 'দখলে' : 'উপলব্ধ'}
-                    </Badge>
-                  </div>
-                  
-                  <div className="space-y-2 text-sm">
-                    <p><span className="font-medium">ধরন:</span> {
-                      room.type === 'single' ? 'একক' :
-                      room.type === 'double' ? 'দ্বিজন' : 'ত্রিজন'
-                    }</p>
-                    <p><span className="font-medium">ধারণক্ষমতা:</span> {room.currentOccupancy}/{room.capacity}</p>
-                    <p><span className="font-medium">মাসিক ফি:</span> ৳{room.monthlyFee.toLocaleString()}</p>
-                  </div>
-
-                  {room.residents.length > 0 && (
-                    <div className="mt-3 pt-3 border-t">
-                      <p className="text-xs font-medium text-gray-600 mb-2">বর্তমান আবাসিক:</p>
-                      {room.residents.map((resident, index) => (
-                        <p key={index} className="text-xs text-gray-700">{resident.name}</p>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="mt-3 flex space-x-2">
-                    <Button size="sm" variant="outline" className="flex-1">
-                      বিস্তারিত
-                    </Button>
-                    {room.status === 'available' && (
-                      <Button size="sm" className="bg-islamic-green hover:bg-islamic-green-dark flex-1">
-                        বরাদ্দ করুন
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Recent Activity */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Room Status */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Calendar className="h-5 w-5 text-islamic-blue" />
-                <span>সাম্প্রতিক কার্যক্রম</span>
+                <Building2 className="w-5 h-5 text-blue-600" />
+                <span>রুমের অবস্থা</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-3 rounded-lg bg-gray-50">
-                    <div className={`p-2 rounded-full ${
-                      activity.type === 'check_in' ? 'bg-green-100 text-green-600' :
-                      activity.type === 'complaint' ? 'bg-red-100 text-red-600' :
-                      'bg-blue-100 text-blue-600'
-                    }`}>
-                      {activity.type === 'check_in' ? <Users className="h-4 w-4" /> :
-                       activity.type === 'complaint' ? <AlertTriangle className="h-4 w-4" /> :
-                       <DollarSign className="h-4 w-4" />}
+                {rooms.map((room) => (
+                  <div key={room.id} className="border rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <h3 className="font-semibold text-gray-900">রুম {room.roomNumber}</h3>
+                        <p className="text-sm text-gray-600">{room.floor} তলা - {getRoomTypeText(room.type)}</p>
+                      </div>
+                      <Badge className={room.currentOccupancy < room.capacity ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                        {room.currentOccupancy}/{room.capacity}
+                      </Badge>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">{activity.description}</p>
-                      <p className="text-sm text-gray-600">
-                        {activity.student} • রুম {activity.room}
-                      </p>
-                      <p className="text-xs text-gray-500">{activity.time}</p>
+                    <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                      <div>
+                        <span className="font-medium">মা��িক ফি:</span> ৳{room.monthlyFee}
+                      </div>
+                      <div>
+                        <span className="font-medium">সুবিধা:</span> {room.facilities.join(', ')}
+                      </div>
+                    </div>
+                    <div className="flex space-x-2 mt-3">
+                      <Button size="sm" variant="outline">
+                        <Eye className="w-4 h-4 mr-1" />
+                        বিস্তারিত
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        <Edit className="w-4 h-4 mr-1" />
+                        সম্পাদনা
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -364,41 +413,46 @@ export default function HostelDashboard() {
             </CardContent>
           </Card>
 
-          {/* Pending Complaints */}
+          {/* Recent Complaints */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <AlertTriangle className="h-5 w-5 text-red-600" />
-                <span>অমীমাংসিত অভিযোগ</span>
+                <MessageSquare className="w-5 h-5 text-orange-600" />
+                <span>সাম্প্রতিক অভিযোগ</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {complaints.map((complaint) => (
-                  <div key={complaint.id} className="p-4 border rounded-lg">
-                    <div className="flex items-start justify-between mb-2">
+                  <div key={complaint.id} className="border rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
                       <div>
-                        <h4 className="font-medium text-gray-900">{complaint.category}</h4>
-                        <p className="text-sm text-gray-600">{complaint.studentName} • রুম {complaint.roomNumber}</p>
+                        <h3 className="font-semibold text-gray-900">{complaint.studentName}</h3>
+                        <p className="text-sm text-gray-600">রুম {complaint.roomNumber}</p>
                       </div>
-                      <Badge variant={
-                        complaint.priority === 'high' ? 'destructive' :
-                        complaint.priority === 'medium' ? 'default' : 'secondary'
-                      }>
-                        {complaint.priority === 'high' ? 'জরুরি' :
-                         complaint.priority === 'medium' ? 'মধ্যম' : 'কম'}
-                      </Badge>
+                      <div className="flex space-x-2">
+                        <Badge className={getPriorityColor(complaint.priority)}>
+                          {complaint.priority === 'high' ? 'জরুরি' : 
+                           complaint.priority === 'medium' ? 'মধ্যম' : 'কম'}
+                        </Badge>
+                        <Badge className={getStatusColor(complaint.status)}>
+                          {complaint.status === 'pending' ? 'অপেক্ষমান' : 
+                           complaint.status === 'in_progress' ? 'প্রক্রিয়াধীন' : 'সমাধান'}
+                        </Badge>
+                      </div>
                     </div>
-                    <p className="text-sm text-gray-700 mb-3">{complaint.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">জমা: {complaint.submittedDate}</span>
-                      <div className="space-x-2">
+                    <p className="text-sm text-gray-700 mb-3">{complaint.complaint}</p>
+                    <div className="flex justify-between items-center text-xs text-gray-500">
+                      <span>{new Date(complaint.date).toLocaleDateString('bn-BD')}</span>
+                      <div className="flex space-x-2">
                         <Button size="sm" variant="outline">
-                          বিস্তারিত
+                          <Eye className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" className="bg-islamic-green hover:bg-islamic-green-dark">
-                          সমাধান
-                        </Button>
+                        {complaint.status === 'pending' && (
+                          <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                            সমাধান
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -408,33 +462,61 @@ export default function HostelDashboard() {
           </Card>
         </div>
 
-        {/* Quick Actions */}
-        <Card className="mt-8">
+        {/* Residents Table */}
+        <Card>
           <CardHeader>
-            <CardTitle>দ্রুত অ্যাকশন</CardTitle>
+            <CardTitle>বর্তমান বাসিন্দারা</CardTitle>
+            <CardDescription>হোস্টেলে বর্তমানে থাকা শিক্ষার্থীদের তালিকা</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Button className="h-20 flex flex-col space-y-2 bg-islamic-green hover:bg-islamic-green-dark">
-                <Plus className="h-6 w-6" />
-                <span className="text-sm">নতুন বরাদ্দ</span>
-              </Button>
-              <Button className="h-20 flex flex-col space-y-2 bg-islamic-blue hover:bg-islamic-blue-dark">
-                <Users className="h-6 w-6" />
-                <span className="text-sm">চেক-আউট</span>
-              </Button>
-              <Button className="h-20 flex flex-col space-y-2 bg-islamic-gold hover:bg-islamic-gold/80">
-                <Settings className="h-6 w-6" />
-                <span className="text-sm">মেস মেনু</span>
-              </Button>
-              <Button className="h-20 flex flex-col space-y-2 bg-purple-600 hover:bg-purple-700">
-                <FileText className="h-6 w-6" />
-                <span className="text-sm">রিপোর্ট</span>
-              </Button>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-2">শিক্ষার্থীর নাম</th>
+                    <th className="text-left p-2">আইডি</th>
+                    <th className="text-left p-2">রুম নম্বর</th>
+                    <th className="text-left p-2">প্রবেশের তারিখ</th>
+                    <th className="text-left p-2">মাসিক ফি</th>
+                    <th className="text-left p-2">জরুরি যোগাযোগ</th>
+                    <th className="text-left p-2">অবস্থা</th>
+                    <th className="text-left p-2">কার্যক্রম</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {residents.map((resident) => (
+                    <tr key={resident.id} className="border-b hover:bg-gray-50">
+                      <td className="p-2 font-medium">{resident.studentName}</td>
+                      <td className="p-2">{resident.studentId}</td>
+                      <td className="p-2">{resident.roomNumber}</td>
+                      <td className="p-2">{new Date(resident.checkInDate).toLocaleDateString('bn-BD')}</td>
+                      <td className="p-2">৳{resident.monthlyFee}</td>
+                      <td className="p-2">{resident.emergencyContact}</td>
+                      <td className="p-2">
+                        <Badge className={getStatusColor(resident.status)}>
+                          {resident.status === 'active' ? 'সক্রিয়' : 'নিষ্ক্রিয়'}
+                        </Badge>
+                      </td>
+                      <td className="p-2">
+                        <div className="flex space-x-2">
+                          <Button size="sm" variant="outline">
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          <Button size="sm" variant="outline">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>
       </div>
     </div>
   );
-}
+};
+
+export default HostelDashboard;

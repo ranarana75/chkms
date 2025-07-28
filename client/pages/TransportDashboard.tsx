@@ -1,319 +1,446 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+import Navigation from '../components/Navigation';
 import { 
-  ArrowLeft, 
   Bus, 
-  Users,
   MapPin,
-  AlertTriangle,
-  DollarSign,
+  Users,
+  Route,
   Plus,
-  Settings,
-  FileText,
-  Navigation,
-  School,
+  Eye,
+  Edit,
+  UserPlus,
+  Wrench,
+  Navigation as NavigationIcon,
   Clock
-} from "lucide-react";
+} from 'lucide-react';
 
-export default function TransportDashboard() {
-  const [transportData, setTransportData] = useState(null);
-  const [loading, setLoading] = useState(true);
+interface Vehicle {
+  id: string;
+  vehicleNumber: string;
+  type: 'bus' | 'minibus' | 'microbus';
+  capacity: number;
+  currentPassengers: number;
+  driverName: string;
+  driverPhone: string;
+  route: string;
+  monthlyFee: number;
+  status: 'active' | 'maintenance' | 'inactive';
+  lastMaintenance: string;
+}
+
+interface TransportRoute {
+  id: string;
+  routeName: string;
+  startPoint: string;
+  endPoint: string;
+  stops: string[];
+  distance: number;
+  duration: number;
+  vehicles: number;
+  passengers: number;
+}
+
+interface TransportUser {
+  id: string;
+  studentId: string;
+  studentName: string;
+  class: string;
+  vehicleId: string;
+  vehicleNumber: string;
+  route: string;
+  pickupPoint: string;
+  monthlyFee: number;
+  status: 'active' | 'inactive';
+  emergencyContact: string;
+}
+
+interface TransportStats {
+  totalVehicles: number;
+  activeVehicles: number;
+  totalPassengers: number;
+  monthlyRevenue: number;
+  totalRoutes: number;
+  maintenanceVehicles: number;
+}
+
+const TransportDashboard: React.FC = () => {
+  const [transportStats, setTransportStats] = useState<TransportStats | null>(null);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [routes, setRoutes] = useState<TransportRoute[]>([]);
+  const [passengers, setPassengers] = useState<TransportUser[]>([]);
+  const [isAddVehicleOpen, setIsAddVehicleOpen] = useState(false);
+  const [isEnrollPassengerOpen, setIsEnrollPassengerOpen] = useState(false);
 
   useEffect(() => {
-    loadTransportData();
+    fetchTransportData();
   }, []);
 
-  const loadTransportData = () => {
-    setLoading(true);
-    // Mock data load
-    setTimeout(() => {
-      setTransportData({
-        dashboard: {
-          totalVehicles: 8,
-          activeVehicles: 7,
-          totalPassengers: 142,
-          totalCapacity: 180,
-          occupancyRate: 78.9,
-          monthlyRevenue: 355000,
-          totalRoutes: 5,
-          maintenanceDue: 2
-        },
-        vehicles: [
-          {
-            id: "VH001",
-            vehicleNumber: "ঢাকা-মেট্রো-গ-১২৩৪৫৬",
-            type: "বাস",
-            capacity: 40,
-            currentPassengers: 35,
-            driverName: "আবুল হোসেন",
-            driverPhone: "০১৭১১২২৩৩৪৪",
-            route: "লক্ষ্মীপুর - ঢাকা",
-            monthlyFee: 2500,
-            status: "active",
-            nextMaintenance: "২০২৪-১২-১৫"
-          },
-          {
-            id: "VH002",
-            vehicleNumber: "ঢাকা-মেট্রো-খ-৭৮৯১২ৃ",
-            type: "মিনিবাস",
-            capacity: 25,
-            currentPassengers: 20,
-            driverName: "রহিম উদ্দিন",
-            driverPhone: "০১৭২২৩৩৪৪৫৫",
-            route: "কুমিল্লা - চট্টগ্রাম",
-            monthlyFee: 2000,
-            status: "active",
-            nextMaintenance: "২০২��-১২-২০"
-          },
-          {
-            id: "VH003",
-            vehicleNumber: "ঢাকা-মেট্রো-ক-৫৬৭৮৯০",
-            type: "মিনিবাস",
-            capacity: 25,
-            currentPassengers: 18,
-            driverName: "সালাম মিয়া",
-            driverPhone: "০১৭৩৩৪৪৫৫৬৬",
-            route: "সিলেট - ঢাকা",
-            monthlyFee: 3000,
-            status: "maintenance",
-            nextMaintenance: "২০২৪-১২-১২"
-          }
-        ],
-        routes: [
-          {
-            id: "RT001",
-            name: "লক্ষ্মীপুর - ঢাকা",
-            distance: "১৮০ কিমি",
-            duration: "৫ ঘন্টা",
-            frequency: "দৈনিক",
-            passengerCount: 35,
-            vehicleNumber: "ঢাকা-মেট্রো-গ-১২৩৪৫৬"
-          },
-          {
-            id: "RT002", 
-            name: "কুমিল্লা - চট্টগ্রাম",
-            distance: "১৫০ কিমি",
-            duration: "৫ ঘন্টা",
-            frequency: "সাপ্তাহিক",
-            passengerCount: 20,
-            vehicleNumber: "ঢাকা-মেট্রো-খ-৭৮৯১২৩"
-          },
-          {
-            id: "RT003",
-            name: "সিলেট - ঢাকা", 
-            distance: "২৪০ কিমি",
-            duration: "৬ ঘন্টা",
-            frequency: "সাপ্তাহিক",
-            passengerCount: 18,
-            vehicleNumber: "ঢাকা-মেট্রো-ক-৫৬৭৮৯০"
-          }
-        ],
-        recentActivity: [
-          {
-            type: "departure",
-            description: "গাড়ি ছেড়েছে মাদ্রাসা থেকে",
-            vehicle: "ঢাকা-মেট্রো-গ-১২৩৪৫৬",
-            time: "৩০ মিনিট আগে"
-          },
-          {
-            type: "maintenance",
-            description: "রক্ষণাবেক্ষণ সম্পন্ন",
-            vehicle: "ঢাকা-মেট্রো-ক-৫৬৭৮৯০",
-            time: "২ ঘন্টা আগে"
-          },
-          {
-            type: "enrollment",
-            description: "নতুন যাত্রী যোগ হয়েছে",
-            student: "মোহাম্মদ সাকিব",
-            route: "কুমিল���লা - চট্টগ্রাম",
-            time: "১ দিন আগে"
-          }
-        ]
+  const fetchTransportData = async () => {
+    try {
+      const response = await fetch('/api/transport/dashboard');
+      const data = await response.json();
+      setTransportStats(data.stats);
+      setVehicles(data.vehicles || []);
+      setRoutes(data.routes || []);
+      setPassengers(data.passengers || []);
+    } catch (error) {
+      console.error('Error fetching transport data:', error);
+      // Mock data for demo
+      setTransportStats({
+        totalVehicles: 8,
+        activeVehicles: 7,
+        totalPassengers: 142,
+        monthlyRevenue: 355000,
+        totalRoutes: 5,
+        maintenanceVehicles: 1
       });
-      setLoading(false);
-    }, 1000);
+
+      setVehicles([
+        {
+          id: '1',
+          vehicleNumber: 'ঢাকা-মেট্রো-গ-১২৩৪৫৬',
+          type: 'bus',
+          capacity: 40,
+          currentPassengers: 35,
+          driverName: 'মোহাম্মদ করিম',
+          driverPhone: '01712345678',
+          route: 'চুনতি-রামগতি-লক্ষ্মীপুর',
+          monthlyFee: 2500,
+          status: 'active',
+          lastMaintenance: '2024-11-15'
+        },
+        {
+          id: '2',
+          vehicleNumber: 'ঢাকা-মেট্রো-খ-৭৮৯০১২',
+          type: 'minibus',
+          capacity: 25,
+          currentPassengers: 20,
+          driverName: 'আব্দুল রহমান',
+          driverPhone: '01812345678',
+          route: 'চুনতি-কমলনগর',
+          monthlyFee: 2000,
+          status: 'active',
+          lastMaintenance: '2024-12-01'
+        }
+      ]);
+
+      setRoutes([
+        {
+          id: '1',
+          routeName: 'চুনতি-রামগতি-লক্ষ্মীপুর',
+          startPoint: 'চুনতি হাকিমিয়া মাদ্রাসা',
+          endPoint: 'ল��্ষ্মীপুর সদর',
+          stops: ['চুনতি বাজার', 'রামগতি', 'কামালনগর', 'লক্ষ্মীপুর'],
+          distance: 25,
+          duration: 45,
+          vehicles: 2,
+          passengers: 55
+        },
+        {
+          id: '2',
+          routeName: 'চুনতি-কমলনগর',
+          startPoint: 'চুনতি হাকিমিয়া মাদ্রাসা',
+          endPoint: 'কমলনগর',
+          stops: ['চুনতি', 'কমলনগর'],
+          distance: 15,
+          duration: 30,
+          vehicles: 1,
+          passengers: 20
+        }
+      ]);
+
+      setPassengers([
+        {
+          id: '1',
+          studentId: 'std-001',
+          studentName: 'মোহাম্মদ আব্দুল্লাহ',
+          class: 'class-8',
+          vehicleId: '1',
+          vehicleNumber: 'ঢাকা-মেট্রো-গ-১২৩৪৫৬',
+          route: 'চুনতি-রামগতি-লক্ষ্মীপুর',
+          pickupPoint: 'রামগতি',
+          monthlyFee: 2500,
+          status: 'active',
+          emergencyContact: '01712345678'
+        }
+      ]);
+    }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-islamic-green"></div>
-      </div>
-    );
+  const getVehicleTypeText = (type: string) => {
+    switch (type) {
+      case 'bus':
+        return 'বাস';
+      case 'minibus':
+        return 'মিনিবাস';
+      case 'microbus':
+        return 'মাইক্রোবাস';
+      default:
+        return type;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active':
+        return 'bg-green-100 text-green-800';
+      case 'maintenance':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'inactive':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'active':
+        return 'সক্রিয়';
+      case 'maintenance':
+        return 'রক্ষণাবেক্ষণ';
+      case 'inactive':
+        return 'নিষ্ক্রিয়';
+      default:
+        return status;
+    }
+  };
+
+  if (!transportStats) {
+    return <div className="flex justify-center items-center h-64">লোড হচ্ছে...</div>;
   }
 
-  const { dashboard, vehicles, routes, recentActivity } = transportData;
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-green-50 to-blue-50">
-      {/* Header */}
-      <header className="border-b border-green-100 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/admin" className="inline-flex items-center text-islamic-green hover:text-islamic-green-dark transition-colors">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              ড্যাশবোর্ডে ফিরে যান
-            </Link>
-            <div className="flex items-center space-x-2">
-              <School className="h-6 w-6 text-islamic-green" />
-              <span className="font-bold text-islamic-green">CHKMS</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      <div className="container mx-auto p-6 space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">পরিবহন ব্যবস্থাপনা</h1>
-            <p className="text-gray-600">গাড়ি, রুট এবং যাত্রী ব্যবস্থাপনা</p>
+            <h1 className="text-3xl font-bold text-gray-900">ট্রান্সপোর্ট ব্যবস্থাপনা</h1>
+            <p className="text-gray-600 mt-1">যানবাহন ও রুট ব্যবস্থাপনা</p>
           </div>
-          <div className="flex items-center space-x-4">
-            <Button className="bg-islamic-green hover:bg-islamic-green-dark">
-              <Plus className="h-4 w-4 mr-2" />
-              নতুন যাত্রী যোগ
-            </Button>
-            <Button variant="outline">
-              <Navigation className="h-4 w-4 mr-2" />
-              GPS ট্র্যাকিং
-            </Button>
+          <div className="flex space-x-2">
+            <Dialog open={isAddVehicleOpen} onOpenChange={setIsAddVehicleOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  <Plus className="w-4 h-4 mr-2" />
+                  যানবাহন যোগ
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>নতুন যানবাহন যোগ করুন</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label>যানবাহনের নম্বর</Label>
+                    <Input placeholder="ঢাকা-মেট্রো-গ-১২৩৪৫৬" />
+                  </div>
+                  <div>
+                    <Label>ধরন</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="যানবাহনের ধরন নির্বাচন করুন" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="bus">বাস</SelectItem>
+                        <SelectItem value="minibus">মিনিবাস</SelectItem>
+                        <SelectItem value="microbus">মাইক্রোবাস</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>চালকের নাম</Label>
+                    <Input placeholder="মোহাম্মদ করিম" />
+                  </div>
+                  <div>
+                    <Label>চালকের ফোন</Label>
+                    <Input placeholder="01712345678" />
+                  </div>
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                    যানবাহন যোগ করুন
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+            <Dialog open={isEnrollPassengerOpen} onOpenChange={setIsEnrollPassengerOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-green-600 hover:bg-green-700">
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  যাত্রী ভর্তি
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>নতুন যাত্রী ভর্তি করুন</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label>শিক্ষার্থী আইডি</Label>
+                    <Input placeholder="std-001" />
+                  </div>
+                  <div>
+                    <Label>রুট নির্বাচন</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="রুট নির্বাচন করুন" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {routes.map((route) => (
+                          <SelectItem key={route.id} value={route.id}>
+                            {route.routeName}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label>পিকআপ পয়েন্ট</Label>
+                    <Input placeholder="রামগতি" />
+                  </div>
+                  <Button className="w-full bg-green-600 hover:bg-green-700">
+                    যাত্রী ভর্তি করুন
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="border-blue-200 bg-blue-50">
-            <CardContent className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <Bus className="h-8 w-8 text-islamic-blue" />
+                <Bus className="w-8 h-8 text-blue-600" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-blue">{dashboard.totalVehicles}</p>
-                  <p className="text-sm text-gray-600">মোট গাড়ি</p>
+                  <p className="text-sm font-medium text-gray-600">মোট যানবাহন</p>
+                  <p className="text-2xl font-bold text-gray-900">{transportStats.totalVehicles}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-green-200 bg-green-50">
-            <CardContent className="p-6">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <Users className="h-8 w-8 text-islamic-green" />
+                <NavigationIcon className="w-8 h-8 text-green-600" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-green">{dashboard.totalPassengers}</p>
-                  <p className="text-sm text-gray-600">মোট যাত্রী</p>
+                  <p className="text-sm font-medium text-gray-600">সক্রিয় যানবাহন</p>
+                  <p className="text-2xl font-bold text-gray-900">{transportStats.activeVehicles}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-yellow-200 bg-yellow-50">
-            <CardContent className="p-6">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <MapPin className="h-8 w-8 text-islamic-gold" />
+                <Users className="w-8 h-8 text-purple-600" />
                 <div>
-                  <p className="text-2xl font-bold text-islamic-gold">{dashboard.totalRoutes}</p>
-                  <p className="text-sm text-gray-600">সক্রিয় রুট</p>
+                  <p className="text-sm font-medium text-gray-600">মোট যাত্রী</p>
+                  <p className="text-2xl font-bold text-gray-900">{transportStats.totalPassengers}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-red-200 bg-red-50">
-            <CardContent className="p-6">
+          <Card>
+            <CardContent className="p-4">
               <div className="flex items-center space-x-2">
-                <AlertTriangle className="h-8 w-8 text-red-600" />
+                <Route className="w-8 h-8 text-orange-600" />
                 <div>
-                  <p className="text-2xl font-bold text-red-600">{dashboard.maintenanceDue}</p>
-                  <p className="text-sm text-gray-600">রক্ষণাবেক্ষণ প্রয়োজন</p>
+                  <p className="text-sm font-medium text-gray-600">মোট রুট</p>
+                  <p className="text-2xl font-bold text-gray-900">{transportStats.totalRoutes}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-        </div>
 
-        {/* Revenue and Occupancy */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <Card className="border-green-200 bg-green-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-2">
+                <Wrench className="w-8 h-8 text-red-600" />
+                <div>
+                  <p className="text-sm font-medium text-gray-600">রক্ষণাবেক্ষণে</p>
+                  <p className="text-2xl font-bold text-gray-900">{transportStats.maintenanceVehicles}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-2">
+                <Clock className="w-8 h-8 text-emerald-600" />
                 <div>
                   <p className="text-sm font-medium text-gray-600">মাসিক আয়</p>
-                  <p className="text-3xl font-bold text-islamic-green">৳{dashboard.monthlyRevenue.toLocaleString()}</p>
-                  <p className="text-sm text-green-600 mt-1">+৮% গত মাসের তুলনায়</p>
+                  <p className="text-2xl font-bold text-gray-900">৳{transportStats.monthlyRevenue.toLocaleString()}</p>
                 </div>
-                <DollarSign className="h-12 w-12 text-islamic-green/20" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-blue-200 bg-blue-50">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">যাত্রী দখলের হার</p>
-                  <p className="text-3xl font-bold text-islamic-blue">{dashboard.occupancyRate}%</p>
-                  <p className="text-sm text-blue-600 mt-1">{dashboard.totalPassengers}/{dashboard.totalCapacity} সিট দখলে</p>
-                </div>
-                <Users className="h-12 w-12 text-islamic-blue/20" />
               </div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Vehicle List */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Vehicle Status */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Bus className="h-5 w-5 text-islamic-blue" />
-                <span>গাড়ির তালিকা</span>
+                <Bus className="w-5 h-5 text-blue-600" />
+                <span>যানবাহনের অবস্থা</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {vehicles.map((vehicle) => (
-                  <div key={vehicle.id} className="p-4 border rounded-lg bg-gray-50">
-                    <div className="flex items-center justify-between mb-3">
+                  <div key={vehicle.id} className="border rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
                       <div>
                         <h3 className="font-semibold text-gray-900">{vehicle.vehicleNumber}</h3>
-                        <p className="text-sm text-gray-600">{vehicle.type} • {vehicle.route}</p>
+                        <p className="text-sm text-gray-600">{getVehicleTypeText(vehicle.type)} - {vehicle.driverName}</p>
                       </div>
-                      <Badge variant={vehicle.status === 'active' ? 'default' : 'destructive'}>
-                        {vehicle.status === 'active' ? 'চলমান' : 'রক্ষণাবেক্ষণে'}
+                      <Badge className={getStatusColor(vehicle.status)}>
+                        {getStatusText(vehicle.status)}
                       </Badge>
                     </div>
-                    
-                    <div className="grid grid-cols-2 gap-4 mb-3">
-                      <div className="text-sm">
-                        <p className="text-gray-600">চালক</p>
-                        <p className="font-medium">{vehicle.driverName}</p>
-                        <p className="text-xs text-gray-500">{vehicle.driverPhone}</p>
+                    <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-3">
+                      <div>
+                        <span className="font-medium">ধারণক্ষমতা:</span> {vehicle.capacity}
                       </div>
-                      <div className="text-sm">
-                        <p className="text-gray-600">যাত্রী</p>
-                        <p className="font-medium">{vehicle.currentPassengers}/{vehicle.capacity}</p>
-                        <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                          <div 
-                            className="bg-islamic-green h-2 rounded-full" 
-                            style={{ width: `${(vehicle.currentPassengers / vehicle.capacity) * 100}%` }}
-                          ></div>
-                        </div>
+                      <div>
+                        <span className="font-medium">বর্তমান যাত্রী:</span> {vehicle.currentPassengers}
+                      </div>
+                      <div>
+                        <span className="font-medium">রুট:</span> {vehicle.route}
+                      </div>
+                      <div>
+                        <span className="font-medium">মাসিক ফি:</span> ৳{vehicle.monthlyFee}
                       </div>
                     </div>
-
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">পরবর্তী সার্ভিস: {vehicle.nextMaintenance}</span>
-                      <div className="space-x-2">
-                        <Button size="sm" variant="outline">
-                          বিস্তারিত
+                    <div className="flex space-x-2">
+                      <Button size="sm" variant="outline">
+                        <Eye className="w-4 h-4 mr-1" />
+                        বিস্তারিত
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        <Edit className="w-4 h-4 mr-1" />
+                        সম্পাদনা
+                      </Button>
+                      {vehicle.status === 'active' && (
+                        <Button size="sm" className="bg-yellow-600 hover:bg-yellow-700 text-white">
+                          <Wrench className="w-4 h-4 mr-1" />
+                          রক্ষণাবেক্ষণ
                         </Button>
-                        <Button size="sm" className="bg-islamic-blue hover:bg-islamic-blue-dark">
-                          ট্র্যাক
-                        </Button>
-                      </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -322,114 +449,115 @@ export default function TransportDashboard() {
           </Card>
 
           {/* Routes */}
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <MapPin className="h-5 w-5 text-islamic-gold" />
-                  <span>রুট তালিকা</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {routes.map((route) => (
-                    <div key={route.id} className="p-4 border rounded-lg">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-semibold text-gray-900">{route.name}</h3>
-                        <Badge variant="outline">{route.frequency}</Badge>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <MapPin className="w-5 h-5 text-orange-600" />
+                <span>পরিবহন রুট</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {routes.map((route) => (
+                  <div key={route.id} className="border rounded-lg p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <h3 className="font-semibold text-gray-900">{route.routeName}</h3>
+                        <p className="text-sm text-gray-600">{route.startPoint} → {route.endPoint}</p>
                       </div>
-                      
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <p className="text-gray-600">দূরত্ব: {route.distance}</p>
-                          <p className="text-gray-600">সময়: {route.duration}</p>
-                        </div>
-                        <div>
-                          <p className="text-gray-600">যাত্রী: {route.passengerCount} জন</p>
-                          <p className="text-gray-600">গাড়ি: {route.vehicleNumber}</p>
-                        </div>
+                      <Badge variant="outline">{route.passengers} যাত্রী</Badge>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-3">
+                      <div>
+                        <span className="font-medium">দূরত্ব:</span> {route.distance} কিমি
                       </div>
-
-                      <div className="mt-3 flex space-x-2">
-                        <Button size="sm" variant="outline" className="flex-1">
-                          রুট দেখুন
-                        </Button>
-                        <Button size="sm" className="bg-islamic-green hover:bg-islamic-green-dark flex-1">
-                          সময়সূচি
-                        </Button>
+                      <div>
+                        <span className="font-medium">সময়:</span> {route.duration} মিনিট
+                      </div>
+                      <div>
+                        <span className="font-medium">যানবাহন:</span> {route.vehicles}টি
+                      </div>
+                      <div>
+                        <span className="font-medium">স্টপ:</span> {route.stops.length}টি
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Recent Activity */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Clock className="h-5 w-5 text-islamic-green" />
-                  <span>সাম্প্রতিক কার্যক্রম</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentActivity.map((activity, index) => (
-                    <div key={index} className="flex items-start space-x-3 p-3 rounded-lg bg-gray-50">
-                      <div className={`p-2 rounded-full ${
-                        activity.type === 'departure' ? 'bg-blue-100 text-blue-600' :
-                        activity.type === 'maintenance' ? 'bg-orange-100 text-orange-600' :
-                        'bg-green-100 text-green-600'
-                      }`}>
-                        {activity.type === 'departure' ? <Bus className="h-4 w-4" /> :
-                         activity.type === 'maintenance' ? <Settings className="h-4 w-4" /> :
-                         <Users className="h-4 w-4" />}
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-medium text-gray-900">{activity.description}</p>
-                        {activity.vehicle && (
-                          <p className="text-sm text-gray-600">{activity.vehicle}</p>
-                        )}
-                        {activity.student && (
-                          <p className="text-sm text-gray-600">{activity.student} • {activity.route}</p>
-                        )}
-                        <p className="text-xs text-gray-500">{activity.time}</p>
-                      </div>
+                    <div className="text-sm text-gray-600 mb-3">
+                      <span className="font-medium">স্টপসমূহ:</span> {route.stops.join(' → ')}
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                    <div className="flex space-x-2">
+                      <Button size="sm" variant="outline">
+                        <Eye className="w-4 h-4 mr-1" />
+                        বিস্তারিত
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        <Edit className="w-4 h-4 mr-1" />
+                        সম্পাদনা
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Quick Actions */}
-        <Card className="mt-8">
+        {/* Passengers Table */}
+        <Card>
           <CardHeader>
-            <CardTitle>দ্রুত অ্যাকশন</CardTitle>
+            <CardTitle>বর্তমান যাত্রীরা</CardTitle>
+            <CardDescription>পরিবহন সেবা ব্যবহারকারী শিক্ষার্থীদের তালিকা</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Button className="h-20 flex flex-col space-y-2 bg-islamic-green hover:bg-islamic-green-dark">
-                <Plus className="h-6 w-6" />
-                <span className="text-sm">নতুন যাত্রী</span>
-              </Button>
-              <Button className="h-20 flex flex-col space-y-2 bg-islamic-blue hover:bg-islamic-blue-dark">
-                <Navigation className="h-6 w-6" />
-                <span className="text-sm">GPS ট্র্যাকিং</span>
-              </Button>
-              <Button className="h-20 flex flex-col space-y-2 bg-islamic-gold hover:bg-islamic-gold/80">
-                <Settings className="h-6 w-6" />
-                <span className="text-sm">রক্ষণাবেক্ষণ</span>
-              </Button>
-              <Button className="h-20 flex flex-col space-y-2 bg-purple-600 hover:bg-purple-700">
-                <FileText className="h-6 w-6" />
-                <span className="text-sm">রিপোর্ট</span>
-              </Button>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left p-2">শিক্ষার্থীর নাম</th>
+                    <th className="text-left p-2">আইডি</th>
+                    <th className="text-left p-2">শ্রেণী</th>
+                    <th className="text-left p-2">যানবাহন</th>
+                    <th className="text-left p-2">রুট</th>
+                    <th className="text-left p-2">পিকআপ পয়েন্ট</th>
+                    <th className="text-left p-2">মাসিক ফি</th>
+                    <th className="text-left p-2">অবস্থা</th>
+                    <th className="text-left p-2">কার্যক্রম</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {passengers.map((passenger) => (
+                    <tr key={passenger.id} className="border-b hover:bg-gray-50">
+                      <td className="p-2 font-medium">{passenger.studentName}</td>
+                      <td className="p-2">{passenger.studentId}</td>
+                      <td className="p-2">{passenger.class}</td>
+                      <td className="p-2">{passenger.vehicleNumber}</td>
+                      <td className="p-2">{passenger.route}</td>
+                      <td className="p-2">{passenger.pickupPoint}</td>
+                      <td className="p-2">৳{passenger.monthlyFee}</td>
+                      <td className="p-2">
+                        <Badge className={getStatusColor(passenger.status)}>
+                          {passenger.status === 'active' ? 'সক্রিয়' : 'নিষ্ক্রিয়'}
+                        </Badge>
+                      </td>
+                      <td className="p-2">
+                        <div className="flex space-x-2">
+                          <Button size="sm" variant="outline">
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          <Button size="sm" variant="outline">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>
       </div>
     </div>
   );
-}
+};
+
+export default TransportDashboard;
