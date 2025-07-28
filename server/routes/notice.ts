@@ -8,7 +8,7 @@ const notices: Notice[] = [
   {
     id: '1',
     title: 'ঈদুল ফিতর ছুটির নোটিশ',
-    content: 'আগামী ঈদুল ফিতর উপলক্ষে মাদ্���াসা ৭ দিন বন্ধ থাকবে। ছুটির পর ক্লাস নিয়মিত হবে।',
+    content: 'আগামী ঈদুল ফিত�� উপলক্ষে মাদ্���াসা ৭ দিন বন্ধ থাকবে। ছুটির পর ক্লাস নিয়মিত হবে।',
     type: 'holiday',
     priority: 'high',
     targetAudience: 'all',
@@ -25,6 +25,7 @@ const notices: Notice[] = [
     title: 'বার্ষিক পরীক্ষার রুটিন প্রকাশ',
     content: 'বার্ষিক পরীক্ষা ২০২৪ এর রুটিন প্রকাশিত হয়েছে। সকল শিক্ষার্থী নোটিশ বোর্ড দেখে নিবেন।',
     type: 'exam',
+    priority: 'high',
     targetAudience: 'students',
     publishDate: new Date('2024-12-08'),
     expiryDate: new Date('2024-12-30'),
