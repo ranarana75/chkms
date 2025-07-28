@@ -64,7 +64,7 @@ export default function AdminPortal() {
   ];
 
   const recentActivities = [
-    { type: "admission", description: "২৫ জন নতুন শিক্ষার্থী ভর্তি হয়েছে", time: "২ ঘন্টা আগে" },
+    { type: "admission", description: "২৫ জন নতুন শিক্ষার্থী ভর্তি হয়েছ��", time: "২ ঘন্টা আগে" },
     { type: "payment", description: "আজ ৳৫৪,০০০ ফি সংগ্রহ হয়েছে", time: "৪ ঘন্টা আগে" },
     { type: "staff", description: "নতুন আরবি শিক্ষক নিয়োগ দেওয়া হয়েছে", time: "১ দিন আগে" },
     { type: "event", description: "বার্ষিক ক্রীড়া প্রতিযোগিতার আয়োজন সম্পন্ন", time: "২ দিন আগে" }
@@ -99,7 +99,7 @@ export default function AdminPortal() {
             <div className="flex items-center space-x-4">
               <Link to="/" className="flex items-center space-x-2">
                 <div className="p-2 bg-islamic-green rounded-lg">
-                  <Mosque className="h-6 w-6 text-white" />
+                  <School className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h1 className="text-lg font-bold text-islamic-green-dark">CHKMS</h1>
@@ -392,7 +392,7 @@ export default function AdminPortal() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Mosque className="h-5 w-5 text-islamic-green" />
+                  <School className="h-5 w-5 text-islamic-green" />
                   <span>নামাজের সময়</span>
                 </CardTitle>
               </CardHeader>
@@ -411,7 +411,7 @@ export default function AdminPortal() {
                     <span className="font-medium">৩:৩০</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>���াগরিব</span>
+                    <span>মাগরিব</span>
                     <span className="font-medium">৫:১০</span>
                   </div>
                   <div className="flex justify-between">
