@@ -45,8 +45,8 @@ export default function Index() {
     },
     {
       icon: <Calculator className="h-8 w-8 text-islamic-gold" />,
-      title: "আর্থিক ব্যবস্থাপনা",
-      description: "ফি কাল��কশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর্ট",
+      title: "আ��্থিক ব্যবস্থাপনা",
+      description: "ফি কালেকশন, বকেয়া ট্র্যাকিং এবং আর্থিক রিপোর্ট",
       color: "bg-yellow-50 dark:bg-yellow-950",
       link: "/finance",
     },
@@ -99,7 +99,7 @@ export default function Index() {
       icon: <GraduationCap className="h-5 w-5" />,
     },
     { label: "বিভাগ", value: "12", icon: <Building2 className="h-5 w-5" /> },
-    { label: "সফলত���র হা���", value: "95%", icon: <Star className="h-5 w-5" /> },
+    { label: "সফলত���র হা����", value: "95%", icon: <Star className="h-5 w-5" /> },
   ];
 
   return (
