@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mosque, ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { School, ArrowLeft, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +26,7 @@ export default function LoginPage() {
             </div>
             <div className="text-left">
               <h1 className="text-2xl font-bold text-white">CHKMS</h1>
-              <p className="text-sm text-islamic-gold">চুনতি হাকিমিয়া কামিল মাদ্রাসা</p>
+              <p className="text-sm text-islamic-gold">চুনতি হাকিমিয়া কামিল ম���দ্রাসা</p>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function LoginPage() {
 
             {/* Demo Links */}
             <div className="pt-4 border-t border-gray-200">
-              <p className="text-center text-sm text-gray-600 mb-3">ডেমো অ্যাকাউ��্ট দিয়ে প্রবেশ:</p>
+              <p className="text-center text-sm text-gray-600 mb-3">ডেমো অ্যাকাউন্ট দিয়ে প্রবেশ:</p>
               <div className="grid grid-cols-2 gap-2">
                 <Button 
                   variant="outline" 
@@ -134,7 +134,7 @@ export default function LoginPage() {
                   asChild
                   className="border-islamic-green text-islamic-green hover:bg-islamic-green hover:text-white"
                 >
-                  <Link to="/teacher">শিক্ষক ডেমো</Link>
+                  <Link to="/teacher">শিক্ষক ডেম���</Link>
                 </Button>
                 <Button 
                   variant="outline" 
