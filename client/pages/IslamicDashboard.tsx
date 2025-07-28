@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { useLocalData, useNotifications } from '@/hooks/useLocalData';
+import { useLocalStorage, useNotifications } from '@/hooks/useLocalData';
 import { Clock, Book, User, Plus, Edit, Trophy, Star, Calendar, Moon, Sun } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 
@@ -140,7 +140,7 @@ export default function IslamicDashboard() {
           startDate: '2023-03-01',
           lastReviewDate: '2024-01-08',
           status: 'active',
-          notes: 'নিয়মিত তিলাওয়াত করে, ভাল�� অগ্রগতি'
+          notes: 'নিয়ম���ত তিলাওয়াত করে, ভালো অগ্রগতি'
         }
       ];
       setHifzStudents(sampleStudents);
@@ -257,7 +257,7 @@ export default function IslamicDashboard() {
       createdAt: new Date().toISOString()
     };
     setIslamicEvents([...islamicEvents, newEvent]);
-    addNotification('ইসলামিক ইভেন্ট সফলভাবে যোগ করা হয়েছে', 'success');
+    addNotification('ইসলামিক ইভ���ন্ট সফলভাবে যোগ করা হয়েছে', 'success');
     setIsEventDialogOpen(false);
   };
 
@@ -311,7 +311,7 @@ export default function IslamicDashboard() {
       upcoming: 'আসন্ন',
       ongoing: 'চলমান',
       competition: 'প্রতিযোগিতা',
-      lecture: '��ক্তব্য',
+      lecture: 'বক্তব্য',
       celebration: 'উৎসব',
       program: 'অনুষ্ঠান'
     };
@@ -942,7 +942,7 @@ function ProgressForm({
 
       <DialogFooter>
         <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
-          ���গ্রগতি রেকর্ড করুন
+          অগ্রগতি রেকর্ড করুন
         </Button>
       </DialogFooter>
     </form>
@@ -1022,7 +1022,7 @@ function EventForm({ onSubmit }: { onSubmit: (data: Omit<IslamicEvent, 'id' | 'c
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="lecture">বক্তব্য</SelectItem>
-              <SelectItem value="competition">প্রতিযোগিতা</SelectItem>
+              <SelectItem value="competition">প্রতিযো���িতা</SelectItem>
               <SelectItem value="celebration">উৎসব</SelectItem>
               <SelectItem value="program">অনুষ্ঠান</SelectItem>
             </SelectContent>
@@ -1052,7 +1052,7 @@ function EventForm({ onSubmit }: { onSubmit: (data: Omit<IslamicEvent, 'id' | 'c
 
       <DialogFooter>
         <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
-          ইভেন্ট যোগ করুন
+          ইভেন্ট ��োগ করুন
         </Button>
       </DialogFooter>
     </form>
