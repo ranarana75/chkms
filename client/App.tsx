@@ -10,11 +10,14 @@ import AdmissionDashboard from "./pages/AdmissionDashboard";
 import NoticeDashboard from "./pages/NoticeDashboard";
 import CalendarDashboard from "./pages/CalendarDashboard";
 import SystemDashboard from "./pages/SystemDashboard";
+import ReportsDashboard from "./pages/ReportsDashboard";
 import FinanceDashboard from "./pages/FinanceDashboard";
 import LibraryDashboard from "./pages/LibraryDashboard";
 import HostelDashboard from "./pages/HostelDashboard";
 import TransportDashboard from "./pages/TransportDashboard";
 import IslamicDashboard from "./pages/IslamicDashboard";
+import FeePayment from "./pages/FeePayment";
+import StudentProfile from "./pages/StudentProfile";
 import PlaceholderPage from "./pages/PlaceholderPage";
 
 function App() {
