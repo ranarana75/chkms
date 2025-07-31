@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./hooks/useAuth";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import LoginPage from "./pages/Login";
+import UserProfile from "./pages/UserProfile";
 import StudentPortal from "./pages/StudentPortal";
 import TeacherPortal from "./pages/TeacherPortal";
 import AdminPortal from "./pages/AdminPortal";
@@ -22,29 +24,32 @@ import PlaceholderPage from "./pages/PlaceholderPage";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/student" element={<StudentPortal />} />
-        <Route path="/teacher" element={<TeacherPortal />} />
-        <Route path="/admin" element={<AdminPortal />} />
-        <Route path="/examination" element={<ExaminationDashboard />} />
-        <Route path="/admission" element={<AdmissionDashboard />} />
-        <Route path="/notice" element={<NoticeDashboard />} />
-        <Route path="/calendar" element={<CalendarDashboard />} />
-        <Route path="/system" element={<SystemDashboard />} />
-        <Route path="/reports" element={<ReportsDashboard />} />
-        <Route path="/fee-payment" element={<FeePayment />} />
-        <Route path="/student-profile" element={<StudentProfile />} />
-        <Route path="/finance" element={<FinanceDashboard />} />
-        <Route path="/library" element={<LibraryDashboard />} />
-        <Route path="/hostel" element={<HostelDashboard />} />
-        <Route path="/transport" element={<TransportDashboard />} />
-        <Route path="/islamic" element={<IslamicDashboard />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/student" element={<StudentPortal />} />
+          <Route path="/teacher" element={<TeacherPortal />} />
+          <Route path="/admin" element={<AdminPortal />} />
+          <Route path="/examination" element={<ExaminationDashboard />} />
+          <Route path="/admission" element={<AdmissionDashboard />} />
+          <Route path="/notice" element={<NoticeDashboard />} />
+          <Route path="/calendar" element={<CalendarDashboard />} />
+          <Route path="/system" element={<SystemDashboard />} />
+          <Route path="/reports" element={<ReportsDashboard />} />
+          <Route path="/fee-payment" element={<FeePayment />} />
+          <Route path="/student-profile" element={<StudentProfile />} />
+          <Route path="/finance" element={<FinanceDashboard />} />
+          <Route path="/library" element={<LibraryDashboard />} />
+          <Route path="/hostel" element={<HostelDashboard />} />
+          <Route path="/transport" element={<TransportDashboard />} />
+          <Route path="/islamic" element={<IslamicDashboard />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
