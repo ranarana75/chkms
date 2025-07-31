@@ -44,10 +44,14 @@ import {
   Home,
   Settings,
   Clock,
-  Target
+  Target,
 } from "lucide-react";
 import { useLocalData, useNotifications } from "@/hooks/useLocalData";
-import { hostelResidentsDB, LocalDB, STORAGE_KEYS } from "@shared/localDatabase";
+import {
+  hostelResidentsDB,
+  LocalDB,
+  STORAGE_KEYS,
+} from "@shared/localDatabase";
 
 interface Room {
   id: string;
@@ -110,8 +114,8 @@ interface HostelStats {
 }
 
 // Create databases
-const roomsDB = new LocalDB<Room>('chkms_hostel_rooms');
-const complaintsDB = new LocalDB<HostelComplaint>('chkms_hostel_complaints');
+const roomsDB = new LocalDB<Room>("chkms_hostel_rooms");
+const complaintsDB = new LocalDB<HostelComplaint>("chkms_hostel_complaints");
 
 const HostelDashboard: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -154,9 +158,27 @@ const HostelDashboard: React.FC = () => {
     priority: "",
   });
 
-  const { data: rooms, loading: roomsLoading, addItem: addRoom, updateItem: updateRoom, refresh: refreshRooms } = useLocalData(roomsDB);
-  const { data: residents, loading: residentsLoading, addItem: addResident, updateItem: updateResident, refresh: refreshResidents } = useLocalData(hostelResidentsDB);
-  const { data: complaints, loading: complaintsLoading, addItem: addComplaint, updateItem: updateComplaint, refresh: refreshComplaints } = useLocalData(complaintsDB);
+  const {
+    data: rooms,
+    loading: roomsLoading,
+    addItem: addRoom,
+    updateItem: updateRoom,
+    refresh: refreshRooms,
+  } = useLocalData(roomsDB);
+  const {
+    data: residents,
+    loading: residentsLoading,
+    addItem: addResident,
+    updateItem: updateResident,
+    refresh: refreshResidents,
+  } = useLocalData(hostelResidentsDB);
+  const {
+    data: complaints,
+    loading: complaintsLoading,
+    addItem: addComplaint,
+    updateItem: updateComplaint,
+    refresh: refreshComplaints,
+  } = useLocalData(complaintsDB);
   const { addNotification } = useNotifications();
 
   useEffect(() => {
@@ -207,7 +229,14 @@ const HostelDashboard: React.FC = () => {
           capacity: 1,
           currentOccupancy: 0,
           monthlyFee: 3000,
-          facilities: ["ফ্যান", "বিদ্যুৎ", "পানি", "আলম���রি", "পড়ার টেবিল", "চেয়ার"],
+          facilities: [
+            "ফ্যান",
+            "বিদ্যুৎ",
+            "পানি",
+            "আলম���রি",
+            "পড়ার টেবিল",
+            "চেয়ার",
+          ],
           isActive: true,
           description: "একক কক্ষ - প্রিমিয়াম",
           createdAt: new Date().toISOString(),
@@ -226,10 +255,10 @@ const HostelDashboard: React.FC = () => {
           description: "সাধারণ ডরমিটরি",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-        }
+        },
       ];
 
-      sampleRooms.forEach(room => roomsDB.add(room));
+      sampleRooms.forEach((room) => roomsDB.add(room));
     }
 
     // Initialize sample residents
@@ -285,10 +314,10 @@ const HostelDashboard: React.FC = () => {
           lastPayment: "2024-12-05",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-        }
+        },
       ];
 
-      sampleResidents.forEach(resident => hostelResidentsDB.add(resident));
+      sampleResidents.forEach((resident) => hostelResidentsDB.add(resident));
     }
 
     // Initialize sample complaints
@@ -336,25 +365,35 @@ const HostelDashboard: React.FC = () => {
           resolution: "রাঁধুনীর সাথে আলোচনা করে খাবারের মান উন্নত করা হয়েছে।",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-        }
+        },
       ];
 
-      sampleComplaints.forEach(complaint => complaintsDB.add(complaint));
+      sampleComplaints.forEach((complaint) => complaintsDB.add(complaint));
     }
   };
 
   const calculateStats = () => {
     const totalRooms = rooms.length;
-    const occupiedRooms = rooms.filter((room: Room) => room.currentOccupancy > 0).length;
-    const availableRooms = rooms.filter((room: Room) => room.currentOccupancy < room.capacity).length;
-    const totalStudents = residents.filter((resident: HostelResident) => resident.status === "active").length;
+    const occupiedRooms = rooms.filter(
+      (room: Room) => room.currentOccupancy > 0,
+    ).length;
+    const availableRooms = rooms.filter(
+      (room: Room) => room.currentOccupancy < room.capacity,
+    ).length;
+    const totalStudents = residents.filter(
+      (resident: HostelResident) => resident.status === "active",
+    ).length;
     const monthlyRevenue = residents
       .filter((resident: HostelResident) => resident.status === "active")
-      .reduce((sum: number, resident: HostelResident) => sum + resident.monthlyFee, 0);
-    const pendingComplaints = complaints.filter((complaint: HostelComplaint) => 
-      complaint.status === "pending" || complaint.status === "in_progress"
+      .reduce(
+        (sum: number, resident: HostelResident) => sum + resident.monthlyFee,
+        0,
+      );
+    const pendingComplaints = complaints.filter(
+      (complaint: HostelComplaint) =>
+        complaint.status === "pending" || complaint.status === "in_progress",
     ).length;
-    
+
     // Estimate mess students (90% of residents)
     const messStudents = Math.floor(totalStudents * 0.9);
 
@@ -372,14 +411,28 @@ const HostelDashboard: React.FC = () => {
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await Promise.all([refreshRooms(), refreshResidents(), refreshComplaints()]);
+    await Promise.all([
+      refreshRooms(),
+      refreshResidents(),
+      refreshComplaints(),
+    ]);
     calculateStats();
-    addNotification("success", "ডেটা আপডেট", "হোস্টেলের তথ্য সফলভাবে আপডেট হয়েছে");
+    addNotification(
+      "success",
+      "ডেটা আপডেট",
+      "হোস্টেলের তথ্য সফলভাবে আপডেট হয়েছে",
+    );
     setTimeout(() => setIsRefreshing(false), 1000);
   };
 
   const handleAddRoom = async () => {
-    if (!newRoom.roomNumber || !newRoom.floor || !newRoom.type || !newRoom.capacity || !newRoom.monthlyFee) {
+    if (
+      !newRoom.roomNumber ||
+      !newRoom.floor ||
+      !newRoom.type ||
+      !newRoom.capacity ||
+      !newRoom.monthlyFee
+    ) {
       addNotification("error", "ত্রুটি", "সব প্রয়োজনীয় ক্ষেত্র পূরণ করুন");
       return;
     }
@@ -412,7 +465,11 @@ const HostelDashboard: React.FC = () => {
           facilities: [],
           description: "",
         });
-        addNotification("success", "রুম যোগ", "নতুন রুম সফলভাবে যোগ করা হয়েছে");
+        addNotification(
+          "success",
+          "রুম যোগ",
+          "নতুন রুম সফলভাবে যোগ করা হয়েছে",
+        );
       }
     } catch (error) {
       addNotification("error", "ত্রুটি", "রুম যোগ করতে সমস্যা হয়েছে");
@@ -420,14 +477,24 @@ const HostelDashboard: React.FC = () => {
   };
 
   const handleAllocateRoom = async () => {
-    if (!roomAllocation.studentId || !roomAllocation.studentName || !roomAllocation.roomId || !roomAllocation.emergencyContact) {
+    if (
+      !roomAllocation.studentId ||
+      !roomAllocation.studentName ||
+      !roomAllocation.roomId ||
+      !roomAllocation.emergencyContact
+    ) {
       addNotification("error", "ত্রুটি", "সব প্রয়োজনীয় ক্ষেত্র পূরণ করুন");
       return;
     }
 
     try {
-      const selectedRoom = rooms.find((room: Room) => room.id === roomAllocation.roomId);
-      if (!selectedRoom || selectedRoom.currentOccupancy >= selectedRoom.capacity) {
+      const selectedRoom = rooms.find(
+        (room: Room) => room.id === roomAllocation.roomId,
+      );
+      if (
+        !selectedRoom ||
+        selectedRoom.currentOccupancy >= selectedRoom.capacity
+      ) {
         addNotification("error", "ত্রুটি", "রুমটি বর্তমানে উপলব্ধ নেই");
         return;
       }
@@ -438,7 +505,7 @@ const HostelDashboard: React.FC = () => {
         studentName: roomAllocation.studentName,
         roomId: roomAllocation.roomId,
         roomNumber: selectedRoom.roomNumber,
-        checkInDate: new Date().toISOString().split('T')[0],
+        checkInDate: new Date().toISOString().split("T")[0],
         monthlyFee: selectedRoom.monthlyFee,
         status: "active",
         emergencyContact: roomAllocation.emergencyContact,
@@ -468,7 +535,11 @@ const HostelDashboard: React.FC = () => {
           guardianName: "",
           class: "",
         });
-        addNotification("success", "রুম বরাদ্দ", "রুম সফলভাবে বরাদ্দ করা হয়েছে");
+        addNotification(
+          "success",
+          "রুম বরাদ্দ",
+          "রুম সফলভাবে বরাদ্দ করা হয়েছে",
+        );
       }
     } catch (error) {
       addNotification("error", "ত্রুটি", "রুম বরাদ্দ করতে সমস্যা হয়েছে");
@@ -476,7 +547,13 @@ const HostelDashboard: React.FC = () => {
   };
 
   const handleComplaint = async () => {
-    if (!newComplaint.studentId || !newComplaint.studentName || !newComplaint.complaint || !newComplaint.category || !newComplaint.priority) {
+    if (
+      !newComplaint.studentId ||
+      !newComplaint.studentName ||
+      !newComplaint.complaint ||
+      !newComplaint.category ||
+      !newComplaint.priority
+    ) {
       addNotification("error", "ত্���ুটি", "সব প্রয়োজনীয় ক্ষেত্র পূরণ করুন");
       return;
     }
@@ -491,7 +568,7 @@ const HostelDashboard: React.FC = () => {
         category: newComplaint.category as any,
         priority: newComplaint.priority as any,
         status: "pending",
-        date: new Date().toISOString().split('T')[0],
+        date: new Date().toISOString().split("T")[0],
         assignedTo: getAssignedDepartment(newComplaint.category),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -508,7 +585,11 @@ const HostelDashboard: React.FC = () => {
           category: "",
           priority: "",
         });
-        addNotification("success", "অভিযোগ দায়ের", "অভিযোগ সফলভাবে দায়ের করা হয়েছে");
+        addNotification(
+          "success",
+          "অভিযোগ দায়ের",
+          "অভিযোগ সফলভাবে দায়ের করা হয়েছে",
+        );
       }
     } catch (error) {
       addNotification("error", "ত্রুটি", "অভিযোগ দায়ের করতে সমস্যা হয়েছে");
@@ -640,12 +721,18 @@ const HostelDashboard: React.FC = () => {
               রুম অ্যালোকেশন এবং আবাসিক সেবা ব্যবস্থাপনা
             </p>
             <p className="text-sm text-gray-500 mt-1">
-              শেষ আপডেট: {hostelStats.lastUpdated.toLocaleString('bn-BD')}
+              শেষ আপডেট: {hostelStats.lastUpdated.toLocaleString("bn-BD")}
             </p>
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing}>
-              <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <Button
+              variant="outline"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+            >
+              <RefreshCw
+                className={`w-4 h-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`}
+              />
               রিফ্রেশ
             </Button>
             <Dialog open={isAddRoomOpen} onOpenChange={setIsAddRoomOpen}>
@@ -669,7 +756,9 @@ const HostelDashboard: React.FC = () => {
                       <Input
                         id="roomNumber"
                         value={newRoom.roomNumber}
-                        onChange={(e) => setNewRoom({ ...newRoom, roomNumber: e.target.value })}
+                        onChange={(e) =>
+                          setNewRoom({ ...newRoom, roomNumber: e.target.value })
+                        }
                         placeholder="১০১"
                       />
                     </div>
@@ -679,7 +768,9 @@ const HostelDashboard: React.FC = () => {
                         id="roomFloor"
                         type="number"
                         value={newRoom.floor}
-                        onChange={(e) => setNewRoom({ ...newRoom, floor: e.target.value })}
+                        onChange={(e) =>
+                          setNewRoom({ ...newRoom, floor: e.target.value })
+                        }
                         placeholder="১"
                       />
                     </div>
@@ -687,7 +778,12 @@ const HostelDashboard: React.FC = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="roomType">ধরন</Label>
-                      <Select value={newRoom.type} onValueChange={(value) => setNewRoom({ ...newRoom, type: value })}>
+                      <Select
+                        value={newRoom.type}
+                        onValueChange={(value) =>
+                          setNewRoom({ ...newRoom, type: value })
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="রুমের ধরন নির্বাচন করুন" />
                         </SelectTrigger>
@@ -705,7 +801,9 @@ const HostelDashboard: React.FC = () => {
                         id="roomCapacity"
                         type="number"
                         value={newRoom.capacity}
-                        onChange={(e) => setNewRoom({ ...newRoom, capacity: e.target.value })}
+                        onChange={(e) =>
+                          setNewRoom({ ...newRoom, capacity: e.target.value })
+                        }
                         placeholder="২"
                       />
                     </div>
@@ -716,7 +814,9 @@ const HostelDashboard: React.FC = () => {
                       id="roomFee"
                       type="number"
                       value={newRoom.monthlyFee}
-                      onChange={(e) => setNewRoom({ ...newRoom, monthlyFee: e.target.value })}
+                      onChange={(e) =>
+                        setNewRoom({ ...newRoom, monthlyFee: e.target.value })
+                      }
                       placeholder="২৫০০"
                     />
                   </div>
@@ -725,12 +825,17 @@ const HostelDashboard: React.FC = () => {
                     <Textarea
                       id="roomDescription"
                       value={newRoom.description}
-                      onChange={(e) => setNewRoom({ ...newRoom, description: e.target.value })}
+                      onChange={(e) =>
+                        setNewRoom({ ...newRoom, description: e.target.value })
+                      }
                       placeholder="রুমের বিস্তারিত বিবরণ"
                       rows={3}
                     />
                   </div>
-                  <Button onClick={handleAddRoom} className="w-full bg-purple-600 hover:bg-purple-700">
+                  <Button
+                    onClick={handleAddRoom}
+                    className="w-full bg-purple-600 hover:bg-purple-700"
+                  >
                     রুম যোগ করুন
                   </Button>
                 </div>
@@ -757,33 +862,55 @@ const HostelDashboard: React.FC = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label>শিক্ষার্থী আইডি</Label>
-                      <Input 
+                      <Input
                         value={roomAllocation.studentId}
-                        onChange={(e) => setRoomAllocation({ ...roomAllocation, studentId: e.target.value })}
-                        placeholder="STD001" 
+                        onChange={(e) =>
+                          setRoomAllocation({
+                            ...roomAllocation,
+                            studentId: e.target.value,
+                          })
+                        }
+                        placeholder="STD001"
                       />
                     </div>
                     <div>
                       <Label>শিক্ষার্থীর নাম</Label>
-                      <Input 
+                      <Input
                         value={roomAllocation.studentName}
-                        onChange={(e) => setRoomAllocation({ ...roomAllocation, studentName: e.target.value })}
-                        placeholder="নাম লিখুন" 
+                        onChange={(e) =>
+                          setRoomAllocation({
+                            ...roomAllocation,
+                            studentName: e.target.value,
+                          })
+                        }
+                        placeholder="নাম লিখুন"
                       />
                     </div>
                   </div>
                   <div>
                     <Label>রুম নির্বাচন</Label>
-                    <Select value={roomAllocation.roomId} onValueChange={(value) => setRoomAllocation({ ...roomAllocation, roomId: value })}>
+                    <Select
+                      value={roomAllocation.roomId}
+                      onValueChange={(value) =>
+                        setRoomAllocation({ ...roomAllocation, roomId: value })
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="উপলব্ধ রুম নির্বাচন করুন" />
                       </SelectTrigger>
                       <SelectContent>
                         {rooms
-                          .filter((room: Room) => room.currentOccupancy < room.capacity)
+                          .filter(
+                            (room: Room) =>
+                              room.currentOccupancy < room.capacity,
+                          )
                           .map((room: Room, index: number) => (
-                            <SelectItem key={`select-room-${room.id}-${index}`} value={room.id}>
-                              রুম {room.roomNumber} - {getRoomTypeText(room.type)} (৳{room.monthlyFee}) 
+                            <SelectItem
+                              key={`select-room-${room.id}-${index}`}
+                              value={room.id}
+                            >
+                              রুম {room.roomNumber} -{" "}
+                              {getRoomTypeText(room.type)} (৳{room.monthlyFee})
                               [{room.currentOccupancy}/{room.capacity}]
                             </SelectItem>
                           ))}
@@ -792,31 +919,49 @@ const HostelDashboard: React.FC = () => {
                   </div>
                   <div>
                     <Label>জরুরি যোগাযোগ</Label>
-                    <Input 
+                    <Input
                       value={roomAllocation.emergencyContact}
-                      onChange={(e) => setRoomAllocation({ ...roomAllocation, emergencyContact: e.target.value })}
-                      placeholder="01712345678" 
+                      onChange={(e) =>
+                        setRoomAllocation({
+                          ...roomAllocation,
+                          emergencyContact: e.target.value,
+                        })
+                      }
+                      placeholder="01712345678"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label>অভিভাবকের নাম</Label>
-                      <Input 
+                      <Input
                         value={roomAllocation.guardianName}
-                        onChange={(e) => setRoomAllocation({ ...roomAllocation, guardianName: e.target.value })}
-                        placeholder="অভিভাবকের নাম" 
+                        onChange={(e) =>
+                          setRoomAllocation({
+                            ...roomAllocation,
+                            guardianName: e.target.value,
+                          })
+                        }
+                        placeholder="অভিভাবকের নাম"
                       />
                     </div>
                     <div>
                       <Label>শ্রেণী</Label>
-                      <Input 
+                      <Input
                         value={roomAllocation.class}
-                        onChange={(e) => setRoomAllocation({ ...roomAllocation, class: e.target.value })}
-                        placeholder="আলিম প্রথম বর্ষ" 
+                        onChange={(e) =>
+                          setRoomAllocation({
+                            ...roomAllocation,
+                            class: e.target.value,
+                          })
+                        }
+                        placeholder="আলিম প্রথম বর্ষ"
                       />
                     </div>
                   </div>
-                  <Button onClick={handleAllocateRoom} className="w-full bg-blue-600 hover:bg-blue-700">
+                  <Button
+                    onClick={handleAllocateRoom}
+                    className="w-full bg-blue-600 hover:bg-blue-700"
+                  >
                     রুম বরাদ্দ করুন
                   </Button>
                 </div>
@@ -840,48 +985,77 @@ const HostelDashboard: React.FC = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label>শিক্ষার্থী আইডি</Label>
-                      <Input 
+                      <Input
                         value={newComplaint.studentId}
-                        onChange={(e) => setNewComplaint({ ...newComplaint, studentId: e.target.value })}
-                        placeholder="STD001" 
+                        onChange={(e) =>
+                          setNewComplaint({
+                            ...newComplaint,
+                            studentId: e.target.value,
+                          })
+                        }
+                        placeholder="STD001"
                       />
                     </div>
                     <div>
                       <Label>নাম</Label>
-                      <Input 
+                      <Input
                         value={newComplaint.studentName}
-                        onChange={(e) => setNewComplaint({ ...newComplaint, studentName: e.target.value })}
-                        placeholder="নাম লিখুন" 
+                        onChange={(e) =>
+                          setNewComplaint({
+                            ...newComplaint,
+                            studentName: e.target.value,
+                          })
+                        }
+                        placeholder="নাম লিখুন"
                       />
                     </div>
                   </div>
                   <div>
                     <Label>রুম নম্বর</Label>
-                    <Input 
+                    <Input
                       value={newComplaint.roomNumber}
-                      onChange={(e) => setNewComplaint({ ...newComplaint, roomNumber: e.target.value })}
-                      placeholder="১০১" 
+                      onChange={(e) =>
+                        setNewComplaint({
+                          ...newComplaint,
+                          roomNumber: e.target.value,
+                        })
+                      }
+                      placeholder="১০১"
                     />
                   </div>
                   <div>
                     <Label>অভিযোগের বিবরণ</Label>
-                    <Textarea 
+                    <Textarea
                       value={newComplaint.complaint}
-                      onChange={(e) => setNewComplaint({ ...newComplaint, complaint: e.target.value })}
-                      placeholder="অভিযোগের বিস্তারিত লিখুন..." 
+                      onChange={(e) =>
+                        setNewComplaint({
+                          ...newComplaint,
+                          complaint: e.target.value,
+                        })
+                      }
+                      placeholder="অভিযোগের বিস্তারিত লিখুন..."
                       rows={3}
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label>বিভাগ</Label>
-                      <Select value={newComplaint.category} onValueChange={(value) => setNewComplaint({ ...newComplaint, category: value })}>
+                      <Select
+                        value={newComplaint.category}
+                        onValueChange={(value) =>
+                          setNewComplaint({ ...newComplaint, category: value })
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="অভিযোগের ধরন নির্বাচন করুন" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="maintenance">রক্ষণাব���ক্ষণ</SelectItem>
-                          <SelectItem value="cleanliness">পরিচ্ছন্নতা</SelectItem>
+                          <SelectItem value="maintenance">
+                            রক্ষণাব���ক্ষণ
+                          </SelectItem>
+                          <SelectItem value="cleanliness">
+                            পরিচ্ছন্নতা
+                          </SelectItem>
                           <SelectItem value="food">খাবার</SelectItem>
                           <SelectItem value="security">নিরাপত্তা</SelectItem>
                           <SelectItem value="other">অন্যান্য</SelectItem>
@@ -890,7 +1064,12 @@ const HostelDashboard: React.FC = () => {
                     </div>
                     <div>
                       <Label>অগ্রাধিকার</Label>
-                      <Select value={newComplaint.priority} onValueChange={(value) => setNewComplaint({ ...newComplaint, priority: value })}>
+                      <Select
+                        value={newComplaint.priority}
+                        onValueChange={(value) =>
+                          setNewComplaint({ ...newComplaint, priority: value })
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="অগ্রাধিকার নির্বাচন করুন" />
                         </SelectTrigger>
@@ -902,7 +1081,10 @@ const HostelDashboard: React.FC = () => {
                       </Select>
                     </div>
                   </div>
-                  <Button onClick={handleComplaint} className="w-full bg-orange-600 hover:bg-orange-700">
+                  <Button
+                    onClick={handleComplaint}
+                    className="w-full bg-orange-600 hover:bg-orange-700"
+                  >
                     অভিযোগ জমা দিন
                   </Button>
                 </div>
@@ -1024,7 +1206,10 @@ const HostelDashboard: React.FC = () => {
               ) : (
                 <div className="space-y-4">
                   {rooms.slice(0, 6).map((room: Room, index: number) => (
-                    <div key={`room-${room.id}-${index}`} className="border rounded-lg p-4">
+                    <div
+                      key={`room-${room.id}-${index}`}
+                      className="border rounded-lg p-4"
+                    >
                       <div className="flex justify-between items-start mb-2">
                         <div>
                           <h3 className="font-semibold text-gray-900">
@@ -1088,50 +1273,59 @@ const HostelDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {complaints.slice(0, 5).map((complaint: HostelComplaint, index: number) => (
-                    <div key={`complaint-${complaint.id}-${index}`} className="border rounded-lg p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h3 className="font-semibold text-gray-900">
-                            {complaint.studentName}
-                          </h3>
-                          <p className="text-sm text-gray-600">
-                            রুম {complaint.roomNumber}
-                          </p>
+                  {complaints
+                    .slice(0, 5)
+                    .map((complaint: HostelComplaint, index: number) => (
+                      <div
+                        key={`complaint-${complaint.id}-${index}`}
+                        className="border rounded-lg p-4"
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <h3 className="font-semibold text-gray-900">
+                              {complaint.studentName}
+                            </h3>
+                            <p className="text-sm text-gray-600">
+                              রুম {complaint.roomNumber}
+                            </p>
+                          </div>
+                          <div className="flex space-x-2">
+                            <Badge
+                              className={getPriorityColor(complaint.priority)}
+                            >
+                              {getPriorityText(complaint.priority)}
+                            </Badge>
+                            <Badge className={getStatusColor(complaint.status)}>
+                              {getStatusText(complaint.status)}
+                            </Badge>
+                          </div>
                         </div>
-                        <div className="flex space-x-2">
-                          <Badge className={getPriorityColor(complaint.priority)}>
-                            {getPriorityText(complaint.priority)}
-                          </Badge>
-                          <Badge className={getStatusColor(complaint.status)}>
-                            {getStatusText(complaint.status)}
-                          </Badge>
+                        <p className="text-sm text-gray-700 mb-2">
+                          {complaint.complaint}
+                        </p>
+                        <div className="flex justify-between items-center text-xs text-gray-500">
+                          <span>{getCategoryText(complaint.category)}</span>
+                          <span>
+                            {new Date(complaint.date).toLocaleDateString(
+                              "bn-BD",
+                            )}
+                          </span>
                         </div>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">
-                        {complaint.complaint}
-                      </p>
-                      <div className="flex justify-between items-center text-xs text-gray-500">
-                        <span>{getCategoryText(complaint.category)}</span>
-                        <span>
-                          {new Date(complaint.date).toLocaleDateString("bn-BD")}
-                        </span>
-                      </div>
-                      <div className="flex space-x-2 mt-3">
-                        <Button size="sm" variant="outline">
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                        {complaint.status === "pending" && (
-                          <Button
-                            size="sm"
-                            className="bg-green-600 hover:bg-green-700 text-white"
-                          >
-                            প্রক্রিয়া শুরু
+                        <div className="flex space-x-2 mt-3">
+                          <Button size="sm" variant="outline">
+                            <Eye className="w-4 h-4" />
                           </Button>
-                        )}
+                          {complaint.status === "pending" && (
+                            <Button
+                              size="sm"
+                              className="bg-green-600 hover:bg-green-700 text-white"
+                            >
+                              প্রক্রিয়া শুরু
+                            </Button>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </CardContent>
@@ -1168,39 +1362,52 @@ const HostelDashboard: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {residents.map((resident: HostelResident, index: number) => (
-                      <tr key={`resident-${resident.id}-${index}`} className="border-b hover:bg-gray-50">
-                        <td className="p-2 font-medium">
-                          {resident.studentName}
-                        </td>
-                        <td className="p-2">{resident.studentId}</td>
-                        <td className="p-2">{resident.roomNumber}</td>
-                        <td className="p-2">
-                          {new Date(resident.checkInDate).toLocaleDateString("bn-BD")}
-                        </td>
-                        <td className="p-2">৳{resident.monthlyFee}</td>
-                        <td className="p-2">
-                          <Badge className={getStatusColor(resident.paymentStatus || "pending")}>
-                            {getStatusText(resident.paymentStatus || "pending")}
-                          </Badge>
-                        </td>
-                        <td className="p-2">
-                          <Badge className={getStatusColor(resident.status)}>
-                            {getStatusText(resident.status)}
-                          </Badge>
-                        </td>
-                        <td className="p-2">
-                          <div className="flex space-x-2">
-                            <Button size="sm" variant="outline">
-                              <Eye className="w-4 h-4" />
-                            </Button>
-                            <Button size="sm" variant="outline">
-                              <Edit className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                    {residents.map(
+                      (resident: HostelResident, index: number) => (
+                        <tr
+                          key={`resident-${resident.id}-${index}`}
+                          className="border-b hover:bg-gray-50"
+                        >
+                          <td className="p-2 font-medium">
+                            {resident.studentName}
+                          </td>
+                          <td className="p-2">{resident.studentId}</td>
+                          <td className="p-2">{resident.roomNumber}</td>
+                          <td className="p-2">
+                            {new Date(resident.checkInDate).toLocaleDateString(
+                              "bn-BD",
+                            )}
+                          </td>
+                          <td className="p-2">৳{resident.monthlyFee}</td>
+                          <td className="p-2">
+                            <Badge
+                              className={getStatusColor(
+                                resident.paymentStatus || "pending",
+                              )}
+                            >
+                              {getStatusText(
+                                resident.paymentStatus || "pending",
+                              )}
+                            </Badge>
+                          </td>
+                          <td className="p-2">
+                            <Badge className={getStatusColor(resident.status)}>
+                              {getStatusText(resident.status)}
+                            </Badge>
+                          </td>
+                          <td className="p-2">
+                            <div className="flex space-x-2">
+                              <Button size="sm" variant="outline">
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                              <Button size="sm" variant="outline">
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ),
+                    )}
                   </tbody>
                 </table>
               </div>

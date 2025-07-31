@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -30,7 +30,7 @@ import {
   User,
   ChevronDown,
   Menu,
-  X
+  X,
 } from "lucide-react";
 
 const Navigation: React.FC = () => {
@@ -57,23 +57,32 @@ const Navigation: React.FC = () => {
   ];
 
   const isActive = (path: string) => location.pathname === path;
-  
+
   const handleLogout = async () => {
     await logout();
-    navigate('/');
+    navigate("/");
   };
-  
+
   const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
   };
-  
+
   const getRoleText = (role: string) => {
     switch (role) {
-      case 'admin': return 'প্রশাসক';
-      case 'teacher': return 'শিক্ষক';
-      case 'student': return 'শিক্ষার্থী';
-      case 'parent': return 'অভিভাবক';
-      default: return role;
+      case "admin":
+        return "প্রশাসক";
+      case "teacher":
+        return "শিক্ষক";
+      case "student":
+        return "শিক্ষার্থী";
+      case "parent":
+        return "অভিভাবক";
+      default:
+        return role;
     }
   };
 
@@ -122,14 +131,19 @@ const Navigation: React.FC = () => {
             {isAuthenticated && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center space-x-2 hover:bg-gray-100">
+                  <Button
+                    variant="ghost"
+                    className="flex items-center space-x-2 hover:bg-gray-100"
+                  >
                     <Avatar className="w-8 h-8">
                       <AvatarImage src={user.profileImage} />
                       <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                     </Avatar>
                     <div className="hidden sm:block text-left">
                       <p className="text-sm font-medium">{user.name}</p>
-                      <p className="text-xs text-gray-500">{getRoleText(user.role)}</p>
+                      <p className="text-xs text-gray-500">
+                        {getRoleText(user.role)}
+                      </p>
                     </div>
                     <ChevronDown className="w-4 h-4" />
                   </Button>
@@ -138,7 +152,9 @@ const Navigation: React.FC = () => {
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium">{user.name}</p>
-                      <p className="text-xs text-muted-foreground">{user.email || user.username}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {user.email || user.username}
+                      </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -155,7 +171,10 @@ const Navigation: React.FC = () => {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="text-red-600"
+                  >
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>লগআউট</span>
                   </DropdownMenuItem>
@@ -169,7 +188,7 @@ const Navigation: React.FC = () => {
                   </Button>
                 </Link>
                 <Link to="/admin">
-                  <Button 
+                  <Button
                     className="bg-islamic-green hover:bg-islamic-green-dark"
                     size="sm"
                   >
@@ -181,9 +200,9 @@ const Navigation: React.FC = () => {
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden">
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
                 {isMobileMenuOpen ? (
@@ -218,7 +237,7 @@ const Navigation: React.FC = () => {
                   </Link>
                 );
               })}
-              
+
               {/* User actions for mobile */}
               {isAuthenticated && user && (
                 <div className="border-t border-gray-200 pt-4 mt-4">
@@ -228,8 +247,12 @@ const Navigation: React.FC = () => {
                       <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="text-base font-medium text-gray-800">{user.name}</p>
-                      <p className="text-sm text-gray-500">{getRoleText(user.role)}</p>
+                      <p className="text-base font-medium text-gray-800">
+                        {user.name}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {getRoleText(user.role)}
+                      </p>
                     </div>
                   </div>
                   <Link
