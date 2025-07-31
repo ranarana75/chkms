@@ -181,7 +181,7 @@ const HostelDashboard: React.FC = () => {
           monthlyFee: 2500,
           facilities: ["ফ্যান", "বিদ্যুৎ", "পানি", "আলমারি"],
           isActive: true,
-          description: "দ্বিতল ভবনের প্রথম তলার কক্ষ",
+          description: "দ্বিতল ভবনের ��্রথম তলার কক্ষ",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
@@ -695,7 +695,7 @@ const HostelDashboard: React.FC = () => {
                           <SelectItem value="single">একক</SelectItem>
                           <SelectItem value="double">দ্বিক</SelectItem>
                           <SelectItem value="triple">ত্রিক</SelectItem>
-                          <SelectItem value="dormitory">ডরমিটরি</SelectItem>
+                          <SelectItem value="dormitory">ডরমিট��ি</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -781,8 +781,8 @@ const HostelDashboard: React.FC = () => {
                       <SelectContent>
                         {rooms
                           .filter((room: Room) => room.currentOccupancy < room.capacity)
-                          .map((room: Room) => (
-                            <SelectItem key={room.id} value={room.id}>
+                          .map((room: Room, index: number) => (
+                            <SelectItem key={`select-room-${room.id}-${index}`} value={room.id}>
                               রুম {room.roomNumber} - {getRoomTypeText(room.type)} (৳{room.monthlyFee}) 
                               [{room.currentOccupancy}/{room.capacity}]
                             </SelectItem>
@@ -831,7 +831,7 @@ const HostelDashboard: React.FC = () => {
               </DialogTrigger>
               <DialogContent className="max-w-md">
                 <DialogHeader>
-                  <DialogTitle>নতুন অভিযোগ দায়ের করুন</DialogTitle>
+                  <DialogTitle>নতুন অভিযোগ দায���ের করুন</DialogTitle>
                   <DialogDescription>
                     অভিযোগের বিস্তারিত তথ্য প্রদান করুন
                   </DialogDescription>
@@ -880,7 +880,7 @@ const HostelDashboard: React.FC = () => {
                           <SelectValue placeholder="অভিযোগের ধরন নির্বাচন করুন" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="maintenance">রক্ষণাবেক্ষণ</SelectItem>
+                          <SelectItem value="maintenance">রক্ষণাব���ক্ষণ</SelectItem>
                           <SelectItem value="cleanliness">পরিচ্ছন্নতা</SelectItem>
                           <SelectItem value="food">খাবার</SelectItem>
                           <SelectItem value="security">নিরাপত্তা</SelectItem>
@@ -1023,8 +1023,8 @@ const HostelDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {rooms.slice(0, 6).map((room: Room) => (
-                    <div key={room.id} className="border rounded-lg p-4">
+                  {rooms.slice(0, 6).map((room: Room, index: number) => (
+                    <div key={`room-${room.id}-${index}`} className="border rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
                         <div>
                           <h3 className="font-semibold text-gray-900">
@@ -1088,8 +1088,8 @@ const HostelDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {complaints.slice(0, 5).map((complaint: HostelComplaint) => (
-                    <div key={complaint.id} className="border rounded-lg p-4">
+                  {complaints.slice(0, 5).map((complaint: HostelComplaint, index: number) => (
+                    <div key={`complaint-${complaint.id}-${index}`} className="border rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
                         <div>
                           <h3 className="font-semibold text-gray-900">
@@ -1168,8 +1168,8 @@ const HostelDashboard: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {residents.map((resident: HostelResident) => (
-                      <tr key={resident.id} className="border-b hover:bg-gray-50">
+                    {residents.map((resident: HostelResident, index: number) => (
+                      <tr key={`resident-${resident.id}-${index}`} className="border-b hover:bg-gray-50">
                         <td className="p-2 font-medium">
                           {resident.studentName}
                         </td>
