@@ -42,7 +42,7 @@ import {
   GraduationCap,
   Target,
   BookOpen,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 import { useLocalData, useNotifications } from "@/hooks/useLocalData";
 import { LocalDB, STORAGE_KEYS } from "@shared/localDatabase";
@@ -103,8 +103,8 @@ interface ExaminationStats {
 }
 
 // Create databases
-const examinationsDB = new LocalDB<Examination>('chkms_examinations');
-const examSchedulesDB = new LocalDB<ExamSchedule>('chkms_exam_schedules');
+const examinationsDB = new LocalDB<Examination>("chkms_examinations");
+const examSchedulesDB = new LocalDB<ExamSchedule>("chkms_exam_schedules");
 const examResultsDB = new LocalDB<ExamResult>(STORAGE_KEYS.EXAM_RESULTS);
 
 const ExaminationDashboard: React.FC = () => {
@@ -151,9 +151,24 @@ const ExaminationDashboard: React.FC = () => {
     obtainedMarks: 0,
   });
 
-  const { data: examinations, loading: examsLoading, addItem: addExam, refresh: refreshExams } = useLocalData(examinationsDB);
-  const { data: schedules, loading: schedulesLoading, addItem: addSchedule, refresh: refreshSchedules } = useLocalData(examSchedulesDB);
-  const { data: results, loading: resultsLoading, addItem: addResult, refresh: refreshResults } = useLocalData(examResultsDB);
+  const {
+    data: examinations,
+    loading: examsLoading,
+    addItem: addExam,
+    refresh: refreshExams,
+  } = useLocalData(examinationsDB);
+  const {
+    data: schedules,
+    loading: schedulesLoading,
+    addItem: addSchedule,
+    refresh: refreshSchedules,
+  } = useLocalData(examSchedulesDB);
+  const {
+    data: results,
+    loading: resultsLoading,
+    addItem: addResult,
+    refresh: refreshResults,
+  } = useLocalData(examResultsDB);
   const { addNotification } = useNotifications();
 
   useEffect(() => {
@@ -193,14 +208,21 @@ const ExaminationDashboard: React.FC = () => {
           totalMarks: 600,
           passingMarks: 300,
           status: "completed",
-          subjects: ["আরবি সাহিত্য", "তাফসীর", "হাদিস", "ফিকহ", "আকাইদ", "ইংরেজি"],
+          subjects: [
+            "আরবি সাহিত্য",
+            "তাফসীর",
+            "হাদিস",
+            "ফিকহ",
+            "আকাইদ",
+            "ইংরেজি",
+          ],
           createdBy: "admin-001",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-        }
+        },
       ];
 
-      sampleExams.forEach(exam => examinationsDB.add(exam));
+      sampleExams.forEach((exam) => examinationsDB.add(exam));
     }
 
     // Initialize sample schedules
@@ -231,10 +253,10 @@ const ExaminationDashboard: React.FC = () => {
           marks: 100,
           invigilator: "উস্তাদ মোহাম্মদ আলী",
           status: "scheduled",
-        }
+        },
       ];
 
-      sampleSchedules.forEach(schedule => examSchedulesDB.add(schedule));
+      sampleSchedules.forEach((schedule) => examSchedulesDB.add(schedule));
     }
 
     // Initialize sample results
@@ -248,11 +270,11 @@ const ExaminationDashboard: React.FC = () => {
           class: "আলিম দ্বিতীয় বর্ষ",
           subjectMarks: {
             "আরবি সাহিত্য": 85,
-            "তাফসীর": 78,
-            "হাদিস": 82,
-            "ফিকহ": 75,
-            "আকাইদ": 80,
-            "ইংরেজি": 70
+            তাফসীর: 78,
+            হাদিস: 82,
+            ফিকহ: 75,
+            আকাইদ: 80,
+            ইংরেজি: 70,
           },
           totalMarks: 600,
           obtainedMarks: 470,
@@ -260,22 +282,32 @@ const ExaminationDashboard: React.FC = () => {
           grade: "A",
           status: "pass",
           position: 5,
-        }
+        },
       ];
 
-      sampleResults.forEach(result => examResultsDB.add(result));
+      sampleResults.forEach((result) => examResultsDB.add(result));
     }
   };
 
   const calculateStats = () => {
     const totalExams = examinations.length;
-    const upcomingExams = examinations.filter((exam: Examination) => exam.status === "upcoming").length;
-    const completedExams = examinations.filter((exam: Examination) => exam.status === "completed").length;
+    const upcomingExams = examinations.filter(
+      (exam: Examination) => exam.status === "upcoming",
+    ).length;
+    const completedExams = examinations.filter(
+      (exam: Examination) => exam.status === "completed",
+    ).length;
     const totalResults = results.length;
-    const passedStudents = results.filter((result: ExamResult) => result.status === "pass").length;
-    const averageMarks = results.length > 0 
-      ? results.reduce((sum: number, result: ExamResult) => sum + result.percentage, 0) / results.length 
-      : 0;
+    const passedStudents = results.filter(
+      (result: ExamResult) => result.status === "pass",
+    ).length;
+    const averageMarks =
+      results.length > 0
+        ? results.reduce(
+            (sum: number, result: ExamResult) => sum + result.percentage,
+            0,
+          ) / results.length
+        : 0;
 
     setStats({
       totalExams,
@@ -292,12 +324,22 @@ const ExaminationDashboard: React.FC = () => {
     setIsRefreshing(true);
     await Promise.all([refreshExams(), refreshSchedules(), refreshResults()]);
     calculateStats();
-    addNotification("success", "ডেটা আপডেট", "পরীক্ষার তথ্য সফলভাবে আপডেট হয়েছে");
+    addNotification(
+      "success",
+      "ডেটা আপডেট",
+      "পরীক্ষার তথ্য সফলভাবে আপডেট হয়েছে",
+    );
     setTimeout(() => setIsRefreshing(false), 1000);
   };
 
   const handleCreateExam = async () => {
-    if (!newExam.name || !newExam.type || !newExam.class || !newExam.startDate || !newExam.endDate) {
+    if (
+      !newExam.name ||
+      !newExam.type ||
+      !newExam.class ||
+      !newExam.startDate ||
+      !newExam.endDate
+    ) {
       addNotification("error", "ত্রুটি", "সব প্রয়োজনীয় ক্ষেত্র পূরণ করুন");
       return;
     }
@@ -332,7 +374,11 @@ const ExaminationDashboard: React.FC = () => {
           passingMarks: "",
           subjects: [],
         });
-        addNotification("success", "পরীক্ষা তৈরি", "নতুন পরীক্ষা সফলভাবে তৈরি হয়েছে");
+        addNotification(
+          "success",
+          "পরীক্ষা তৈরি",
+          "নতুন পরীক্ষা সফলভাবে তৈরি হয়েছে",
+        );
       }
     } catch (error) {
       addNotification("error", "ত্রুটি", "পরীক্ষা তৈরিতে সমস্যা হয়েছে");
@@ -340,13 +386,20 @@ const ExaminationDashboard: React.FC = () => {
   };
 
   const handleCreateSchedule = async () => {
-    if (!newSchedule.examId || !newSchedule.subject || !newSchedule.date || !newSchedule.startTime) {
+    if (
+      !newSchedule.examId ||
+      !newSchedule.subject ||
+      !newSchedule.date ||
+      !newSchedule.startTime
+    ) {
       addNotification("error", "ত্রুটি", "সব প্রয়োজনীয় ক্ষেত্র পূরণ করুন");
       return;
     }
 
     try {
-      const exam = examinations.find((e: Examination) => e.id === newSchedule.examId);
+      const exam = examinations.find(
+        (e: Examination) => e.id === newSchedule.examId,
+      );
       const schedule: ExamSchedule = {
         id: Date.now().toString(),
         examId: newSchedule.examId,
@@ -374,7 +427,11 @@ const ExaminationDashboard: React.FC = () => {
           marks: "",
           invigilator: "",
         });
-        addNotification("success", "সময়সূচি যোগ", "নতুন পরীক্ষার সময়সূচি যোগ করা হয়েছে");
+        addNotification(
+          "success",
+          "সময়সূচি যোগ",
+          "নতুন পরীক্ষার সময়সূচি যোগ করা হয়েছে",
+        );
       }
     } catch (error) {
       addNotification("error", "ত্রুটি", "সময়সূচি যোগ করতে সমস্যা হয়েছে");
@@ -440,12 +497,18 @@ const ExaminationDashboard: React.FC = () => {
               পরীক্ষার সময়সূচি এবং ফলাফল ব্যবস্থাপনা
             </p>
             <p className="text-sm text-gray-500 mt-1">
-              শেষ আপডেট: {stats.lastUpdated.toLocaleString('bn-BD')}
+              শেষ আপডেট: {stats.lastUpdated.toLocaleString("bn-BD")}
             </p>
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing}>
-              <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <Button
+              variant="outline"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+            >
+              <RefreshCw
+                className={`w-4 h-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`}
+              />
               রিফ্রেশ
             </Button>
             <Dialog
@@ -470,17 +533,24 @@ const ExaminationDashboard: React.FC = () => {
                     <Label htmlFor="scheduleExam">পরীক্ষা নির্বাচন</Label>
                     <Select
                       value={newSchedule.examId}
-                      onValueChange={(value) => setNewSchedule({ ...newSchedule, examId: value })}
+                      onValueChange={(value) =>
+                        setNewSchedule({ ...newSchedule, examId: value })
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="পরীক্ষা নির্বাচন করুন" />
                       </SelectTrigger>
                       <SelectContent>
-                        {examinations.map((exam: Examination, index: number) => (
-                          <SelectItem key={`exam-select-${exam.id}-${index}`} value={exam.id}>
-                            {exam.name} - {exam.class}
-                          </SelectItem>
-                        ))}
+                        {examinations.map(
+                          (exam: Examination, index: number) => (
+                            <SelectItem
+                              key={`exam-select-${exam.id}-${index}`}
+                              value={exam.id}
+                            >
+                              {exam.name} - {exam.class}
+                            </SelectItem>
+                          ),
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
@@ -489,7 +559,12 @@ const ExaminationDashboard: React.FC = () => {
                     <Input
                       id="scheduleSubject"
                       value={newSchedule.subject}
-                      onChange={(e) => setNewSchedule({ ...newSchedule, subject: e.target.value })}
+                      onChange={(e) =>
+                        setNewSchedule({
+                          ...newSchedule,
+                          subject: e.target.value,
+                        })
+                      }
                       placeholder="বিষয়ের না��"
                     />
                   </div>
@@ -500,7 +575,12 @@ const ExaminationDashboard: React.FC = () => {
                         id="scheduleDate"
                         type="date"
                         value={newSchedule.date}
-                        onChange={(e) => setNewSchedule({ ...newSchedule, date: e.target.value })}
+                        onChange={(e) =>
+                          setNewSchedule({
+                            ...newSchedule,
+                            date: e.target.value,
+                          })
+                        }
                       />
                     </div>
                     <div>
@@ -508,7 +588,12 @@ const ExaminationDashboard: React.FC = () => {
                       <Input
                         id="scheduleRoom"
                         value={newSchedule.room}
-                        onChange={(e) => setNewSchedule({ ...newSchedule, room: e.target.value })}
+                        onChange={(e) =>
+                          setNewSchedule({
+                            ...newSchedule,
+                            room: e.target.value,
+                          })
+                        }
                         placeholder="১০১"
                       />
                     </div>
@@ -520,7 +605,12 @@ const ExaminationDashboard: React.FC = () => {
                         id="scheduleStartTime"
                         type="time"
                         value={newSchedule.startTime}
-                        onChange={(e) => setNewSchedule({ ...newSchedule, startTime: e.target.value })}
+                        onChange={(e) =>
+                          setNewSchedule({
+                            ...newSchedule,
+                            startTime: e.target.value,
+                          })
+                        }
                       />
                     </div>
                     <div>
@@ -529,7 +619,12 @@ const ExaminationDashboard: React.FC = () => {
                         id="scheduleEndTime"
                         type="time"
                         value={newSchedule.endTime}
-                        onChange={(e) => setNewSchedule({ ...newSchedule, endTime: e.target.value })}
+                        onChange={(e) =>
+                          setNewSchedule({
+                            ...newSchedule,
+                            endTime: e.target.value,
+                          })
+                        }
                       />
                     </div>
                   </div>
@@ -540,7 +635,12 @@ const ExaminationDashboard: React.FC = () => {
                         id="scheduleMarks"
                         type="number"
                         value={newSchedule.marks}
-                        onChange={(e) => setNewSchedule({ ...newSchedule, marks: e.target.value })}
+                        onChange={(e) =>
+                          setNewSchedule({
+                            ...newSchedule,
+                            marks: e.target.value,
+                          })
+                        }
                         placeholder="১০০"
                       />
                     </div>
@@ -549,7 +649,12 @@ const ExaminationDashboard: React.FC = () => {
                       <Input
                         id="scheduleInvigilator"
                         value={newSchedule.invigilator}
-                        onChange={(e) => setNewSchedule({ ...newSchedule, invigilator: e.target.value })}
+                        onChange={(e) =>
+                          setNewSchedule({
+                            ...newSchedule,
+                            invigilator: e.target.value,
+                          })
+                        }
                         placeholder="উস্তাদের নাম"
                       />
                     </div>
@@ -583,7 +688,9 @@ const ExaminationDashboard: React.FC = () => {
                     <Input
                       id="examName"
                       value={newExam.name}
-                      onChange={(e) => setNewExam({ ...newExam, name: e.target.value })}
+                      onChange={(e) =>
+                        setNewExam({ ...newExam, name: e.target.value })
+                      }
                       placeholder="পরীক্ষার নাম লিখুন"
                     />
                   </div>
@@ -592,7 +699,9 @@ const ExaminationDashboard: React.FC = () => {
                       <Label htmlFor="examType">পরীক্ষার ধরন</Label>
                       <Select
                         value={newExam.type}
-                        onValueChange={(value) => setNewExam({ ...newExam, type: value })}
+                        onValueChange={(value) =>
+                          setNewExam({ ...newExam, type: value })
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="ধরন নির্বাচন করুন" />
@@ -609,16 +718,26 @@ const ExaminationDashboard: React.FC = () => {
                       <Label htmlFor="examClass">শ্রেণী</Label>
                       <Select
                         value={newExam.class}
-                        onValueChange={(value) => setNewExam({ ...newExam, class: value })}
+                        onValueChange={(value) =>
+                          setNewExam({ ...newExam, class: value })
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="শ্রেণী নির্বাচন করুন" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="আলিম প্রথম বর্ষ">আলিম প্রথম বর্ষ</SelectItem>
-                          <SelectItem value="আলিম দ্বিতীয় বর্ষ">আলিম দ্বিতীয় বর্ষ</SelectItem>
-                          <SelectItem value="ফাজিল প্রথম বর্ষ">ফাজিল প্রথম বর্ষ</SelectItem>
-                          <SelectItem value="ফাজিল দ্বিতীয় বর্ষ">ফাজিল দ্বিতীয় বর্ষ</SelectItem>
+                          <SelectItem value="আলিম প্রথম বর্ষ">
+                            আলিম প্রথম বর্ষ
+                          </SelectItem>
+                          <SelectItem value="আলিম দ্বিতীয় বর্ষ">
+                            আলিম দ্বিতীয় বর্ষ
+                          </SelectItem>
+                          <SelectItem value="ফাজিল প্রথম বর্ষ">
+                            ফাজিল প্রথম বর্ষ
+                          </SelectItem>
+                          <SelectItem value="ফাজিল দ্বিতীয় বর্ষ">
+                            ফাজিল দ্বিতীয় বর্ষ
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -630,7 +749,9 @@ const ExaminationDashboard: React.FC = () => {
                         id="startDate"
                         type="date"
                         value={newExam.startDate}
-                        onChange={(e) => setNewExam({ ...newExam, startDate: e.target.value })}
+                        onChange={(e) =>
+                          setNewExam({ ...newExam, startDate: e.target.value })
+                        }
                       />
                     </div>
                     <div>
@@ -639,7 +760,9 @@ const ExaminationDashboard: React.FC = () => {
                         id="endDate"
                         type="date"
                         value={newExam.endDate}
-                        onChange={(e) => setNewExam({ ...newExam, endDate: e.target.value })}
+                        onChange={(e) =>
+                          setNewExam({ ...newExam, endDate: e.target.value })
+                        }
                       />
                     </div>
                   </div>
@@ -650,7 +773,9 @@ const ExaminationDashboard: React.FC = () => {
                         id="totalMarks"
                         type="number"
                         value={newExam.totalMarks}
-                        onChange={(e) => setNewExam({ ...newExam, totalMarks: e.target.value })}
+                        onChange={(e) =>
+                          setNewExam({ ...newExam, totalMarks: e.target.value })
+                        }
                         placeholder="৫০০"
                       />
                     </div>
@@ -660,7 +785,12 @@ const ExaminationDashboard: React.FC = () => {
                         id="passingMarks"
                         type="number"
                         value={newExam.passingMarks}
-                        onChange={(e) => setNewExam({ ...newExam, passingMarks: e.target.value })}
+                        onChange={(e) =>
+                          setNewExam({
+                            ...newExam,
+                            passingMarks: e.target.value,
+                          })
+                        }
                         placeholder="২৫০"
                       />
                     </div>
@@ -793,48 +923,55 @@ const ExaminationDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {examinations.slice(0, 5).map((exam: Examination, index: number) => (
-                    <div key={`recent-exam-${exam.id}-${index}`} className="border rounded-lg p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-semibold text-gray-900">
-                          {exam.name}
-                        </h3>
-                        <Badge className={getStatusColor(exam.status)}>
-                          {getStatusText(exam.status)}
-                        </Badge>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                        <div>
-                          <span className="font-medium">ধরন:</span>{" "}
-                          {getExamTypeText(exam.type)}
+                  {examinations
+                    .slice(0, 5)
+                    .map((exam: Examination, index: number) => (
+                      <div
+                        key={`recent-exam-${exam.id}-${index}`}
+                        className="border rounded-lg p-4"
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-semibold text-gray-900">
+                            {exam.name}
+                          </h3>
+                          <Badge className={getStatusColor(exam.status)}>
+                            {getStatusText(exam.status)}
+                          </Badge>
                         </div>
-                        <div>
-                          <span className="font-medium">শ্��েণী:</span>{" "}
-                          {exam.class}
+                        <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                          <div>
+                            <span className="font-medium">ধরন:</span>{" "}
+                            {getExamTypeText(exam.type)}
+                          </div>
+                          <div>
+                            <span className="font-medium">শ্��েণী:</span>{" "}
+                            {exam.class}
+                          </div>
+                          <div>
+                            <span className="font-medium">শুরু:</span>{" "}
+                            {new Date(exam.startDate).toLocaleDateString(
+                              "bn-BD",
+                            )}
+                          </div>
+                          <div>
+                            <span className="font-medium">শেষ:</span>{" "}
+                            {new Date(exam.endDate).toLocaleDateString("bn-BD")}
+                          </div>
                         </div>
-                        <div>
-                          <span className="font-medium">শুরু:</span>{" "}
-                          {new Date(exam.startDate).toLocaleDateString("bn-BD")}
-                        </div>
-                        <div>
-                          <span className="font-medium">শেষ:</span>{" "}
-                          {new Date(exam.endDate).toLocaleDateString("bn-BD")}
-                        </div>
-                      </div>
-                      <div className="flex space-x-2 mt-3">
-                        <Button size="sm" variant="outline">
-                          <Eye className="w-4 h-4 mr-1" />
-                          বিস্তারিত
-                        </Button>
-                        {exam.status === "completed" && (
+                        <div className="flex space-x-2 mt-3">
                           <Button size="sm" variant="outline">
-                            <Download className="w-4 h-4 mr-1" />
-                            ফলাফল
+                            <Eye className="w-4 h-4 mr-1" />
+                            বিস্তারিত
                           </Button>
-                        )}
+                          {exam.status === "completed" && (
+                            <Button size="sm" variant="outline">
+                              <Download className="w-4 h-4 mr-1" />
+                              ফলাফল
+                            </Button>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </CardContent>
@@ -856,34 +993,43 @@ const ExaminationDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {schedules.slice(0, 5).map((schedule: ExamSchedule, index: number) => (
-                    <div key={`schedule-${schedule.id}-${index}`} className="border rounded-lg p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-semibold text-gray-900">
-                          {schedule.subject}
-                        </h3>
-                        <Badge variant="outline">{schedule.marks} নম্বর</Badge>
+                  {schedules
+                    .slice(0, 5)
+                    .map((schedule: ExamSchedule, index: number) => (
+                      <div
+                        key={`schedule-${schedule.id}-${index}`}
+                        className="border rounded-lg p-4"
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-semibold text-gray-900">
+                            {schedule.subject}
+                          </h3>
+                          <Badge variant="outline">
+                            {schedule.marks} নম্বর
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                          <div>
+                            <span className="font-medium">তারিখ:</span>{" "}
+                            {new Date(schedule.date).toLocaleDateString(
+                              "bn-BD",
+                            )}
+                          </div>
+                          <div>
+                            <span className="font-medium">সময়:</span>{" "}
+                            {schedule.startTime} - {schedule.endTime}
+                          </div>
+                          <div>
+                            <span className="font-medium">কক্ষ:</span>{" "}
+                            {schedule.room}
+                          </div>
+                          <div>
+                            <span className="font-medium">পরীক্ষক:</span>{" "}
+                            {schedule.invigilator}
+                          </div>
+                        </div>
                       </div>
-                      <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                        <div>
-                          <span className="font-medium">তারিখ:</span>{" "}
-                          {new Date(schedule.date).toLocaleDateString("bn-BD")}
-                        </div>
-                        <div>
-                          <span className="font-medium">সময়:</span>{" "}
-                          {schedule.startTime} - {schedule.endTime}
-                        </div>
-                        <div>
-                          <span className="font-medium">কক্ষ:</span>{" "}
-                          {schedule.room}
-                        </div>
-                        <div>
-                          <span className="font-medium">পরীক্ষক:</span>{" "}
-                          {schedule.invigilator}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </CardContent>
@@ -920,7 +1066,10 @@ const ExaminationDashboard: React.FC = () => {
                   </thead>
                   <tbody>
                     {examinations.map((exam: Examination, index: number) => (
-                      <tr key={`exam-table-${exam.id}-${index}`} className="border-b hover:bg-gray-50">
+                      <tr
+                        key={`exam-table-${exam.id}-${index}`}
+                        className="border-b hover:bg-gray-50"
+                      >
                         <td className="p-2 font-medium">{exam.name}</td>
                         <td className="p-2">{getExamTypeText(exam.type)}</td>
                         <td className="p-2">{exam.class}</td>

@@ -44,7 +44,7 @@ import {
   Activity,
   PieChart,
   Calculator,
-  Wallet
+  Wallet,
 } from "lucide-react";
 import { useLocalData, useNotifications } from "@/hooks/useLocalData";
 import { LocalDB, STORAGE_KEYS } from "@shared/localDatabase";
@@ -77,7 +77,9 @@ interface FinancialStats {
 }
 
 // Create transactions database
-const transactionsDB = new LocalDB<Transaction>(STORAGE_KEYS.FINANCIAL_TRANSACTIONS);
+const transactionsDB = new LocalDB<Transaction>(
+  STORAGE_KEYS.FINANCIAL_TRANSACTIONS,
+);
 
 const FinanceDashboard: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -103,7 +105,14 @@ const FinanceDashboard: React.FC = () => {
     reference: "",
   });
 
-  const { data: transactions, loading, addItem: addTransaction, updateItem, removeItem, refresh } = useLocalData(transactionsDB);
+  const {
+    data: transactions,
+    loading,
+    addItem: addTransaction,
+    updateItem,
+    removeItem,
+    refresh,
+  } = useLocalData(transactionsDB);
   const { addNotification } = useNotifications();
 
   useEffect(() => {
@@ -215,10 +224,10 @@ const FinanceDashboard: React.FC = () => {
           createdBy: "admin-001",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-        }
+        },
       ];
 
-      sampleTransactions.forEach(transaction => {
+      sampleTransactions.forEach((transaction) => {
         transactionsDB.add(transaction);
       });
     }
@@ -232,40 +241,49 @@ const FinanceDashboard: React.FC = () => {
 
     // Calculate totals
     const totalRevenue = transactions
-      .filter((t: Transaction) => t.type === "income" && t.status === "completed")
+      .filter(
+        (t: Transaction) => t.type === "income" && t.status === "completed",
+      )
       .reduce((sum, t: Transaction) => sum + t.amount, 0);
 
     const totalExpenses = transactions
-      .filter((t: Transaction) => t.type === "expense" && t.status === "completed")
+      .filter(
+        (t: Transaction) => t.type === "expense" && t.status === "completed",
+      )
       .reduce((sum, t: Transaction) => sum + t.amount, 0);
 
     // Calculate monthly figures
     const monthlyRevenue = transactions
       .filter((t: Transaction) => {
         const transactionDate = new Date(t.date);
-        return t.type === "income" && 
-               t.status === "completed" &&
-               transactionDate.getMonth() === currentMonth &&
-               transactionDate.getFullYear() === currentYear;
+        return (
+          t.type === "income" &&
+          t.status === "completed" &&
+          transactionDate.getMonth() === currentMonth &&
+          transactionDate.getFullYear() === currentYear
+        );
       })
       .reduce((sum, t: Transaction) => sum + t.amount, 0);
 
     const monthlyExpenses = transactions
       .filter((t: Transaction) => {
         const transactionDate = new Date(t.date);
-        return t.type === "expense" && 
-               t.status === "completed" &&
-               transactionDate.getMonth() === currentMonth &&
-               transactionDate.getFullYear() === currentYear;
+        return (
+          t.type === "expense" &&
+          t.status === "completed" &&
+          transactionDate.getMonth() === currentMonth &&
+          transactionDate.getFullYear() === currentYear
+        );
       })
       .reduce((sum, t: Transaction) => sum + t.amount, 0);
 
     // Calculate fee collection
     const feeCollection = transactions
-      .filter((t: Transaction) => 
-        t.type === "income" && 
-        t.status === "completed" &&
-        ['tuition', 'library', 'transport', 'hostel'].includes(t.category)
+      .filter(
+        (t: Transaction) =>
+          t.type === "income" &&
+          t.status === "completed" &&
+          ["tuition", "library", "transport", "hostel"].includes(t.category),
       )
       .reduce((sum, t: Transaction) => sum + t.amount, 0);
 
@@ -274,7 +292,8 @@ const FinanceDashboard: React.FC = () => {
 
     // Calculate fee collection rate
     const totalExpectedFees = feeCollection + outstandingFees;
-    const feeCollectionRate = totalExpectedFees > 0 ? (feeCollection / totalExpectedFees) * 100 : 0;
+    const feeCollectionRate =
+      totalExpectedFees > 0 ? (feeCollection / totalExpectedFees) * 100 : 0;
 
     setFinancialStats({
       totalRevenue,
@@ -293,12 +312,22 @@ const FinanceDashboard: React.FC = () => {
     setIsRefreshing(true);
     await refresh();
     calculateStats();
-    addNotification("success", "ডেটা আপডেট", "আর্থিক তথ্য সফলভাবে আপডেট হয়েছে");
+    addNotification(
+      "success",
+      "ডেটা আপডেট",
+      "আর্থিক তথ্য সফলভাবে আপডেট হয়েছে",
+    );
     setTimeout(() => setIsRefreshing(false), 1000);
   };
 
   const handleCreateTransaction = async () => {
-    if (!newTransaction.type || !newTransaction.description || !newTransaction.amount || !newTransaction.category || !newTransaction.method) {
+    if (
+      !newTransaction.type ||
+      !newTransaction.description ||
+      !newTransaction.amount ||
+      !newTransaction.category ||
+      !newTransaction.method
+    ) {
       addNotification("error", "ত্রুটি", "সব ক্ষেত্র পূরণ করুন");
       return;
     }
@@ -330,7 +359,11 @@ const FinanceDashboard: React.FC = () => {
           method: "",
           reference: "",
         });
-        addNotification("success", "লেনদেন যোগ", "নতুন লেনদেন সফলভাবে যোগ করা হয়েছে");
+        addNotification(
+          "success",
+          "লেনদেন যোগ",
+          "নতুন লেনদেন সফলভাবে যোগ করা হয়েছে",
+        );
         calculateStats();
       }
     } catch (error) {
@@ -380,23 +413,28 @@ const FinanceDashboard: React.FC = () => {
 
   // Calculate category-wise summary
   const categoryWiseSummary = React.useMemo(() => {
-    const summary: Record<string, { income: number; expense: number; net: number }> = {};
-    
+    const summary: Record<
+      string,
+      { income: number; expense: number; net: number }
+    > = {};
+
     transactions.forEach((transaction: Transaction) => {
       if (transaction.status === "completed") {
         if (!summary[transaction.category]) {
           summary[transaction.category] = { income: 0, expense: 0, net: 0 };
         }
-        
+
         if (transaction.type === "income") {
           summary[transaction.category].income += transaction.amount;
         } else {
           summary[transaction.category].expense += transaction.amount;
         }
-        summary[transaction.category].net = summary[transaction.category].income - summary[transaction.category].expense;
+        summary[transaction.category].net =
+          summary[transaction.category].income -
+          summary[transaction.category].expense;
       }
     });
-    
+
     return Object.entries(summary).map(([category, data]) => ({
       category,
       ...data,
@@ -417,12 +455,18 @@ const FinanceDashboard: React.FC = () => {
               আয়-ব্যয় এবং ফি কালেকশন ট্র্যাকিং
             </p>
             <p className="text-sm text-gray-500 mt-1">
-              শেষ আপডেট: {financialStats.lastUpdated.toLocaleString('bn-BD')}
+              শেষ আপডেট: {financialStats.lastUpdated.toLocaleString("bn-BD")}
             </p>
           </div>
           <div className="flex space-x-2">
-            <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing}>
-              <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <Button
+              variant="outline"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+            >
+              <RefreshCw
+                className={`w-4 h-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`}
+              />
               রিফ্রেশ
             </Button>
             <Button variant="outline">
@@ -550,12 +594,17 @@ const FinanceDashboard: React.FC = () => {
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="transactionReference">রেফারেন্স (ঐচ্ছিক)</Label>
+                    <Label htmlFor="transactionReference">
+                      রেফারেন্স (ঐচ্ছিক)
+                    </Label>
                     <Input
                       id="transactionReference"
                       value={newTransaction.reference}
                       onChange={(e) =>
-                        setNewTransaction({ ...newTransaction, reference: e.target.value })
+                        setNewTransaction({
+                          ...newTransaction,
+                          reference: e.target.value,
+                        })
                       }
                       placeholder="TXN001"
                     />
@@ -621,7 +670,9 @@ const FinanceDashboard: React.FC = () => {
               <div className="flex items-center">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-600">নিট লাভ</p>
-                  <p className={`text-2xl font-bold ${financialStats.netProfit >= 0 ? 'text-blue-600' : 'text-red-600'}`}>
+                  <p
+                    className={`text-2xl font-bold ${financialStats.netProfit >= 0 ? "text-blue-600" : "text-red-600"}`}
+                  >
                     {loading ? (
                       <Activity className="h-8 w-8 animate-spin" />
                     ) : (
@@ -629,7 +680,11 @@ const FinanceDashboard: React.FC = () => {
                     )}
                   </p>
                   <p className="text-xs text-gray-500">
-                    মাসিক: ৳{(financialStats.monthlyRevenue - financialStats.monthlyExpenses).toLocaleString()}
+                    মাসিক: ৳
+                    {(
+                      financialStats.monthlyRevenue -
+                      financialStats.monthlyExpenses
+                    ).toLocaleString()}
                   </p>
                 </div>
                 <DollarSign className="h-8 w-8 text-blue-600" />
@@ -673,22 +728,31 @@ const FinanceDashboard: React.FC = () => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {categoryWiseSummary.map((summary, index: number) => (
-                <div key={`category-${summary.category}-${index}`} className="p-4 border rounded-lg">
+                <div
+                  key={`category-${summary.category}-${index}`}
+                  className="p-4 border rounded-lg"
+                >
                   <h3 className="font-semibold text-gray-900 mb-2">
                     {getCategoryText(summary.category)}
                   </h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-green-600">আয়:</span>
-                      <span className="font-medium">৳{summary.income.toLocaleString()}</span>
+                      <span className="font-medium">
+                        ৳{summary.income.toLocaleString()}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-red-600">ব্যয়:</span>
-                      <span className="font-medium">৳{summary.expense.toLocaleString()}</span>
+                      <span className="font-medium">
+                        ৳{summary.expense.toLocaleString()}
+                      </span>
                     </div>
                     <div className="flex justify-between border-t pt-2">
                       <span className="font-medium">নিট:</span>
-                      <span className={`font-bold ${summary.net >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      <span
+                        className={`font-bold ${summary.net >= 0 ? "text-green-600" : "text-red-600"}`}
+                      >
                         ৳{summary.net.toLocaleString()}
                       </span>
                     </div>
@@ -729,55 +793,61 @@ const FinanceDashboard: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {transactions.slice(0, 10).map((transaction: Transaction, index: number) => (
-                      <tr
-                        key={`transaction-${transaction.id}-${index}`}
-                        className="border-b hover:bg-gray-50"
-                      >
-                        <td className="p-2">
-                          {new Date(transaction.date).toLocaleDateString("bn-BD")}
-                        </td>
-                        <td className="p-2 font-medium">
-                          {transaction.description}
-                        </td>
-                        <td className="p-2">
-                          {getCategoryText(transaction.category)}
-                        </td>
-                        <td className="p-2">{transaction.method}</td>
-                        <td
-                          className={`p-2 font-bold ${getTransactionColor(transaction.type)}`}
+                    {transactions
+                      .slice(0, 10)
+                      .map((transaction: Transaction, index: number) => (
+                        <tr
+                          key={`transaction-${transaction.id}-${index}`}
+                          className="border-b hover:bg-gray-50"
                         >
-                          {transaction.type === "income" ? "+" : "-"}৳
-                          {transaction.amount.toLocaleString()}
-                        </td>
-                        <td className="p-2">
-                          <Badge className={getStatusColor(transaction.status)}>
-                            {transaction.status === "completed"
-                              ? "সম্পন্ন"
-                              : transaction.status === "pending"
-                                ? "অপ��ক্ষ��ান"
-                                : "ব্যর্থ"}
-                          </Badge>
-                        </td>
-                        <td className="p-2">
-                          <div className="flex space-x-2">
-                            <Button size="sm" variant="outline">
-                              <Eye className="w-4 h-4" />
-                            </Button>
-                            <Button size="sm" variant="outline">
-                              <Edit className="w-4 h-4" />
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="text-red-600 hover:text-red-700"
+                          <td className="p-2">
+                            {new Date(transaction.date).toLocaleDateString(
+                              "bn-BD",
+                            )}
+                          </td>
+                          <td className="p-2 font-medium">
+                            {transaction.description}
+                          </td>
+                          <td className="p-2">
+                            {getCategoryText(transaction.category)}
+                          </td>
+                          <td className="p-2">{transaction.method}</td>
+                          <td
+                            className={`p-2 font-bold ${getTransactionColor(transaction.type)}`}
+                          >
+                            {transaction.type === "income" ? "+" : "-"}৳
+                            {transaction.amount.toLocaleString()}
+                          </td>
+                          <td className="p-2">
+                            <Badge
+                              className={getStatusColor(transaction.status)}
                             >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                              {transaction.status === "completed"
+                                ? "সম্পন্ন"
+                                : transaction.status === "pending"
+                                  ? "অপ��ক্ষ��ান"
+                                  : "ব্যর্থ"}
+                            </Badge>
+                          </td>
+                          <td className="p-2">
+                            <div className="flex space-x-2">
+                              <Button size="sm" variant="outline">
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                              <Button size="sm" variant="outline">
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="text-red-600 hover:text-red-700"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
