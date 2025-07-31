@@ -209,7 +209,7 @@ const ExaminationDashboard: React.FC = () => {
         {
           id: "1",
           examId: "1",
-          examName: "মাসি��� পরীক্ষা - ডিসেম্বর ২০২৪",
+          examName: "মাসি��� পরী���্ষা - ডিসেম্বর ২০২৪",
           subject: "আরবি সাহিত্য",
           date: "2024-12-20",
           startTime: "09:00",
@@ -476,8 +476,8 @@ const ExaminationDashboard: React.FC = () => {
                         <SelectValue placeholder="পরীক্ষা নির্বাচন করুন" />
                       </SelectTrigger>
                       <SelectContent>
-                        {examinations.map((exam: Examination) => (
-                          <SelectItem key={exam.id} value={exam.id}>
+                        {examinations.map((exam: Examination, index: number) => (
+                          <SelectItem key={`exam-select-${exam.id}-${index}`} value={exam.id}>
                             {exam.name} - {exam.class}
                           </SelectItem>
                         ))}
@@ -793,8 +793,8 @@ const ExaminationDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {examinations.slice(0, 5).map((exam: Examination) => (
-                    <div key={exam.id} className="border rounded-lg p-4">
+                  {examinations.slice(0, 5).map((exam: Examination, index: number) => (
+                    <div key={`recent-exam-${exam.id}-${index}`} className="border rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-semibold text-gray-900">
                           {exam.name}
@@ -856,8 +856,8 @@ const ExaminationDashboard: React.FC = () => {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {schedules.slice(0, 5).map((schedule: ExamSchedule) => (
-                    <div key={schedule.id} className="border rounded-lg p-4">
+                  {schedules.slice(0, 5).map((schedule: ExamSchedule, index: number) => (
+                    <div key={`schedule-${schedule.id}-${index}`} className="border rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-semibold text-gray-900">
                           {schedule.subject}
@@ -919,8 +919,8 @@ const ExaminationDashboard: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {examinations.map((exam: Examination) => (
-                      <tr key={exam.id} className="border-b hover:bg-gray-50">
+                    {examinations.map((exam: Examination, index: number) => (
+                      <tr key={`exam-table-${exam.id}-${index}`} className="border-b hover:bg-gray-50">
                         <td className="p-2 font-medium">{exam.name}</td>
                         <td className="p-2">{getExamTypeText(exam.type)}</td>
                         <td className="p-2">{exam.class}</td>
