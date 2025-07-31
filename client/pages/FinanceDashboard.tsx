@@ -448,7 +448,7 @@ const FinanceDashboard: React.FC = () => {
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="transactionType">ধরন</Label>
+                    <Label htmlFor="transactionType">���রন</Label>
                     <Select
                       value={newTransaction.type}
                       onValueChange={(value) =>
@@ -475,7 +475,7 @@ const FinanceDashboard: React.FC = () => {
                           description: e.target.value,
                         })
                       }
-                      placeholder="লেনদেনের বিবরণ"
+                      placeholder="লেনদেনের বিবর��"
                     />
                   </div>
                   <div>
@@ -531,7 +531,7 @@ const FinanceDashboard: React.FC = () => {
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="transactionMethod">পেমেন্ট পদ্ধতি</Label>
+                    <Label htmlFor="transactionMethod">প���মেন্ট পদ্ধতি</Label>
                     <Select
                       value={newTransaction.method}
                       onValueChange={(value) =>
@@ -672,8 +672,8 @@ const FinanceDashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {categoryWiseSummary.map((summary) => (
-                <div key={summary.category} className="p-4 border rounded-lg">
+              {categoryWiseSummary.map((summary, index: number) => (
+                <div key={`category-${summary.category}-${index}`} className="p-4 border rounded-lg">
                   <h3 className="font-semibold text-gray-900 mb-2">
                     {getCategoryText(summary.category)}
                   </h3>
@@ -729,9 +729,9 @@ const FinanceDashboard: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {transactions.slice(0, 10).map((transaction: Transaction) => (
+                    {transactions.slice(0, 10).map((transaction: Transaction, index: number) => (
                       <tr
-                        key={transaction.id}
+                        key={`transaction-${transaction.id}-${index}`}
                         className="border-b hover:bg-gray-50"
                       >
                         <td className="p-2">
@@ -755,7 +755,7 @@ const FinanceDashboard: React.FC = () => {
                             {transaction.status === "completed"
                               ? "সম্পন্ন"
                               : transaction.status === "pending"
-                                ? "অপেক্ষ��ান"
+                                ? "অপ��ক্ষ��ান"
                                 : "ব্যর্থ"}
                           </Badge>
                         </td>
