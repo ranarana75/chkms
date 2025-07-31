@@ -25,8 +25,10 @@ export default function LoginPage() {
   const [userType, setUserType] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -44,30 +46,37 @@ export default function LoginPage() {
 
     setIsLoading(true);
     setError("");
+    setSuccess("");
 
-    const success = await login({
+    const result = await login({
       username,
       password,
       userType: userType as any,
+      rememberMe,
     });
 
-    if (success) {
-      // Redirect based on user type
-      switch (userType) {
-        case "student":
-          navigate("/student");
-          break;
-        case "teacher":
-          navigate("/teacher");
-          break;
-        case "admin":
-          navigate("/admin");
-          break;
-        default:
-          navigate(from);
-      }
+    if (result.success) {
+      setSuccess(result.message || "সফলভাবে লগইন হয়েছে");
+
+      // Wait a moment to show success message
+      setTimeout(() => {
+        // Redirect based on user type
+        switch (userType) {
+          case "student":
+            navigate("/student");
+            break;
+          case "teacher":
+            navigate("/teacher");
+            break;
+          case "admin":
+            navigate("/admin");
+            break;
+          default:
+            navigate(from);
+        }
+      }, 1000);
     } else {
-      setError("ভুল ব্যবহারকারী নাম বা পাসওয়ার্ড");
+      setError(result.message || "ভুল ব্যবহারকারী নাম বা পাসওয়ার্ড");
     }
 
     setIsLoading(false);
@@ -92,7 +101,7 @@ export default function LoginPage() {
             <div className="text-left">
               <h1 className="text-2xl font-bold text-white">CHKMS</h1>
               <p className="text-sm text-islamic-gold">
-                চুনতি হাকিমিয়া কামিল মাদ্রাসা
+                চুনতি হাকিমিয়া কামিল মাদ্রাস��
               </p>
             </div>
           </div>
@@ -189,10 +198,12 @@ export default function LoginPage() {
                   <input
                     type="checkbox"
                     id="remember"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
                     className="rounded border-gray-300"
                   />
                   <label htmlFor="remember" className="text-sm text-gray-600">
-                    মনে রাখুন
+                    মনে রাখুন (৩০ দিন)
                   </label>
                 </div>
                 <Link
@@ -202,6 +213,13 @@ export default function LoginPage() {
                   পাসওয়ার্ড ভুলে গেছেন?
                 </Link>
               </div>
+
+              {/* Success Message */}
+              {success && (
+                <div className="p-3 bg-green-50 border border-green-200 rounded-md">
+                  <p className="text-sm text-green-600">{success}</p>
+                </div>
+              )}
 
               {/* Error Message */}
               {error && (
@@ -223,7 +241,7 @@ export default function LoginPage() {
               {/* Demo Links */}
               <div className="pt-4 border-t border-gray-200">
                 <p className="text-center text-sm text-gray-600 mb-3">
-                  ডেমো অ্যাকাউন্ট দিয়ে প্রবেশ:
+                  ডেমো অ্যাকাউন্ট দিয়ে প্রবেশ: (পাসওয়ার্ড: password123)
                 </p>
                 <div className="grid grid-cols-2 gap-2">
                   <Button
